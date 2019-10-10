@@ -1,4 +1,4 @@
-package model;
+package dataStructures;
 
 import java.util.EmptyStackException;
 

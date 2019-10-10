@@ -1,4 +1,4 @@
-package model;
+package dataStructures;
 
 public interface IQueue<E> {
 	

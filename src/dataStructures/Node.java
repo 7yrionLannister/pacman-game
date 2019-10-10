@@ -1,4 +1,4 @@
-package model;
+package dataStructures;
 
 public class Node<E> {
 	private E element;

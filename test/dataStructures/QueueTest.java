@@ -1,8 +1,10 @@
-package model;
+package dataStructures;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
+
+import dataStructures.Queue;
 
 public class QueueTest {
 	private Queue<Integer> queue;

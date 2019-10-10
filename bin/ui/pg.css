@@ -1,0 +1,5 @@
+.button {
+    -fx-border-color: blue;
+    -fx-background-color: indigo;
+    -fx-text-fill: while;
+}

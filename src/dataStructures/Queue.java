@@ -1,4 +1,4 @@
-package model;
+package dataStructures;
 
 public class Queue<E> implements IQueue<E> {
 	private Node<E> front;
