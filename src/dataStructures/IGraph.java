@@ -4,11 +4,17 @@ import java.util.List;
 
 public interface IGraph<T> {
 	
-	void addVertex(T t);
+	void insertVertex(T t);
 	
-	void link(T t1, T t2, int weight);
+	boolean deleteVertex(T sk);
 	
-	Vertex<T> searchVertex(T data) ;
+	void link(T t1, T t2, int w);
+	
+	Vertex<T> searchVertex(T sk);
+	
+	int getOrder();
+	
+	boolean isEmpty();
 	
 	void BFS(T src) ;
 	
