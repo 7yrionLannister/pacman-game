@@ -2,72 +2,24 @@ package dataStructures;
 
 public class Vertex<T> implements Comparable<Vertex<T>> {
 	
-	public static final String GREY = "Grey";
-	/**
-	 * 
-	 */
-	public static final String WHITE = "White";
-	/**
-	 * 
-	 */
-	public static final String BLACK = "Black";
-	// -----------------------------------------------------------------
-    // Attributes
-    // -----------------------------------------------------------------
-	private String color;
-	/**
-	 * 
-	 */
+	public enum state {
+		GREY, WHITE, BLACK
+	};
+	
+	private state color;
+	
 	private int distance;
-	/**
-	 * 
-	 */
+	
 	private int discovered;
-	/**
-	 * 
-	 */
+	
 	private int ended;
-	/**
-	 * 
-	 */
+	
 	private Vertex<T> predecessor;
-	/**
-	 * 
-	 */
+	
 	private T data;
-	/**
-	 * 
-	 */
-	private ArrayList<Triple<T>> triples;
-	/**
-	 * 
-	 */
-	
-	
-	// -----------------------------------------------------------------
-    // Builder
-    // -----------------------------------------------------------------
-	/**
-	 * 
-	 * @param data
-	 */
-	public Vertex(T data){
-		this.data = data;
-		triples = new ArrayList<Triple<T>>();
-		distance = Integer.MAX_VALUE;
-	}
-	
-	public void addTriple(int weight, Vertex<T> vertex){
-		Triple<T> triple = new Triple<T>(weight, vertex);
-//		if(!(hashTriples.containsKey(nombre))){
-			triples.add(triple);
-				
-//		}
-	}
 	
 	@Override
 	public int compareTo(Vertex<T> other) {
-		
 		return this.distance-other.distance;
 	}
 	
@@ -95,11 +47,11 @@ public class Vertex<T> implements Comparable<Vertex<T>> {
 		this.ended = ended;
 	}
 	
-	public String getColor() {
+	public state getColor() {
 		return color;
 	}
 	
-	public void setColor(String color) {
+	public void setColor(state color) {
 		this.color = color;
 	}
 	
@@ -118,14 +70,4 @@ public class Vertex<T> implements Comparable<Vertex<T>> {
 	public void setPredecessor(Vertex<T> predecessor) {
 		this.predecessor = predecessor;
 	}
-	
-	public ArrayList<Triple<T>> getTriples() {
-		return triples;
-	}
-	
-	public void setTriples(ArrayList<Triple<T>> triples) {
-		this.triples = triples;
-	}
-	
-	
 }
