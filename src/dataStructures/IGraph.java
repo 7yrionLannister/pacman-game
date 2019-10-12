@@ -1,28 +1,25 @@
 package dataStructures;
 
-import java.util.List;
 
-public interface IGraph<T> {
+public interface IGraph<E> {
 	
-	void insertVertex(T t);
+	boolean insertIsolatedVertex(E e);
 	
-	boolean deleteVertex(T sk);
+	boolean deleteVertex(E e);
 	
-	void link(T t1, T t2, int w);
+	void link(E src, E dst, int weight);
 	
-	Vertex<T> searchVertex(T sk);
+	AdjacencyListVertex<E> searchVertex(E key);
 	
 	int getOrder();
 	
 	boolean isEmpty();
 	
-	void BFS(T src) ;
+	boolean BFS(E src) throws Exception;
 	
-	void DFS(T src) ;
+	void DFS() ;
 	
-	void Dijkstra(T start, T end) ;
+	void Dijkstra(E src, E dst) ;
 	
-	void FloydWarshall(T start, T end) ;
-	
-	List<Vertex<T>> getVertices();
+	void FloydWarshall(E src, E dst) ;
 }
