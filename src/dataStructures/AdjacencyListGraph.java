@@ -11,6 +11,7 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 	private boolean isDirected;
 	private boolean isWeighted;
 	private AdjacencyListVertex<E> lastSrcInBSF;
+	private static int DFStime;
 	
 	public AdjacencyListGraph(boolean isDirected, boolean isWeighted) {
 		this.isDirected = isDirected;
@@ -70,7 +71,7 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 	public boolean BFS(E src) throws Exception {
 		if(vertices.containsKey(src)) {
 			AdjacencyListVertex<E> s = vertices.get(src);
-			vertices.forEach(new BiConsumer<E, AdjacencyListVertex<E>>() {
+			vertices.forEach(new BiConsumer<E, AdjacencyListVertex<E>>() { //Fix the vertices configuration to make BFS
 				@Override
 				public void accept(E e, AdjacencyListVertex<E> u) {
 					u.setColor(State.WHITE);
@@ -123,20 +124,52 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 		}
 	}
 
+	//dfs that traverses every vertex independent if it is not reachable from ceratain vertices
 	@Override
 	public void DFS() {
+		vertices.forEach(new BiConsumer<E, AdjacencyListVertex<E>>() { //Fix the vertices configuration to make DFS
+			@Override
+			public void accept(E e, AdjacencyListVertex<E> u) {
+				u.setColor(State.WHITE);
+				u.setPredecessor(null);
+			}
+		});
+		DFStime = 0;
+		vertices.forEach(new BiConsumer<E, AdjacencyListVertex<E>>() {
+			@Override
+			public void accept(E e, AdjacencyListVertex<E> u) {
+				if(u.getColor() == State.WHITE) {
+					DFSVisit(u);
+				}
+			}
+		});
+	}
+	
+	private void DFSVisit(AdjacencyListVertex<E> u) {
+		DFStime++;
+		u.setDiscovered(DFStime);
+		u.setColor(State.GRAY);
+		ArrayList<AdjacencyListEdge<E>> adj = u.getEdges();
+		for(AdjacencyListEdge<E> ale : adj) {
+			AdjacencyListVertex<E> v = ale.getDst();
+			if(v.getColor() == State.WHITE) {
+				v.setPredecessor(u);
+				DFSVisit(v);
+			}
+		}
+		u.setColor(State.BLACK);
+		DFStime++;
+		u.setFinished(DFStime);
+	}
+
+	@Override
+	public void Dijkstra(E src, E dst) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void Dijkstra(E start, E end) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void FloydWarshall(E start, E end) {
+	public void FloydWarshall(E src, E dst) {
 		// TODO Auto-generated method stub
 
 	}
