@@ -62,4 +62,10 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 		
 	}
 
+	@Override
+	public void DFS(E src) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

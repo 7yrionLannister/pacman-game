@@ -2,7 +2,7 @@ package dataStructures;
 
 
 public interface IGraph<E> {
-	
+
 	boolean insertIsolatedVertex(E e);
 	
 	boolean deleteVertex(E e);
@@ -17,7 +17,9 @@ public interface IGraph<E> {
 	
 	boolean BFS(E src) throws Exception;
 	
-	void DFS() ;
+	void DFS();
+	
+	void DFS(E src);
 	
 	void Dijkstra(E src, E dst) ;
 	

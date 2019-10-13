@@ -71,6 +71,7 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 	public boolean BFS(E src) throws Exception {
 		if(vertices.containsKey(src)) {
 			AdjacencyListVertex<E> s = vertices.get(src);
+			lastSrcInBSF = s;
 			vertices.forEach(new BiConsumer<E, AdjacencyListVertex<E>>() { //Fix the vertices configuration to make BFS
 				@Override
 				public void accept(E e, AdjacencyListVertex<E> u) {
@@ -124,7 +125,8 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 		}
 	}
 
-	//dfs that traverses every vertex independent if it is not reachable from ceratain vertices
+	//dfs that traverses every vertex independent if it is not reachable from certain vertices
+	//it uses stack of recursive calls in dfsvisit method
 	@Override
 	public void DFS() {
 		vertices.forEach(new BiConsumer<E, AdjacencyListVertex<E>>() { //Fix the vertices configuration to make DFS
@@ -145,6 +147,7 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 		});
 	}
 	
+	//recursive method for traversing every reachable vertex from u
 	private void DFSVisit(AdjacencyListVertex<E> u) {
 		DFStime++;
 		u.setDiscovered(DFStime);
@@ -162,6 +165,46 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 		u.setFinished(DFStime);
 	}
 
+	//iterative dfs using stack data structure
+	//it does not traverses all the vertices as the main implementation of dfs, instead
+	//it traverses the reachable vertices starting from src
+	@Override
+	public void DFS(E src) {
+		if(vertices.containsKey(src)) {
+			vertices.forEach(new BiConsumer<E, AdjacencyListVertex<E>>() { //Fix the vertices configuration to make DFS
+				@Override
+				public void accept(E e, AdjacencyListVertex<E> u) {
+					u.setColor(State.WHITE);
+					u.setPredecessor(null);
+				}
+			});
+			DFStime = 1;
+			AdjacencyListVertex<E> s = vertices.get(src);
+			s.setColor(State.GRAY);
+			s.setDiscovered(DFStime);
+			//s.predecessor is already null so skip that step
+			Stack<AdjacencyListVertex<E>> stack = new Stack<>();
+			stack.push(s);
+			while(!stack.isEmpty()) {
+				AdjacencyListVertex<E> u = stack.pop();
+				ArrayList<AdjacencyListEdge<E>> adj = u.getEdges();
+				for(AdjacencyListEdge<E> ale: adj) {
+					AdjacencyListVertex<E> v = ale.getDst();
+					if(v.getColor() == State.WHITE) {
+						DFStime++;
+						v.setColor(State.GRAY);
+						v.setDiscovered(DFStime);
+						v.setPredecessor(u);
+						stack.push(v);
+					}
+				}
+				u.setColor(State.BLACK);
+				DFStime++;
+				u.setFinished(DFStime);
+			}
+		}
+	}
+	
 	@Override
 	public void Dijkstra(E src, E dst) {
 		// TODO Auto-generated method stub

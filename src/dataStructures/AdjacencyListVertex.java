@@ -3,9 +3,8 @@ package dataStructures;
 import java.util.ArrayList;
 
 public class AdjacencyListVertex<E> implements Comparable<AdjacencyListVertex<E>> {
-	
 	public enum State {
-		GRAY, WHITE, BLACK
+		WHITE, GRAY, BLACK
 	};
 	
 	private E element;
