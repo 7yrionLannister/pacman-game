@@ -1,6 +1,7 @@
 package dataStructures;
 
 
+//IMPOTANT: E must override equals
 public interface IGraph<E> {
 
 	boolean insertVertex(E e);

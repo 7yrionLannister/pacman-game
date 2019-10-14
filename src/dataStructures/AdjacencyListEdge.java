@@ -34,4 +34,10 @@ public class AdjacencyListEdge<E> {
 	public void setWeight(int weight) {
 		this.weight = weight;
 	}
+	
+	@Override
+	public boolean equals(Object another) {
+		AdjacencyListEdge<E> a = (AdjacencyListEdge<E>)another; //throws exception if another is not an AdjacencyListEdge<E> 
+		return a.src.equals(src) && a.dst.equals(dst);
+	}
 }

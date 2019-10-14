@@ -12,7 +12,7 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 	private boolean isWeighted;
 	private AdjacencyListVertex<E> lastSrcInBSF;
 	private static int DFStime;
-	
+
 	public AdjacencyListGraph(boolean isDirected, boolean isWeighted) {
 		this.isDirected = isDirected;
 		this.isWeighted = isWeighted;
@@ -30,13 +30,26 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 
 	@Override
 	public boolean deleteVertex(E sk) {
-		// TODO Auto-generated method stub
-		//Tomar en cuenta que al eliminar un vertice hay que eliminar todas las aristas que los contengan
+		if(vertices.containsKey(sk)) {
+			vertices.remove(sk); //remove the vertex itself
+			vertices.forEach(new BiConsumer<E, AdjacencyListVertex<E>>() { //and remove all edges where it is dst
+				@Override
+				public void accept(E t, AdjacencyListVertex<E> u) {
+					ArrayList<AdjacencyListEdge<E>> toremove = new ArrayList<>();
+					for(AdjacencyListEdge<E> ale : u.getEdges()) {
+						if(ale.getDst().getElement().equals(sk)) {
+							toremove.add(ale);
+						}
+					}
+					u.getEdges().removeAll(toremove);
+				}
+			});
+			
+			return true;
+		}
 		return false;
 	}
 
-	//TODO modificar este metodo para que si ya existe una arista de src a dst, 
-	//elimine la existente para aniadir la nueva
 	@Override
 	public void link(E src, E dst, int weight) {
 		if(!isWeighted) {
@@ -46,12 +59,17 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 		insertVertex(dst); //Inserts dst if not currently in the graph
 		AdjacencyListVertex<E> s = vertices.get(src);
 		AdjacencyListVertex<E> d = vertices.get(dst);
-		s.getEdges().add(new AdjacencyListEdge<>(s, d, weight));
-		if(!isDirected) { //Add the additional edge is this graph is undirected
-			d.getEdges().add(new AdjacencyListEdge<>(d, s, weight));
+		AdjacencyListEdge<E> newedge1 = new AdjacencyListEdge<>(s, d, weight);
+
+		s.getEdges().remove(newedge1); //if the edge already exists remove it
+		s.getEdges().add(newedge1);
+		if(!isDirected) { //Add the additional edge if this graph is undirected
+			AdjacencyListEdge<E> newedge2 = new AdjacencyListEdge<>(d, s, weight);
+			d.getEdges().remove(newedge2); //if the edge already exists remove it
+			d.getEdges().add(newedge2); 
 		}
 	}
-	
+
 	@Override
 	public boolean unlink(E src, E dst) {
 		// TODO Auto-generated method stub
@@ -99,7 +117,7 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 					AdjacencyListVertex<E> v = ale.getDst();
 					if(v.getColor() == State.WHITE) {
 						v.setColor(State.GRAY);
-						v.setDistance(u.getDistance()+1);
+						v.setDistance(u.getDistance()+1); //TODO considerar en vez de sumar 1, sumar el peso de la arista(u,v), esto porque sumando de uno en uno va a dar el mismo resultado que si alguien le da a getBFSPath el .size(), asi que no brinda mucha informacion adicional
 						v.setPredecessor(u);
 						queue.enqueue(v);
 					}
@@ -110,19 +128,22 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 		}
 		return false;
 	}
-	
+
 	//it is only the shortest path in unweighted graphs, else is just a path
+	//it is the least stops path
 	//returns empty arraylist if the dst vertex was not reachable from lastSrcInBST, or if dst == null
 	public ArrayList<E> getBFSPath(E dst) {
 		AdjacencyListVertex<E> d = vertices.get(dst);
 		ArrayList<E> path = new ArrayList<E>();
 		if(d != null && d.getPredecessor() != null) {
-			BFSPathFill(lastSrcInBSF, vertices.get(dst), path);
+			BFSPathFill(lastSrcInBSF, d, path);
+		} else if(d == lastSrcInBSF && d != null) {
+			path.add(d.getElement());
 		}
-		
+
 		return path;
 	}
-	
+
 	private void BFSPathFill(AdjacencyListVertex<E> src, AdjacencyListVertex<E> dst, ArrayList<E> path) {
 		if(src == dst) {
 			path.add(src.getElement());
@@ -153,7 +174,7 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 			}
 		});
 	}
-	
+
 	//recursive method for traversing every reachable vertex from u
 	private void DFSVisit(AdjacencyListVertex<E> u) {
 		DFStime++;
@@ -211,7 +232,7 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 			}
 		}
 	}
-	
+
 	@Override
 	public void Dijkstra(E src, E dst) {
 		// TODO Auto-generated method stub
@@ -234,5 +255,9 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 
 	public AdjacencyListVertex<E> getLastSrcInBSF() {
 		return lastSrcInBSF;
+	}
+
+	public HashMap<E, AdjacencyListVertex<E>> getVertices() {
+		return vertices;
 	}
 }

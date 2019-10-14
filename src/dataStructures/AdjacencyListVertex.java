@@ -91,4 +91,10 @@ public class AdjacencyListVertex<E> implements Comparable<AdjacencyListVertex<E>
 	public void setEdges(ArrayList<AdjacencyListEdge<E>> edges) {
 		this.edges = edges;
 	}
+	
+	@Override
+	public boolean equals(Object another) {
+		AdjacencyListVertex<E> a = (AdjacencyListVertex<E>)another; //throws exception if another is not an AdjacencyListVertex<E>
+		return a.element.equals(element);
+	}
 }
