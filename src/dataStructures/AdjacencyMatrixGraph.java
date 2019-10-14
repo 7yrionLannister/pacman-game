@@ -3,7 +3,7 @@ package dataStructures;
 public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 
 	@Override
-	public boolean insertIsolatedVertex(E e) {
+	public boolean insertVertex(E e) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -66,6 +66,12 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 	public void DFS(E src) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public boolean unlink(E src, E dst) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

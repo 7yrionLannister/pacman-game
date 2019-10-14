@@ -20,7 +20,7 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 	}
 
 	@Override
-	public boolean insertIsolatedVertex(E e) {
+	public boolean insertVertex(E e) {
 		if(!vertices.containsKey(e)) {
 			vertices.put(e, new AdjacencyListVertex<E>(e));
 			return true;
@@ -35,19 +35,27 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 		return false;
 	}
 
+	//TODO modificar este metodo para que si ya existe una arista de src a dst, 
+	//elimine la existente para aniadir la nueva
 	@Override
 	public void link(E src, E dst, int weight) {
 		if(!isWeighted) {
 			weight = 1;
 		}
-		insertIsolatedVertex(src); //Inserts src if not currently in the graph
-		insertIsolatedVertex(dst); //Inserts dst if not currently in the graph
+		insertVertex(src); //Inserts src if not currently in the graph
+		insertVertex(dst); //Inserts dst if not currently in the graph
 		AdjacencyListVertex<E> s = vertices.get(src);
 		AdjacencyListVertex<E> d = vertices.get(dst);
 		s.getEdges().add(new AdjacencyListEdge<>(s, d, weight));
 		if(!isDirected) { //Add the additional edge is this graph is undirected
 			d.getEdges().add(new AdjacencyListEdge<>(d, s, weight));
 		}
+	}
+	
+	@Override
+	public boolean unlink(E src, E dst) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	@Override
@@ -62,8 +70,7 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 
 	@Override
 	public boolean isEmpty() {
-		// TODO Auto-generated method stub
-		return false;
+		return vertices.isEmpty();
 	}
 
 	//traverses all vertices reachable from src
