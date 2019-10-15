@@ -17,7 +17,7 @@ public class AdjacencyListGraphTest {
 	
 	private void setupStageDirectedAndWeighted() {
 		graph = new AdjacencyListGraph<>(true, true);
-		edges = new ArrayList<>();
+		edges = new ArrayList<>();	
 	}
 
 	private void setupStageUndirectedAndUnweighted() {
