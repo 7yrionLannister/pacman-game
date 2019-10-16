@@ -308,17 +308,41 @@ public class AdjacencyListGraphTest {
 		assertTrue(leastStopsPath.get(2) == 2, "It is not the least stops path");
 		assertTrue(leastStopsPath.get(3) == 3, "It is not the least stops path");
 	}
-
-	//TODO de aqui en adelante es indiferente que tipo de grafo se use
 	
 	@Test
 	public void DFSTest() {
-		//TODO implementar
+		linkVerticesInUndirectedAndWeightedGraphTest();
+		graph.DFS();
+		
+		graph.getVertices().forEach(new BiConsumer<Integer, AdjacencyListVertex<Integer>>() {
+			@Override
+			public void accept(Integer t, AdjacencyListVertex<Integer> u) {
+				assertTrue(u.getColor() == State.BLACK);
+				assertTrue(u.getDiscovered() > 0 && u.getFinished() > 0, "There is a vertex that was not marked as discovered or finished");
+			}
+		});
 	}
 
 	@Test
 	public void DFSWithGivenSourceTest() {
-		//TODO implementar
+		linkVerticesInDirectedAndWeightedGraphTest();
+		graph.DFS(8);
+		assertTrue(graph.searchVertex(1).getColor() == State.WHITE && graph.searchVertex(1).getDiscovered() == 0 && graph.searchVertex(1).getFinished() == 0);
+		assertNull(graph.searchVertex(1).getPredecessor(), "1 is not reachable from 8 so it must not have a predecessor");
+		assertTrue(graph.searchVertex(2).getColor() == State.WHITE && graph.searchVertex(2).getDiscovered() == 0 && graph.searchVertex(2).getFinished() == 0);
+		assertNull(graph.searchVertex(2).getPredecessor(), "2 is not reachable from 8 so it must not have a predecessor");
+		assertTrue(graph.searchVertex(3).getColor() == State.BLACK && graph.searchVertex(3).getDiscovered() > 0 && graph.searchVertex(3).getFinished() > 0);
+		assertNotNull(graph.searchVertex(3).getPredecessor(), "3 is reachable from 8 so it must have a predecessor");
+		assertTrue(graph.searchVertex(4).getColor() == State.WHITE && graph.searchVertex(4).getDiscovered() == 0 && graph.searchVertex(4).getFinished() == 0);
+		assertNull(graph.searchVertex(4).getPredecessor(), "4 is not reachable from 8 so it must not have a predecessor");
+		assertTrue(graph.searchVertex(5).getColor() == State.BLACK && graph.searchVertex(5).getDiscovered() > 0 && graph.searchVertex(5).getFinished() > 0);
+		assertNotNull(graph.searchVertex(5).getPredecessor(), "5 is reachable from 8 so it must have a predecessor");
+		assertTrue(graph.searchVertex(6).getColor() == State.WHITE && graph.searchVertex(6).getDiscovered() == 0 && graph.searchVertex(6).getFinished() == 0);
+		assertNull(graph.searchVertex(6).getPredecessor(), "6 is not reachable from 8 so it must not have a predecessor");
+		assertTrue(graph.searchVertex(7).getColor() == State.WHITE && graph.searchVertex(7).getDiscovered() == 0 && graph.searchVertex(7).getFinished() == 0);
+		assertNull(graph.searchVertex(7).getPredecessor(), "7 is not reachable from 8 so it must not have a predecessor");
+		assertTrue(graph.searchVertex(8).getColor() == State.BLACK && graph.searchVertex(8).getDiscovered() > 0 && graph.searchVertex(8).getFinished() > 0);
+		assertNull(graph.searchVertex(8).getPredecessor(), "8 is the source vertex so it must not have a predecessor");
 	}
 
 	@Test
