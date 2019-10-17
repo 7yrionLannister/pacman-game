@@ -2,15 +2,17 @@ package dataStructures;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.PriorityQueue;
 import java.util.function.BiConsumer;
 
-import dataStructures.AdjacencyListVertex.State;
+import dataStructures.State;
+
 
 public class AdjacencyListGraph<E> implements IGraph<E>{
 	private HashMap<E, AdjacencyListVertex<E>> vertices;
 	private boolean isDirected;
 	private boolean isWeighted;
-	private AdjacencyListVertex<E> lastSrcInBSF;
+	private AdjacencyListVertex<E> lastSrc;
 	private static int DFStime;
 
 	public AdjacencyListGraph(boolean isDirected, boolean isWeighted) {
@@ -44,7 +46,7 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 					u.getEdges().removeAll(toremove);
 				}
 			});
-			
+
 			return true;
 		}
 		return false;
@@ -96,7 +98,7 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 	public boolean BFS(E src) throws Exception {
 		if(vertices.containsKey(src)) {
 			AdjacencyListVertex<E> s = vertices.get(src);
-			lastSrcInBSF = s;
+			lastSrc = s;
 			vertices.forEach(new BiConsumer<E, AdjacencyListVertex<E>>() { //Fix the vertices configuration to make BFS
 				@Override
 				public void accept(E e, AdjacencyListVertex<E> u) {
@@ -129,26 +131,27 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 		return false;
 	}
 
+	//pre: bfs, dfs or dijkstra have been called
 	//it is only the shortest path in unweighted graphs, else is just a path
 	//it is the least stops path
 	//returns empty arraylist if the dst vertex was not reachable from lastSrcInBST, or if dst == null
-	public ArrayList<E> getBFSPath(E dst) {
+	public ArrayList<E> getPath(E dst) {
 		AdjacencyListVertex<E> d = vertices.get(dst);
 		ArrayList<E> path = new ArrayList<E>();
 		if(d != null && d.getPredecessor() != null) {
-			BFSPathFill(lastSrcInBSF, d, path);
-		} else if(d == lastSrcInBSF && d != null) {
+			pathFill(lastSrc, d, path);
+		} else if(d == lastSrc && d != null) {
 			path.add(d.getElement());
 		}
 
 		return path;
 	}
 
-	private void BFSPathFill(AdjacencyListVertex<E> src, AdjacencyListVertex<E> dst, ArrayList<E> path) {
+	private void pathFill(AdjacencyListVertex<E> src, AdjacencyListVertex<E> dst, ArrayList<E> path) {
 		if(src == dst) {
 			path.add(src.getElement());
 		} else {
-			BFSPathFill(src, dst.getPredecessor(), path);
+			pathFill(src, dst.getPredecessor(), path);
 			path.add(dst.getElement());
 		}
 	}
@@ -234,9 +237,33 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 	}
 
 	@Override
-	public void Dijkstra(E src, E dst) {
-		// TODO Auto-generated method stub
-
+	public void Dijkstra(E src) {
+		PriorityQueue<AdjacencyListVertex<E>> pq = new PriorityQueue<AdjacencyListVertex<E>>();
+		if(vertices.containsKey(src)) {
+			lastSrc = vertices.get(src);
+			vertices.forEach(new BiConsumer<E, AdjacencyListVertex<E>>() {
+				@Override
+				public void accept(E t, AdjacencyListVertex<E> u) {
+					u.setDistance(Integer.MAX_VALUE);
+					u.setPredecessor(null);
+					pq.offer(u);
+				}
+			});
+			pq.remove(lastSrc);
+			lastSrc.setDistance(0);
+			pq.offer(lastSrc);
+			while(!pq.isEmpty()) {
+				AdjacencyListVertex<E> u = pq.poll();
+				for(AdjacencyListEdge<E> ale : u.getEdges()) {
+					if(ale.getDst().getDistance() > ale.getSrc().getDistance() + ale.getWeight()) {
+						pq.remove(ale.getDst());
+						ale.getDst().setDistance(ale.getSrc().getDistance() + ale.getWeight());
+						ale.getDst().setPredecessor(ale.getSrc());
+						pq.offer(ale.getDst());
+					}
+				}
+			}
+		}
 	}
 
 	@Override
@@ -253,8 +280,8 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 		return isWeighted;
 	}
 
-	public AdjacencyListVertex<E> getLastSrcInBSF() {
-		return lastSrcInBSF;
+	public AdjacencyListVertex<E> getLastSrc() {
+		return lastSrc;
 	}
 
 	public HashMap<E, AdjacencyListVertex<E>> getVertices() {

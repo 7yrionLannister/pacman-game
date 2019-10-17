@@ -2,10 +2,8 @@ package dataStructures;
 
 import java.util.ArrayList;
 
+
 public class AdjacencyListVertex<E> implements Comparable<AdjacencyListVertex<E>> {
-	public enum State {
-		WHITE, GRAY, BLACK
-	};
 	
 	private E element;
 	
@@ -29,11 +27,6 @@ public class AdjacencyListVertex<E> implements Comparable<AdjacencyListVertex<E>
 		color = State.WHITE;
 		edges = new ArrayList<>();
 		predecessor = null;
-	}
-	
-	@Override
-	public int compareTo(AdjacencyListVertex<E> other) {
-		return this.distance-other.distance;
 	}
 	
 	public E getElement(){
@@ -96,5 +89,10 @@ public class AdjacencyListVertex<E> implements Comparable<AdjacencyListVertex<E>
 	public boolean equals(Object another) {
 		AdjacencyListVertex<E> a = (AdjacencyListVertex<E>)another; //throws exception if another is not an AdjacencyListVertex<E>
 		return a.element.equals(element);
+	}
+	
+	@Override
+	public int compareTo(AdjacencyListVertex<E> other) {
+		return this.distance-other.distance;
 	}
 }

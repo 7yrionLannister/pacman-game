@@ -7,7 +7,8 @@ import java.util.function.BiConsumer;
 
 import org.junit.jupiter.api.Test;
 
-import dataStructures.AdjacencyListVertex.State;
+import dataStructures.State;
+
 
 public class AdjacencyListGraphTest {
 	private AdjacencyListGraph<Integer> graph;
@@ -210,13 +211,13 @@ public class AdjacencyListGraphTest {
 				assertTrue(u.getColor() == State.BLACK);
 			}
 		});
-		ArrayList<Integer> leastStopsPath = graph.getBFSPath(5);
-		assertTrue(leastStopsPath.get(0) == src && graph.getLastSrcInBSF().getElement() == src, "Source is not the expected");
+		ArrayList<Integer> leastStopsPath = graph.getPath(5);
+		assertTrue(leastStopsPath.get(0) == src && graph.getLastSrc().getElement() == src, "Source is not the expected");
 		assertTrue(leastStopsPath.get(1) == 7, "It is not the least stops path");
 		assertTrue(leastStopsPath.get(2) == 5, "It is not the least stops path");
 		
-		leastStopsPath = graph.getBFSPath(1);
-		assertTrue(leastStopsPath.get(0) == src && graph.getLastSrcInBSF().getElement() == src, "Source is not the expected");
+		leastStopsPath = graph.getPath(1);
+		assertTrue(leastStopsPath.get(0) == src && graph.getLastSrc().getElement() == src, "Source is not the expected");
 		assertTrue(leastStopsPath.get(1) == 7, "It is not the least stops path");
 		assertTrue(leastStopsPath.get(2) == 6, "It is not the least stops path");
 		assertTrue(leastStopsPath.get(3) == 1, "It is not the least stops path");
@@ -229,8 +230,8 @@ public class AdjacencyListGraphTest {
 				assertTrue(u.getColor() == State.BLACK);
 			}
 		});
-		leastStopsPath = graph.getBFSPath(4);
-		assertTrue(leastStopsPath.get(0) == src && graph.getLastSrcInBSF().getElement() == src, "Source is not the expected");
+		leastStopsPath = graph.getPath(4);
+		assertTrue(leastStopsPath.get(0) == src && graph.getLastSrc().getElement() == src, "Source is not the expected");
 		assertTrue(leastStopsPath.get(1) == 6, "It is not the least stops path");
 		assertTrue(leastStopsPath.get(2) == 7, "It is not the least stops path");
 		assertTrue(leastStopsPath.get(3) == 8, "It is not the least stops path");
@@ -244,8 +245,8 @@ public class AdjacencyListGraphTest {
 				assertTrue(u.getColor() == State.BLACK);
 			}
 		});
-		leastStopsPath = graph.getBFSPath(3);
-		assertTrue(leastStopsPath.get(0) == src && graph.getLastSrcInBSF().getElement() == src, "Source is not the expected");
+		leastStopsPath = graph.getPath(3);
+		assertTrue(leastStopsPath.get(0) == src && graph.getLastSrc().getElement() == src, "Source is not the expected");
 		assertTrue(leastStopsPath.get(1) == 6, "It is not the least stops path");
 		assertTrue(leastStopsPath.get(2) == 7, "It is not the least stops path");
 		assertTrue(leastStopsPath.get(3) == 8, "It is not the least stops path");
@@ -265,11 +266,11 @@ public class AdjacencyListGraphTest {
 		assertTrue(graph.searchVertex(2).getColor() == State.WHITE);
 		assertTrue(graph.searchVertex(4).getColor() == State.WHITE);
 		assertTrue(graph.searchVertex(7).getColor() == State.WHITE);
-		ArrayList<Integer> leastStopsPath = graph.getBFSPath(5);
-		assertTrue(leastStopsPath.get(0) == src && graph.getLastSrcInBSF().getElement() == src, "Source is not the expected");
+		ArrayList<Integer> leastStopsPath = graph.getPath(5);
+		assertTrue(leastStopsPath.get(0) == src && graph.getLastSrc().getElement() == src, "Source is not the expected");
 		assertTrue(leastStopsPath.get(1) == 5, "It is not the least stops path");
 		
-		leastStopsPath = graph.getBFSPath(1);
+		leastStopsPath = graph.getPath(1);
 		assertTrue(leastStopsPath.isEmpty(), "Vertex 1 is not reachable from source "+src+" so the path must be empty");
 		
 		src = 1;
@@ -282,7 +283,7 @@ public class AdjacencyListGraphTest {
 		assertTrue(graph.searchVertex(8).getColor() == State.BLACK);
 		assertTrue(graph.searchVertex(6).getColor() == State.WHITE);
 		assertTrue(graph.searchVertex(4).getColor() == State.WHITE);
-		leastStopsPath = graph.getBFSPath(4);
+		leastStopsPath = graph.getPath(4);
 		assertTrue(leastStopsPath.isEmpty(), "Vertex 4 is not reachable from any vertex so the path must be empty");
 		
 		src = 6;
@@ -295,15 +296,15 @@ public class AdjacencyListGraphTest {
 		assertTrue(graph.searchVertex(8).getColor() == State.BLACK);
 		assertTrue(graph.searchVertex(6).getColor() == State.BLACK);
 		assertTrue(graph.searchVertex(4).getColor() == State.WHITE);
-		leastStopsPath = graph.getBFSPath(5);
-		assertTrue(leastStopsPath.get(0) == src && graph.getLastSrcInBSF().getElement() == src, "Source is not the expected");
+		leastStopsPath = graph.getPath(5);
+		assertTrue(leastStopsPath.get(0) == src && graph.getLastSrc().getElement() == src, "Source is not the expected");
 		assertTrue(leastStopsPath.get(1) == 1, "It is not the least stops path");
 		assertTrue(leastStopsPath.get(2) == 2, "It is not the least stops path");
 		assertTrue(leastStopsPath.get(3) == 8, "It is not the least stops path");
 		assertTrue(leastStopsPath.get(4) == 5, "It is not the least stops path");
 		
-		leastStopsPath = graph.getBFSPath(3);
-		assertTrue(leastStopsPath.get(0) == src && graph.getLastSrcInBSF().getElement() == src, "Source is not the expected");
+		leastStopsPath = graph.getPath(3);
+		assertTrue(leastStopsPath.get(0) == src && graph.getLastSrc().getElement() == src, "Source is not the expected");
 		assertTrue(leastStopsPath.get(1) == 1, "It is not the least stops path");
 		assertTrue(leastStopsPath.get(2) == 2, "It is not the least stops path");
 		assertTrue(leastStopsPath.get(3) == 3, "It is not the least stops path");
@@ -364,7 +365,56 @@ public class AdjacencyListGraphTest {
 
 	@Test
 	public void DijkstraTest() {
-		//TODO implementar
+		linkVerticesInDirectedAndWeightedGraphTest();
+		int src = 6;
+		graph.Dijkstra(src);
+		
+		ArrayList<Integer> shortestPath = graph.getPath(5);
+		assertTrue(shortestPath.get(0) == src && graph.getLastSrc().getElement() == src, "Source is not the expected");
+		assertTrue(shortestPath.get(1) == 1, "It is not the shortest path");
+		assertTrue(shortestPath.get(2) == 2, "It is not the shortest path");
+		assertTrue(shortestPath.get(3) == 8, "It is not the shortest path");
+		assertTrue(shortestPath.get(4) == 5, "It is not the shortest path");
+		
+		shortestPath = graph.getPath(3);
+		assertTrue(shortestPath.get(0) == src && graph.getLastSrc().getElement() == src, "Source is not the expected");
+		assertTrue(shortestPath.get(1) == 1, "It is not the shortest path");
+		assertTrue(shortestPath.get(2) == 2, "It is not the shortest path");
+		assertTrue(shortestPath.get(3) == 3, "It is not the shortest path");
+		
+		linkVerticesInUndirectedAndWeightedGraphTest();
+		
+		src = 8;
+		graph.Dijkstra(src);
+		shortestPath = graph.getPath(5);
+		assertTrue(shortestPath.get(0) == src && graph.getLastSrc().getElement() == src, "Source is not the expected");
+		assertTrue(shortestPath.get(1) == 7, "It is not the shortest path");
+		assertTrue(shortestPath.get(2) == 5, "It is not the shortest path");
+		
+		shortestPath = graph.getPath(1);
+		assertTrue(shortestPath.get(0) == src && graph.getLastSrc().getElement() == src, "Source is not the expected");
+		assertTrue(shortestPath.get(1) == 7, "It is not the shortest path");
+		assertTrue(shortestPath.get(2) == 6, "It is not the shortest path");
+		assertTrue(shortestPath.get(3) == 1, "It is not the shortest path");
+		
+		src = 1;
+		graph.Dijkstra(src);
+		shortestPath = graph.getPath(4);
+		assertTrue(shortestPath.get(0) == src && graph.getLastSrc().getElement() == src, "Source is not the expected");
+		assertTrue(shortestPath.get(1) == 6, "It is not the shortest path");
+		assertTrue(shortestPath.get(2) == 7, "It is not the shortest path");
+		assertTrue(shortestPath.get(3) == 8, "It is not the shortest path");
+		assertTrue(shortestPath.get(4) == 4, "It is not the shortest path");
+		
+		src = 1;
+		graph.Dijkstra(src);
+		shortestPath = graph.getPath(3);
+		assertTrue(shortestPath.get(0) == src && graph.getLastSrc().getElement() == src, "Source is not the expected");
+		assertTrue(shortestPath.get(1) == 6, "It is not the shortest path");
+		assertTrue(shortestPath.get(2) == 7, "It is not the shortest path");
+		assertTrue(shortestPath.get(3) == 8, "It is not the shortest path");
+		assertTrue(shortestPath.get(4) == 4, "It is not the shortest path");
+		assertTrue(shortestPath.get(5) == 3, "It is not the shortest path");
 	}
 
 	@Test

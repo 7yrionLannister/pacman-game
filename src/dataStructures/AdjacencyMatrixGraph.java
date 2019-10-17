@@ -51,7 +51,7 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 	}
 
 	@Override
-	public void Dijkstra(E src, E dst) {
+	public void Dijkstra(E src) {
 		// TODO Auto-generated method stub
 		
 	}

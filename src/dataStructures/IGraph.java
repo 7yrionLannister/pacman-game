@@ -24,7 +24,7 @@ public interface IGraph<E> {
 	
 	void DFS(E src);
 	
-	void Dijkstra(E src, E dst) ;
+	void Dijkstra(E src) ;
 	
 	void FloydWarshall(E src, E dst) ;
 }
