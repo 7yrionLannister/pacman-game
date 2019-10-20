@@ -11,13 +11,11 @@ import dataStructures.State;
 public class AdjacencyListGraph<E> implements IGraph<E>{
 	private HashMap<E, AdjacencyListVertex<E>> vertices;
 	private boolean isDirected;
-	private boolean isWeighted;
 	private AdjacencyListVertex<E> lastSrc;
 	private static int DFStime;
 
-	public AdjacencyListGraph(boolean isDirected, boolean isWeighted) {
+	public AdjacencyListGraph(boolean isDirected) {
 		this.isDirected = isDirected;
-		this.isWeighted = isWeighted;
 		vertices = new HashMap<>();
 	}
 
@@ -54,9 +52,6 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 
 	@Override
 	public void link(E src, E dst, int weight) {
-		if(!isWeighted) {
-			weight = 1;
-		}
 		insertVertex(src); //Inserts src if not currently in the graph
 		insertVertex(dst); //Inserts dst if not currently in the graph
 		AdjacencyListVertex<E> s = vertices.get(src);
@@ -74,7 +69,15 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 
 	@Override
 	public boolean unlink(E src, E dst) {
-		// TODO Auto-generated method stub
+		AdjacencyListVertex<E> s = vertices.get(src);
+		AdjacencyListVertex<E> d = vertices.get(dst);
+		if(s != null && d != null) {
+			s.getEdges().remove(new AdjacencyListEdge<>(s, d, 1)); //remove edge (s,d)
+			if(!isDirected) { //Remove the other edge if this graph is undirected
+				d.getEdges().remove(new AdjacencyListEdge<E>(d, s, 1));
+			}
+			return true;
+		}
 		return false;
 	}
 
@@ -119,7 +122,7 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 					AdjacencyListVertex<E> v = ale.getDst();
 					if(v.getColor() == State.WHITE) {
 						v.setColor(State.GRAY);
-						v.setDistance(u.getDistance()+1); //TODO considerar en vez de sumar 1, sumar el peso de la arista(u,v), esto porque sumando de uno en uno va a dar el mismo resultado que si alguien le da a getBFSPath el .size(), asi que no brinda mucha informacion adicional
+						v.setDistance(u.getDistance()+1); //TODO considerar en vez de sumar 1, sumar el peso de la arista(u,v), esto porque sumando de uno en uno va a dar el mismo resultado que si alguien le da a getPath el .size(), asi que no brinda mucha informacion adicional
 						v.setPredecessor(u);
 						queue.enqueue(v);
 					}
@@ -274,10 +277,6 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 
 	public boolean isDirected() {
 		return isDirected;
-	}
-
-	public boolean isWeighted() {
-		return isWeighted;
 	}
 
 	public AdjacencyListVertex<E> getLastSrc() {

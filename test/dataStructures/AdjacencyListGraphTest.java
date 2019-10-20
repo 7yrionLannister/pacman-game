@@ -16,23 +16,13 @@ public class AdjacencyListGraphTest {
 	private ArrayList<AdjacencyListEdge<Integer>> removedEdges;
 	
 	
-	private void setupStageDirectedAndWeighted() {
-		graph = new AdjacencyListGraph<>(true, true);
+	private void setupStageDirected() {
+		graph = new AdjacencyListGraph<>(true);
 		edges = new ArrayList<>();	
 	}
 
-	private void setupStageUndirectedAndUnweighted() {
-		graph = new AdjacencyListGraph<>(false, false);
-		edges = new ArrayList<>();
-	}
-
-	private void setupStageDirectedAndUnweighted() {
-		graph = new AdjacencyListGraph<>(true, false);
-		edges = new ArrayList<>();
-	}
-
-	private void setupStageUndirectedAndWeighted() {
-		graph = new AdjacencyListGraph<>(false, true);
+	private void setupStageUndirected() {
+		graph = new AdjacencyListGraph<>(false);
 		edges = new ArrayList<>();
 	}
 
@@ -45,23 +35,17 @@ public class AdjacencyListGraphTest {
 
 	@Test
 	public void insertAndSearchVertexTest() {
-		setupStageDirectedAndWeighted();
+		setupStageDirected();
 		assertTrue(graph.isEmpty(), "Graph must be initially empty");
 		vertexInsertionLoop();
-		setupStageUndirectedAndUnweighted();
-		assertTrue(graph.isEmpty(), "Graph must be initially empty");
-		vertexInsertionLoop();
-		setupStageDirectedAndUnweighted();
-		assertTrue(graph.isEmpty(), "Graph must be initially empty");
-		vertexInsertionLoop();
-		setupStageUndirectedAndWeighted();
+		setupStageUndirected();
 		assertTrue(graph.isEmpty(), "Graph must be initially empty");
 		vertexInsertionLoop();
 	}
 
 	@Test
 	public void linkVerticesInDirectedAndWeightedGraphTest() {
-		setupStageDirectedAndWeighted();
+		setupStageDirected();
 		assertTrue(graph.isEmpty(), "Graph must be initially empty");
 		setupStageGraphWithIsolatedVertices();
 		
@@ -124,7 +108,7 @@ public class AdjacencyListGraphTest {
 
 	@Test
 	public void linkVerticesInUndirectedAndWeightedGraphTest() {
-		setupStageUndirectedAndWeighted();
+		setupStageUndirected();
 		assertTrue(graph.isEmpty(), "Graph must be initially empty");
 		setupStageGraphWithIsolatedVertices();
 		
