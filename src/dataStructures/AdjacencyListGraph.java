@@ -144,6 +144,7 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 	//it is only the shortest path in unweighted graphs, else is just a path
 	//it is the least stops path
 	//returns empty arraylist if the dst vertex was not reachable from lastSrcInBST, or if dst == null
+	@Override
 	public ArrayList<E> getPath(E dst) {
 		Vertex<E> d = vertices.get(dst);
 		ArrayList<E> path = new ArrayList<E>();

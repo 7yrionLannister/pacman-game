@@ -1,5 +1,6 @@
 package dataStructures;
 
+import java.util.ArrayList;
 
 //IMPOTANT: E must override equals
 public interface IGraph<E> {
@@ -27,4 +28,6 @@ public interface IGraph<E> {
 	void Dijkstra(E src) ;
 	
 	void FloydWarshall(E src, E dst) ;
+
+	ArrayList<E> getPath(E dst);
 }
