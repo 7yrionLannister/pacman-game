@@ -1,29 +1,29 @@
 package dataStructures;
 
 public class AdjacencyListEdge<E> {
-	private AdjacencyListVertex<E> src;
-	private AdjacencyListVertex<E> dst;
+	private Vertex<E> src;
+	private Vertex<E> dst;
 	private int weight;
 	
-	public AdjacencyListEdge(AdjacencyListVertex<E> src, AdjacencyListVertex<E> dst, int weight) {
+	public AdjacencyListEdge(Vertex<E> src, Vertex<E> dst, int weight) {
 		this.src = src;
 		this.dst = dst;
 		this.weight = weight;
 	}
 	
-	public AdjacencyListVertex<E> getSrc() {
+	public Vertex<E> getSrc() {
 		return src;
 	}
 	
-	public void setSrc(AdjacencyListVertex<E> src) {
+	public void setSrc(Vertex<E> src) {
 		this.src = src;
 	}
 	
-	public AdjacencyListVertex<E> getDst() {
+	public Vertex<E> getDst() {
 		return dst;
 	}
 	
-	public void setDst(AdjacencyListVertex<E> dst) {
+	public void setDst(Vertex<E> dst) {
 		this.dst = dst;
 	}
 	

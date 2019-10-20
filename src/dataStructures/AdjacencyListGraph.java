@@ -9,20 +9,23 @@ import dataStructures.State;
 
 
 public class AdjacencyListGraph<E> implements IGraph<E>{
-	private HashMap<E, AdjacencyListVertex<E>> vertices;
+	private HashMap<E, Vertex<E>> vertices;
+	private HashMap<E, ArrayList<AdjacencyListEdge<E>>> adjacencyLists;
 	private boolean isDirected;
-	private AdjacencyListVertex<E> lastSrc;
+	private Vertex<E> lastSrc;
 	private static int DFStime;
 
 	public AdjacencyListGraph(boolean isDirected) {
 		this.isDirected = isDirected;
 		vertices = new HashMap<>();
+		adjacencyLists = new HashMap<>();
 	}
 
 	@Override
 	public boolean insertVertex(E e) {
 		if(!vertices.containsKey(e)) {
-			vertices.put(e, new AdjacencyListVertex<E>(e));
+			vertices.put(e, new Vertex<E>(e));
+			adjacencyLists.put(e, new ArrayList<>());
 			return true;
 		}
 		return false;
@@ -32,16 +35,16 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 	public boolean deleteVertex(E sk) {
 		if(vertices.containsKey(sk)) {
 			vertices.remove(sk); //remove the vertex itself
-			vertices.forEach(new BiConsumer<E, AdjacencyListVertex<E>>() { //and remove all edges where it is dst
+			vertices.forEach(new BiConsumer<E, Vertex<E>>() { //and remove all edges where it is dst
 				@Override
-				public void accept(E t, AdjacencyListVertex<E> u) {
+				public void accept(E t, Vertex<E> u) {
 					ArrayList<AdjacencyListEdge<E>> toremove = new ArrayList<>();
-					for(AdjacencyListEdge<E> ale : u.getEdges()) {
+					for(AdjacencyListEdge<E> ale : adjacencyLists.get(t)) {
 						if(ale.getDst().getElement().equals(sk)) {
 							toremove.add(ale);
 						}
 					}
-					u.getEdges().removeAll(toremove);
+					adjacencyLists.get(t).removeAll(toremove);
 				}
 			});
 
@@ -54,27 +57,30 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 	public void link(E src, E dst, int weight) {
 		insertVertex(src); //Inserts src if not currently in the graph
 		insertVertex(dst); //Inserts dst if not currently in the graph
-		AdjacencyListVertex<E> s = vertices.get(src);
-		AdjacencyListVertex<E> d = vertices.get(dst);
+		Vertex<E> s = vertices.get(src);
+		Vertex<E> d = vertices.get(dst);
 		AdjacencyListEdge<E> newedge1 = new AdjacencyListEdge<>(s, d, weight);
 
-		s.getEdges().remove(newedge1); //if the edge already exists remove it
-		s.getEdges().add(newedge1);
+		ArrayList<AdjacencyListEdge<E>> sEdges = adjacencyLists.get(src);
+		sEdges.remove(newedge1); //if the edge already exists remove it
+		sEdges.add(newedge1);
 		if(!isDirected) { //Add the additional edge if this graph is undirected
 			AdjacencyListEdge<E> newedge2 = new AdjacencyListEdge<>(d, s, weight);
-			d.getEdges().remove(newedge2); //if the edge already exists remove it
-			d.getEdges().add(newedge2); 
+			
+			ArrayList<AdjacencyListEdge<E>> dEdges = adjacencyLists.get(dst);
+			dEdges.remove(newedge2); //if the edge already exists remove it
+			dEdges.add(newedge2); 
 		}
 	}
 
 	@Override
 	public boolean unlink(E src, E dst) {
-		AdjacencyListVertex<E> s = vertices.get(src);
-		AdjacencyListVertex<E> d = vertices.get(dst);
+		Vertex<E> s = vertices.get(src);
+		Vertex<E> d = vertices.get(dst);
 		if(s != null && d != null) {
-			s.getEdges().remove(new AdjacencyListEdge<>(s, d, 1)); //remove edge (s,d)
+			adjacencyLists.get(src).remove(new AdjacencyListEdge<>(s, d, 1)); //remove edge (s,d)
 			if(!isDirected) { //Remove the other edge if this graph is undirected
-				d.getEdges().remove(new AdjacencyListEdge<E>(d, s, 1));
+				adjacencyLists.get(dst).remove(new AdjacencyListEdge<E>(d, s, 1));
 			}
 			return true;
 		}
@@ -82,7 +88,7 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 	}
 
 	@Override
-	public AdjacencyListVertex<E> searchVertex(E key) {
+	public Vertex<E> searchVertex(E key) {
 		return vertices.get(key);
 	}
 
@@ -100,11 +106,11 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 	@Override
 	public boolean BFS(E src) throws Exception {
 		if(vertices.containsKey(src)) {
-			AdjacencyListVertex<E> s = vertices.get(src);
+			Vertex<E> s = vertices.get(src);
 			lastSrc = s;
-			vertices.forEach(new BiConsumer<E, AdjacencyListVertex<E>>() { //Fix the vertices configuration to make BFS
+			vertices.forEach(new BiConsumer<E, Vertex<E>>() { //Fix the vertices configuration to make BFS
 				@Override
-				public void accept(E e, AdjacencyListVertex<E> u) {
+				public void accept(E e, Vertex<E> u) {
 					u.setColor(State.WHITE);
 					u.setDistance(Integer.MAX_VALUE);
 					u.setPredecessor(null);
@@ -113,13 +119,13 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 			s.setColor(State.GRAY);
 			s.setDistance(0);
 			//s.predecessor is already null so skip that step
-			Queue<AdjacencyListVertex<E>> queue = new Queue<>();
+			Queue<Vertex<E>> queue = new Queue<>();
 			queue.enqueue(s);
 			while(!queue.isEmpty()) {
-				AdjacencyListVertex<E> u = queue.dequeue();
-				ArrayList<AdjacencyListEdge<E>> adj = u.getEdges();
+				Vertex<E> u = queue.dequeue();
+				ArrayList<AdjacencyListEdge<E>> adj = adjacencyLists.get(u.getElement());
 				for(AdjacencyListEdge<E> ale: adj) {
-					AdjacencyListVertex<E> v = ale.getDst();
+					Vertex<E> v = ale.getDst();
 					if(v.getColor() == State.WHITE) {
 						v.setColor(State.GRAY);
 						v.setDistance(u.getDistance()+1); //TODO considerar en vez de sumar 1, sumar el peso de la arista(u,v), esto porque sumando de uno en uno va a dar el mismo resultado que si alguien le da a getPath el .size(), asi que no brinda mucha informacion adicional
@@ -139,7 +145,7 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 	//it is the least stops path
 	//returns empty arraylist if the dst vertex was not reachable from lastSrcInBST, or if dst == null
 	public ArrayList<E> getPath(E dst) {
-		AdjacencyListVertex<E> d = vertices.get(dst);
+		Vertex<E> d = vertices.get(dst);
 		ArrayList<E> path = new ArrayList<E>();
 		if(d != null && d.getPredecessor() != null) {
 			pathFill(lastSrc, d, path);
@@ -150,7 +156,7 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 		return path;
 	}
 
-	private void pathFill(AdjacencyListVertex<E> src, AdjacencyListVertex<E> dst, ArrayList<E> path) {
+	private void pathFill(Vertex<E> src, Vertex<E> dst, ArrayList<E> path) {
 		if(src == dst) {
 			path.add(src.getElement());
 		} else {
@@ -163,17 +169,17 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 	//it uses stack of recursive calls in dfsvisit method
 	@Override
 	public void DFS() {
-		vertices.forEach(new BiConsumer<E, AdjacencyListVertex<E>>() { //Fix the vertices configuration to make DFS
+		vertices.forEach(new BiConsumer<E, Vertex<E>>() { //Fix the vertices configuration to make DFS
 			@Override
-			public void accept(E e, AdjacencyListVertex<E> u) {
+			public void accept(E e, Vertex<E> u) {
 				u.setColor(State.WHITE);
 				u.setPredecessor(null);
 			}
 		});
 		DFStime = 0;
-		vertices.forEach(new BiConsumer<E, AdjacencyListVertex<E>>() {
+		vertices.forEach(new BiConsumer<E, Vertex<E>>() {
 			@Override
-			public void accept(E e, AdjacencyListVertex<E> u) {
+			public void accept(E e, Vertex<E> u) {
 				if(u.getColor() == State.WHITE) {
 					DFSVisit(u);
 				}
@@ -182,13 +188,13 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 	}
 
 	//recursive method for traversing every reachable vertex from u
-	private void DFSVisit(AdjacencyListVertex<E> u) {
+	private void DFSVisit(Vertex<E> u) {
 		DFStime++;
 		u.setDiscovered(DFStime);
 		u.setColor(State.GRAY);
-		ArrayList<AdjacencyListEdge<E>> adj = u.getEdges();
+		ArrayList<AdjacencyListEdge<E>> adj = adjacencyLists.get(u.getElement());
 		for(AdjacencyListEdge<E> ale : adj) {
-			AdjacencyListVertex<E> v = ale.getDst();
+			Vertex<E> v = ale.getDst();
 			if(v.getColor() == State.WHITE) {
 				v.setPredecessor(u);
 				DFSVisit(v);
@@ -205,25 +211,25 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 	@Override
 	public void DFS(E src) {
 		if(vertices.containsKey(src)) {
-			vertices.forEach(new BiConsumer<E, AdjacencyListVertex<E>>() { //Fix the vertices configuration to make DFS
+			vertices.forEach(new BiConsumer<E, Vertex<E>>() { //Fix the vertices configuration to make DFS
 				@Override
-				public void accept(E e, AdjacencyListVertex<E> u) {
+				public void accept(E e, Vertex<E> u) {
 					u.setColor(State.WHITE);
 					u.setPredecessor(null);
 				}
 			});
 			DFStime = 1;
-			AdjacencyListVertex<E> s = vertices.get(src);
+			Vertex<E> s = vertices.get(src);
 			s.setColor(State.GRAY);
 			s.setDiscovered(DFStime);
 			//s.predecessor is already null so skip that step
-			Stack<AdjacencyListVertex<E>> stack = new Stack<>();
+			Stack<Vertex<E>> stack = new Stack<>();
 			stack.push(s);
 			while(!stack.isEmpty()) {
-				AdjacencyListVertex<E> u = stack.pop();
-				ArrayList<AdjacencyListEdge<E>> adj = u.getEdges();
+				Vertex<E> u = stack.pop();
+				ArrayList<AdjacencyListEdge<E>> adj = adjacencyLists.get(u.getElement());
 				for(AdjacencyListEdge<E> ale: adj) {
-					AdjacencyListVertex<E> v = ale.getDst();
+					Vertex<E> v = ale.getDst();
 					if(v.getColor() == State.WHITE) {
 						DFStime++;
 						v.setColor(State.GRAY);
@@ -241,12 +247,12 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 
 	@Override
 	public void Dijkstra(E src) {
-		PriorityQueue<AdjacencyListVertex<E>> pq = new PriorityQueue<AdjacencyListVertex<E>>();
+		PriorityQueue<Vertex<E>> pq = new PriorityQueue<Vertex<E>>();
 		if(vertices.containsKey(src)) {
 			lastSrc = vertices.get(src);
-			vertices.forEach(new BiConsumer<E, AdjacencyListVertex<E>>() {
+			vertices.forEach(new BiConsumer<E, Vertex<E>>() {
 				@Override
-				public void accept(E t, AdjacencyListVertex<E> u) {
+				public void accept(E t, Vertex<E> u) {
 					u.setDistance(Integer.MAX_VALUE);
 					u.setPredecessor(null);
 					pq.offer(u);
@@ -256,8 +262,8 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 			lastSrc.setDistance(0);
 			pq.offer(lastSrc);
 			while(!pq.isEmpty()) {
-				AdjacencyListVertex<E> u = pq.poll();
-				for(AdjacencyListEdge<E> ale : u.getEdges()) {
+				Vertex<E> u = pq.poll();
+				for(AdjacencyListEdge<E> ale : adjacencyLists.get(u.getElement())) {
 					if(ale.getDst().getDistance() > ale.getSrc().getDistance() + ale.getWeight()) {
 						pq.remove(ale.getDst());
 						ale.getDst().setDistance(ale.getSrc().getDistance() + ale.getWeight());
@@ -279,11 +285,15 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 		return isDirected;
 	}
 
-	public AdjacencyListVertex<E> getLastSrc() {
+	public Vertex<E> getLastSrc() {
 		return lastSrc;
 	}
 
-	public HashMap<E, AdjacencyListVertex<E>> getVertices() {
+	public HashMap<E, Vertex<E>> getVertices() {
 		return vertices;
+	}
+
+	public HashMap<E, ArrayList<AdjacencyListEdge<E>>> getAdjacencyLists() {
+		return adjacencyLists;
 	}
 }

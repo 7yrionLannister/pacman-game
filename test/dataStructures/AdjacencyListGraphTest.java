@@ -44,7 +44,7 @@ public class AdjacencyListGraphTest {
 	}
 
 	@Test
-	public void linkVerticesInDirectedAndWeightedGraphTest() {
+	public void linkVerticesInDirectedGraphTest() {
 		setupStageDirected();
 		assertTrue(graph.isEmpty(), "Graph must be initially empty");
 		setupStageGraphWithIsolatedVertices();
@@ -107,7 +107,7 @@ public class AdjacencyListGraphTest {
 	}
 
 	@Test
-	public void linkVerticesInUndirectedAndWeightedGraphTest() {
+	public void linkVerticesInUndirectedGraphTest() {
 		setupStageUndirected();
 		assertTrue(graph.isEmpty(), "Graph must be initially empty");
 		setupStageGraphWithIsolatedVertices();
@@ -173,25 +173,25 @@ public class AdjacencyListGraphTest {
 	}
 	
 	@Test
-	public void unlinkVerticesTestInDirectedAndWeightedGraphTest() {
+	public void unlinkVerticesInDirectedGraphTest() {
 		//TODO implementar
-		linkVerticesInDirectedAndWeightedGraphTest();
+		linkVerticesInDirectedGraphTest();
 	}
 	
 	@Test
-	public void unlinkVerticesTestInUndirectedAndWeightedGraphTest() {
+	public void unlinkVerticesInUndirectedGraphTest() {
 		//TODO implementar
-		linkVerticesInUndirectedAndWeightedGraphTest();
+		linkVerticesInUndirectedGraphTest();
 	}
 	
 	@Test
 	public void BFSInUndirectedGraphTest() throws Exception {
-		linkVerticesInUndirectedAndWeightedGraphTest();
+		linkVerticesInUndirectedGraphTest();
 		int src = 8;
 		graph.BFS(src);
-		graph.getVertices().forEach(new BiConsumer<Integer, AdjacencyListVertex<Integer>>() {
+		graph.getVertices().forEach(new BiConsumer<Integer, Vertex<Integer>>() {
 			@Override
-			public void accept(Integer t, AdjacencyListVertex<Integer> u) {
+			public void accept(Integer t, Vertex<Integer> u) {
 				assertTrue(u.getColor() == State.BLACK);
 			}
 		});
@@ -208,9 +208,9 @@ public class AdjacencyListGraphTest {
 		
 		src = 1;
 		graph.BFS(src);
-		graph.getVertices().forEach(new BiConsumer<Integer, AdjacencyListVertex<Integer>>() {
+		graph.getVertices().forEach(new BiConsumer<Integer, Vertex<Integer>>() {
 			@Override
-			public void accept(Integer t, AdjacencyListVertex<Integer> u) {
+			public void accept(Integer t, Vertex<Integer> u) {
 				assertTrue(u.getColor() == State.BLACK);
 			}
 		});
@@ -223,9 +223,9 @@ public class AdjacencyListGraphTest {
 		
 		src = 1;
 		graph.BFS(src);
-		graph.getVertices().forEach(new BiConsumer<Integer, AdjacencyListVertex<Integer>>() {
+		graph.getVertices().forEach(new BiConsumer<Integer, Vertex<Integer>>() {
 			@Override
-			public void accept(Integer t, AdjacencyListVertex<Integer> u) {
+			public void accept(Integer t, Vertex<Integer> u) {
 				assertTrue(u.getColor() == State.BLACK);
 			}
 		});
@@ -239,7 +239,7 @@ public class AdjacencyListGraphTest {
 	
 	@Test
 	public void BFSInDirectedGraphTest() throws Exception {
-		linkVerticesInDirectedAndWeightedGraphTest();
+		linkVerticesInDirectedGraphTest();
 		int src = 8;
 		graph.BFS(src);
 		assertTrue(graph.searchVertex(src).getColor() == State.BLACK);
@@ -296,12 +296,12 @@ public class AdjacencyListGraphTest {
 	
 	@Test
 	public void DFSTest() {
-		linkVerticesInUndirectedAndWeightedGraphTest();
+		linkVerticesInUndirectedGraphTest();
 		graph.DFS();
 		
-		graph.getVertices().forEach(new BiConsumer<Integer, AdjacencyListVertex<Integer>>() {
+		graph.getVertices().forEach(new BiConsumer<Integer, Vertex<Integer>>() {
 			@Override
-			public void accept(Integer t, AdjacencyListVertex<Integer> u) {
+			public void accept(Integer t, Vertex<Integer> u) {
 				assertTrue(u.getColor() == State.BLACK);
 				assertTrue(u.getDiscovered() > 0 && u.getFinished() > 0, "There is a vertex that was not marked as discovered or finished");
 			}
@@ -310,7 +310,7 @@ public class AdjacencyListGraphTest {
 
 	@Test
 	public void DFSWithGivenSourceTest() {
-		linkVerticesInDirectedAndWeightedGraphTest();
+		linkVerticesInDirectedGraphTest();
 		graph.DFS(8);
 		assertTrue(graph.searchVertex(1).getColor() == State.WHITE && graph.searchVertex(1).getDiscovered() == 0 && graph.searchVertex(1).getFinished() == 0);
 		assertNull(graph.searchVertex(1).getPredecessor(), "1 is not reachable from 8 so it must not have a predecessor");
@@ -332,24 +332,24 @@ public class AdjacencyListGraphTest {
 
 	@Test
 	public void deleteVertexTest() {
-		linkVerticesInDirectedAndWeightedGraphTest();
+		linkVerticesInDirectedGraphTest();
 		int orderBeforeDeletion = graph.getOrder();
 		assertFalse(graph.deleteVertex(100), "There is not a vertex with key 100 in the graph");
 		assertTrue(graph.deleteVertex(8), "The vertex should have been deleted");
 		assertNull(graph.searchVertex(100), "The vertex should have been deleted");
 		assertTrue(orderBeforeDeletion == graph.getOrder()+1, "The order after insertion should be a unit less");
 		removedEdges = new ArrayList<>();
-		removedEdges.add(new AdjacencyListEdge<Integer>(new AdjacencyListVertex<Integer>(2), new AdjacencyListVertex<Integer>(8), Integer.MAX_VALUE));
-		removedEdges.add(new AdjacencyListEdge<Integer>(new AdjacencyListVertex<Integer>(8), new AdjacencyListVertex<Integer>(3), Integer.MAX_VALUE));
-		removedEdges.add(new AdjacencyListEdge<Integer>(new AdjacencyListVertex<Integer>(8), new AdjacencyListVertex<Integer>(5), Integer.MAX_VALUE));
-		removedEdges.add(new AdjacencyListEdge<Integer>(new AdjacencyListVertex<Integer>(5), new AdjacencyListVertex<Integer>(8), Integer.MAX_VALUE));
+		removedEdges.add(new AdjacencyListEdge<Integer>(new Vertex<Integer>(2), new Vertex<Integer>(8), Integer.MAX_VALUE));
+		removedEdges.add(new AdjacencyListEdge<Integer>(new Vertex<Integer>(8), new Vertex<Integer>(3), Integer.MAX_VALUE));
+		removedEdges.add(new AdjacencyListEdge<Integer>(new Vertex<Integer>(8), new Vertex<Integer>(5), Integer.MAX_VALUE));
+		removedEdges.add(new AdjacencyListEdge<Integer>(new Vertex<Integer>(5), new Vertex<Integer>(8), Integer.MAX_VALUE));
 		edges.removeAll(removedEdges);
 		verifyGraphContainsAllEdgesItShould();
 	}
 
 	@Test
 	public void DijkstraTest() {
-		linkVerticesInDirectedAndWeightedGraphTest();
+		linkVerticesInDirectedGraphTest();
 		int src = 6;
 		graph.Dijkstra(src);
 		
@@ -366,7 +366,7 @@ public class AdjacencyListGraphTest {
 		assertTrue(shortestPath.get(2) == 2, "It is not the shortest path");
 		assertTrue(shortestPath.get(3) == 3, "It is not the shortest path");
 		
-		linkVerticesInUndirectedAndWeightedGraphTest();
+		linkVerticesInUndirectedGraphTest();
 		
 		src = 8;
 		graph.Dijkstra(src);
@@ -413,10 +413,10 @@ public class AdjacencyListGraphTest {
 			if(graph.insertVertex(r)) {
 				vertexCount++;
 			}
-			AdjacencyListVertex<Integer> found = graph.searchVertex(r);
+			Vertex<Integer> found = graph.searchVertex(r);
 			assertNotNull(found, "The vertex with key "+r+" must have been found as it was added either in a previous iteration of the for loop or in this iteration");
 			assertTrue(graph.getOrder() == vertexCount, "The order is not the expected");
-			assertTrue(found.getEdges().isEmpty(), "The vertex just added should not have any edges");
+			assertTrue(graph.getAdjacencyLists().get(r).isEmpty(), "The vertex just added should not have any edges");
 			assertFalse(graph.isEmpty(), "Graph must not be empty after insertion");
 		}
 		assertNull(graph.searchVertex(200), "No vertex with key 200 was added so it should not have been found");
@@ -424,14 +424,16 @@ public class AdjacencyListGraphTest {
 	
 	private void verifyGraphContainsAllEdgesItShould() {
 		for (AdjacencyListEdge<Integer> ale : edges) {
-			assertTrue(graph.searchVertex(ale.getSrc().getElement()).getEdges().contains(ale), "A missing edge was found");
+			assertTrue(graph.getAdjacencyLists().get(ale.getSrc().getElement()).contains(ale), "A missing edge was found");
 			int weight = 0;
-			for(AdjacencyListEdge<Integer> ale2 : graph.searchVertex(ale.getSrc().getElement()).getEdges()) {
+			int times = 0;
+			for(AdjacencyListEdge<Integer> ale2 : graph.getAdjacencyLists().get(ale.getSrc().getElement())) {
 				if(ale2.equals(ale)) {
 					weight = ale2.getWeight();
-					break;
+					times++;
 				}
 			}
+			assertTrue(times == 1, "Edge was found more than once");
 			assertTrue(weight == ale.getWeight(), "The edge was found but it does not have the correct weight");
 		}
 	}

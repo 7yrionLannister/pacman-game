@@ -12,7 +12,7 @@ public interface IGraph<E> {
 	
 	boolean unlink(E src, E dst);
 	
-	AdjacencyListVertex<E> searchVertex(E key);
+	Vertex<E> searchVertex(E key);
 	
 	int getOrder();
 	
