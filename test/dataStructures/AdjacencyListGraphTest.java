@@ -14,8 +14,8 @@ public class AdjacencyListGraphTest {
 	private AdjacencyListGraph<Integer> graph;
 	private ArrayList<AdjacencyListEdge<Integer>> edges;
 	private ArrayList<AdjacencyListEdge<Integer>> removedEdges;
-	
-	
+
+
 	private void setupStageDirected() {
 		graph = new AdjacencyListGraph<>(true);
 		edges = new ArrayList<>();	
@@ -48,61 +48,61 @@ public class AdjacencyListGraphTest {
 		setupStageDirected();
 		assertTrue(graph.isEmpty(), "Graph must be initially empty");
 		setupStageGraphWithIsolatedVertices();
-		
+
 		int src = 1;
 		int dst = 2;
 		int weight = 4;
 		edges.add(new AdjacencyListEdge<Integer>(graph.searchVertex(src), graph.searchVertex(dst), weight));
 		graph.link(src, dst, weight);
-		
+
 		src = 2;
 		dst = 1;
 		weight = 3;
 		edges.add(new AdjacencyListEdge<Integer>(graph.searchVertex(src), graph.searchVertex(dst), weight));
 		graph.link(src, dst, weight);
-		
+
 		src = 2;
 		dst = 3;
 		weight = 9;
 		edges.add(new AdjacencyListEdge<Integer>(graph.searchVertex(src), graph.searchVertex(dst), weight));
 		graph.link(src, dst, weight);
-		
+
 		src = 2;
 		dst = 7;
 		weight = 5;
 		edges.add(new AdjacencyListEdge<Integer>(graph.searchVertex(src), graph.searchVertex(dst), weight));
 		graph.link(src, dst, weight);
-		
+
 		src = 2;
 		dst = 8;
 		weight = 5;
 		edges.add(new AdjacencyListEdge<Integer>(graph.searchVertex(src), graph.searchVertex(dst), weight));
 		graph.link(src, dst, weight);
-		
+
 		src = 8;
 		dst = 3;
 		weight = 10;
 		edges.add(new AdjacencyListEdge<Integer>(graph.searchVertex(src), graph.searchVertex(dst), weight));
 		graph.link(src, dst, weight);
-		
+
 		src = 8;
 		dst = 5;
 		weight = 7;
 		edges.add(new AdjacencyListEdge<Integer>(graph.searchVertex(src), graph.searchVertex(dst), weight));
 		graph.link(src, dst, weight);
-		
+
 		src = 5;
 		dst = 8;
 		weight = 2;
 		edges.add(new AdjacencyListEdge<Integer>(graph.searchVertex(src), graph.searchVertex(dst), weight));
 		graph.link(src, dst, weight);
-		
+
 		src = 6;
 		dst = 1;
 		weight = 8;
 		edges.add(new AdjacencyListEdge<Integer>(graph.searchVertex(src), graph.searchVertex(dst), weight));
 		graph.link(src, dst, weight);
-		
+
 		verifyGraphContainsAllEdgesItShould();
 	}
 
@@ -111,7 +111,7 @@ public class AdjacencyListGraphTest {
 		setupStageUndirected();
 		assertTrue(graph.isEmpty(), "Graph must be initially empty");
 		setupStageGraphWithIsolatedVertices();
-		
+
 		int src = 1;
 		int dst = 6;
 		int weight = 1;
@@ -119,71 +119,81 @@ public class AdjacencyListGraphTest {
 		edges.add(new AdjacencyListEdge<Integer>(graph.searchVertex(src), graph.searchVertex(dst), weight));
 		edges.add(new AdjacencyListEdge<Integer>(graph.searchVertex(dst), graph.searchVertex(src), weight));
 		graph.link(src, dst, weight);
-		
+
 		src = 6;
 		dst = 7;
 		weight = 2;
 		edges.add(new AdjacencyListEdge<Integer>(graph.searchVertex(src), graph.searchVertex(dst), weight));
 		edges.add(new AdjacencyListEdge<Integer>(graph.searchVertex(dst), graph.searchVertex(src), weight));
 		graph.link(src, dst, weight);
-		
+
 		src = 7;
 		dst = 2;
 		weight = 9;
 		edges.add(new AdjacencyListEdge<Integer>(graph.searchVertex(src), graph.searchVertex(dst), weight));
 		edges.add(new AdjacencyListEdge<Integer>(graph.searchVertex(dst), graph.searchVertex(src), weight));
 		graph.link(src, dst, weight);
-		
+
 		src = 7;
 		dst = 8;
 		weight = 6;
 		edges.add(new AdjacencyListEdge<Integer>(graph.searchVertex(src), graph.searchVertex(dst), weight));
 		edges.add(new AdjacencyListEdge<Integer>(graph.searchVertex(dst), graph.searchVertex(src), weight));
 		graph.link(src, dst, weight);
-		
+
 		src = 7;
 		dst = 5;
 		weight = 8;
 		edges.add(new AdjacencyListEdge<Integer>(graph.searchVertex(src), graph.searchVertex(dst), weight));
 		edges.add(new AdjacencyListEdge<Integer>(graph.searchVertex(dst), graph.searchVertex(src), weight));
 		graph.link(src, dst, weight);
-		
+
 		src = 8;
 		dst = 3;
 		weight = 10;
 		edges.add(new AdjacencyListEdge<Integer>(graph.searchVertex(src), graph.searchVertex(dst), weight));
 		edges.add(new AdjacencyListEdge<Integer>(graph.searchVertex(dst), graph.searchVertex(src), weight));
 		graph.link(src, dst, weight);
-		
+
 		src = 8;
 		dst = 4;
 		weight = 5;
 		edges.add(new AdjacencyListEdge<Integer>(graph.searchVertex(src), graph.searchVertex(dst), weight));
 		edges.add(new AdjacencyListEdge<Integer>(graph.searchVertex(dst), graph.searchVertex(src), weight));
 		graph.link(src, dst, weight);
-		
+
 		src = 3;
 		dst = 4;
 		weight = 4;
 		edges.add(new AdjacencyListEdge<Integer>(graph.searchVertex(src), graph.searchVertex(dst), weight));
 		edges.add(new AdjacencyListEdge<Integer>(graph.searchVertex(dst), graph.searchVertex(src), weight));
 		graph.link(src, dst, weight);
-		
+
 		verifyGraphContainsAllEdgesItShould();
 	}
-	
+
 	@Test
 	public void unlinkVerticesInDirectedGraphTest() {
-		//TODO implementar
 		linkVerticesInDirectedGraphTest();
+		graph.unlink(2, 8);
+		assertFalse(graph.getAdjacencyLists().get(2).contains(new AdjacencyListEdge<Integer>(graph.searchVertex(2), graph.searchVertex(8), Integer.MAX_VALUE)), "The edge was not removed");
+		graph.unlink(6, 1);
+		assertFalse(graph.getAdjacencyLists().get(6).contains(new AdjacencyListEdge<Integer>(graph.searchVertex(1), graph.searchVertex(8), Integer.MAX_VALUE)), "The edge was not removed");
 	}
-	
+
 	@Test
 	public void unlinkVerticesInUndirectedGraphTest() {
 		//TODO implementar
 		linkVerticesInUndirectedGraphTest();
+		graph.unlink(7, 8);
+		assertFalse(graph.getAdjacencyLists().get(7).contains(new AdjacencyListEdge<Integer>(graph.searchVertex(7), graph.searchVertex(8), Integer.MAX_VALUE)), "The edge was not removed");
+		assertFalse(graph.getAdjacencyLists().get(8).contains(new AdjacencyListEdge<Integer>(graph.searchVertex(8), graph.searchVertex(7), Integer.MAX_VALUE)), "The edge was not removed");
+		graph.unlink(3, 4);
+		assertFalse(graph.getAdjacencyLists().get(3).contains(new AdjacencyListEdge<Integer>(graph.searchVertex(3), graph.searchVertex(4), Integer.MAX_VALUE)), "The edge was not removed");
+		assertFalse(graph.getAdjacencyLists().get(4).contains(new AdjacencyListEdge<Integer>(graph.searchVertex(4), graph.searchVertex(3), Integer.MAX_VALUE)), "The edge was not removed");
+
 	}
-	
+
 	@Test
 	public void BFSInUndirectedGraphTest() throws Exception {
 		linkVerticesInUndirectedGraphTest();
@@ -199,13 +209,13 @@ public class AdjacencyListGraphTest {
 		assertTrue(leastStopsPath.get(0) == src && graph.getLastSrc().getElement() == src, "Source is not the expected");
 		assertTrue(leastStopsPath.get(1) == 7, "It is not the least stops path");
 		assertTrue(leastStopsPath.get(2) == 5, "It is not the least stops path");
-		
+
 		leastStopsPath = graph.getPath(1);
 		assertTrue(leastStopsPath.get(0) == src && graph.getLastSrc().getElement() == src, "Source is not the expected");
 		assertTrue(leastStopsPath.get(1) == 7, "It is not the least stops path");
 		assertTrue(leastStopsPath.get(2) == 6, "It is not the least stops path");
 		assertTrue(leastStopsPath.get(3) == 1, "It is not the least stops path");
-		
+
 		src = 1;
 		graph.BFS(src);
 		graph.getVertices().forEach(new BiConsumer<Integer, Vertex<Integer>>() {
@@ -220,7 +230,7 @@ public class AdjacencyListGraphTest {
 		assertTrue(leastStopsPath.get(2) == 7, "It is not the least stops path");
 		assertTrue(leastStopsPath.get(3) == 8, "It is not the least stops path");
 		assertTrue(leastStopsPath.get(4) == 4, "It is not the least stops path");
-		
+
 		src = 1;
 		graph.BFS(src);
 		graph.getVertices().forEach(new BiConsumer<Integer, Vertex<Integer>>() {
@@ -236,7 +246,7 @@ public class AdjacencyListGraphTest {
 		assertTrue(leastStopsPath.get(3) == 8, "It is not the least stops path");
 		assertTrue(leastStopsPath.get(4) == 3, "It is not the least stops path");
 	}
-	
+
 	@Test
 	public void BFSInDirectedGraphTest() throws Exception {
 		linkVerticesInDirectedGraphTest();
@@ -253,10 +263,10 @@ public class AdjacencyListGraphTest {
 		ArrayList<Integer> leastStopsPath = graph.getPath(5);
 		assertTrue(leastStopsPath.get(0) == src && graph.getLastSrc().getElement() == src, "Source is not the expected");
 		assertTrue(leastStopsPath.get(1) == 5, "It is not the least stops path");
-		
+
 		leastStopsPath = graph.getPath(1);
 		assertTrue(leastStopsPath.isEmpty(), "Vertex 1 is not reachable from source "+src+" so the path must be empty");
-		
+
 		src = 1;
 		graph.BFS(src);
 		assertTrue(graph.searchVertex(src).getColor() == State.BLACK);
@@ -269,7 +279,7 @@ public class AdjacencyListGraphTest {
 		assertTrue(graph.searchVertex(4).getColor() == State.WHITE);
 		leastStopsPath = graph.getPath(4);
 		assertTrue(leastStopsPath.isEmpty(), "Vertex 4 is not reachable from any vertex so the path must be empty");
-		
+
 		src = 6;
 		graph.BFS(src);
 		assertTrue(graph.searchVertex(src).getColor() == State.BLACK);
@@ -286,19 +296,19 @@ public class AdjacencyListGraphTest {
 		assertTrue(leastStopsPath.get(2) == 2, "It is not the least stops path");
 		assertTrue(leastStopsPath.get(3) == 8, "It is not the least stops path");
 		assertTrue(leastStopsPath.get(4) == 5, "It is not the least stops path");
-		
+
 		leastStopsPath = graph.getPath(3);
 		assertTrue(leastStopsPath.get(0) == src && graph.getLastSrc().getElement() == src, "Source is not the expected");
 		assertTrue(leastStopsPath.get(1) == 1, "It is not the least stops path");
 		assertTrue(leastStopsPath.get(2) == 2, "It is not the least stops path");
 		assertTrue(leastStopsPath.get(3) == 3, "It is not the least stops path");
 	}
-	
+
 	@Test
 	public void DFSTest() {
 		linkVerticesInUndirectedGraphTest();
 		graph.DFS();
-		
+
 		graph.getVertices().forEach(new BiConsumer<Integer, Vertex<Integer>>() {
 			@Override
 			public void accept(Integer t, Vertex<Integer> u) {
@@ -336,7 +346,7 @@ public class AdjacencyListGraphTest {
 		int orderBeforeDeletion = graph.getOrder();
 		assertFalse(graph.deleteVertex(100), "There is not a vertex with key 100 in the graph");
 		assertTrue(graph.deleteVertex(8), "The vertex should have been deleted");
-		assertNull(graph.searchVertex(100), "The vertex should have been deleted");
+		assertNull(graph.searchVertex(8), "The vertex should have been deleted");
 		assertTrue(orderBeforeDeletion == graph.getOrder()+1, "The order after insertion should be a unit less");
 		removedEdges = new ArrayList<>();
 		removedEdges.add(new AdjacencyListEdge<Integer>(new Vertex<Integer>(2), new Vertex<Integer>(8), Integer.MAX_VALUE));
@@ -352,35 +362,35 @@ public class AdjacencyListGraphTest {
 		linkVerticesInDirectedGraphTest();
 		int src = 6;
 		graph.Dijkstra(src);
-		
+
 		ArrayList<Integer> shortestPath = graph.getPath(5);
 		assertTrue(shortestPath.get(0) == src && graph.getLastSrc().getElement() == src, "Source is not the expected");
 		assertTrue(shortestPath.get(1) == 1, "It is not the shortest path");
 		assertTrue(shortestPath.get(2) == 2, "It is not the shortest path");
 		assertTrue(shortestPath.get(3) == 8, "It is not the shortest path");
 		assertTrue(shortestPath.get(4) == 5, "It is not the shortest path");
-		
+
 		shortestPath = graph.getPath(3);
 		assertTrue(shortestPath.get(0) == src && graph.getLastSrc().getElement() == src, "Source is not the expected");
 		assertTrue(shortestPath.get(1) == 1, "It is not the shortest path");
 		assertTrue(shortestPath.get(2) == 2, "It is not the shortest path");
 		assertTrue(shortestPath.get(3) == 3, "It is not the shortest path");
-		
+
 		linkVerticesInUndirectedGraphTest();
-		
+
 		src = 8;
 		graph.Dijkstra(src);
 		shortestPath = graph.getPath(5);
 		assertTrue(shortestPath.get(0) == src && graph.getLastSrc().getElement() == src, "Source is not the expected");
 		assertTrue(shortestPath.get(1) == 7, "It is not the shortest path");
 		assertTrue(shortestPath.get(2) == 5, "It is not the shortest path");
-		
+
 		shortestPath = graph.getPath(1);
 		assertTrue(shortestPath.get(0) == src && graph.getLastSrc().getElement() == src, "Source is not the expected");
 		assertTrue(shortestPath.get(1) == 7, "It is not the shortest path");
 		assertTrue(shortestPath.get(2) == 6, "It is not the shortest path");
 		assertTrue(shortestPath.get(3) == 1, "It is not the shortest path");
-		
+
 		src = 1;
 		graph.Dijkstra(src);
 		shortestPath = graph.getPath(4);
@@ -389,7 +399,7 @@ public class AdjacencyListGraphTest {
 		assertTrue(shortestPath.get(2) == 7, "It is not the shortest path");
 		assertTrue(shortestPath.get(3) == 8, "It is not the shortest path");
 		assertTrue(shortestPath.get(4) == 4, "It is not the shortest path");
-		
+
 		src = 1;
 		graph.Dijkstra(src);
 		shortestPath = graph.getPath(3);
@@ -421,7 +431,7 @@ public class AdjacencyListGraphTest {
 		}
 		assertNull(graph.searchVertex(200), "No vertex with key 200 was added so it should not have been found");
 	}
-	
+
 	private void verifyGraphContainsAllEdgesItShould() {
 		for (AdjacencyListEdge<Integer> ale : edges) {
 			assertTrue(graph.getAdjacencyLists().get(ale.getSrc().getElement()).contains(ale), "A missing edge was found");

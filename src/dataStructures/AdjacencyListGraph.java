@@ -251,7 +251,7 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 		PriorityQueue<Vertex<E>> pq = new PriorityQueue<Vertex<E>>();
 		if(vertices.containsKey(src)) {
 			lastSrc = vertices.get(src);
-			vertices.forEach(new BiConsumer<E, Vertex<E>>() {
+			vertices.forEach(new BiConsumer<E, Vertex<E>>() { //Fix the vertices configuration to make Dijkstra
 				@Override
 				public void accept(E t, Vertex<E> u) {
 					u.setDistance(Integer.MAX_VALUE);

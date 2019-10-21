@@ -1,8 +1,11 @@
 package dataStructures;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.PriorityQueue;
 import java.util.function.BiConsumer;
+
 
 public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 	private int[][] edges;
@@ -47,7 +50,24 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 
 	@Override
 	public boolean deleteVertex(E e) {
-		// TODO estoy va a estar medio ineficiente pero pojnimodo
+		if(keyToIndex.containsKey(e)) {
+			int indexToDelete = keyToIndex.get(e);
+			vertices[indexToDelete] = vertices[keyToIndex.size()-1];
+			vertices[keyToIndex.size()-1] = null;
+			for(int i = 0; i < keyToIndex.size(); i++) { 
+				edges[indexToDelete][i] = edges[keyToIndex.size()-1][i];
+				edges[keyToIndex.size()-1][i] = 0;
+				edges[i][indexToDelete] = edges[i][keyToIndex.size()-1];
+				edges[i][keyToIndex.size()-1] = 0;
+			}
+			
+			freeRow--;
+			if(freeRow > 0 && indexToDelete < keyToIndex.size()-1) {
+				keyToIndex.put(vertices[indexToDelete].getElement(), indexToDelete);
+			}
+			keyToIndex.remove(e);
+			return true;
+		}
 		return false;
 	}
 
@@ -69,7 +89,7 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 		Integer d = keyToIndex.get(dst);
 		if(s != null && d != null) {
 			edges[s][d] = 0;
-			if(!isDirected) { ////Remove the other edge if this graph is undirected
+			if(!isDirected) { //Remove the other edge if this graph is undirected
 				edges[d][s] = 0;
 			}
 			return true;
@@ -227,14 +247,46 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 	
 	@Override
 	public void Dijkstra(E src) {
-		// TODO Auto-generated method stub
-
+		PriorityQueue<Vertex<E>> pq = new PriorityQueue<Vertex<E>>();
+		if(keyToIndex.containsKey(src)) {
+			Vertex<E> s = vertices[keyToIndex.get(src)];
+			lastSrc = s;
+			for(int i = 0; i < keyToIndex.size(); i++) { //Fix the vertices configuration to make Dijkstra
+				vertices[i].setDistance(Integer.MAX_VALUE);
+				vertices[i].setPredecessor(null);
+				pq.offer(vertices[i]);
+			}
+			pq.remove(lastSrc);
+			lastSrc.setDistance(0);
+			pq.offer(lastSrc);
+			while(!pq.isEmpty()) {
+				Vertex<E> u = pq.poll();
+				int uIndex = keyToIndex.get(u.getElement());
+				for(int i = 0; i < keyToIndex.size(); i++) {
+					if(edges[uIndex][i] != 0 && vertices[i].getDistance() > vertices[uIndex].getDistance() + edges[uIndex][i]) { //edge exists && the current shortest path can be improved
+						pq.remove(vertices[i]);
+						vertices[i].setDistance(vertices[uIndex].getDistance() + edges[uIndex][i]);
+						vertices[i].setPredecessor(vertices[uIndex]);
+						pq.offer(vertices[i]);
+					}
+				}
+			}
+		}
 	}
 
 	@Override
 	public void FloydWarshall(E src, E dst) {
 		// TODO Auto-generated method stub
 
+	}
+	
+	public int getEdgeWeight(E u, E v) throws Exception {
+		Integer uIndex = keyToIndex.get(u);
+		Integer vIndex = keyToIndex.get(v);
+		if(uIndex == null && vIndex == null) {
+			throw new Exception("Graph does not contain the requested keys");
+		}
+		return edges[uIndex][vIndex];
 	}
 
 	public int[][] getEdges() {
