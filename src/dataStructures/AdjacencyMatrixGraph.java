@@ -276,8 +276,16 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 
 	@Override
 	public void FloydWarshall(E src, E dst) {
-		// TODO Auto-generated method stub
-
+		int[][] d1 = edges;
+		int[][] d2 = null;
+		for(int k = 0; k < keyToIndex.size(); k++) {
+			d2 = d1.clone();
+			for(int i = 0; i < keyToIndex.size(); i++) {
+				for(int j = 0; j < keyToIndex.size(); j++) {
+					d2[i][j] = Math.min(d1[i][j], d1[i][k] + d1[k][j]);
+				}
+			}
+		}
 	}
 	
 	public int getEdgeWeight(E u, E v) throws Exception {

@@ -14,6 +14,7 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 	private boolean isDirected;
 	private Vertex<E> lastSrc;
 	private static int DFStime;
+	private AdjacencyMatrixGraph<E> graphForWarshall;
 
 	public AdjacencyListGraph(boolean isDirected) {
 		this.isDirected = isDirected;
