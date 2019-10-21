@@ -15,6 +15,8 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 	private Vertex<E> lastSrc;
 	private int freeRow;
 	private static int DFStime;
+	private int[][] allPairsminimumDistances;
+	private Vertex<E>[][] allPairsShortestPath;
 
 	//usar size mas grande que los vertices presupuestados para reducir las veces que se debe crear matriz por falta de espacio
 	public AdjacencyMatrixGraph(int size, boolean isDIrected) {
@@ -275,14 +277,25 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 	}
 
 	@Override
-	public void FloydWarshall(E src, E dst) {
-		int[][] d1 = edges;
-		int[][] d2 = null;
+	public void FloydWarshall() {
+		int[][] d1 = new int[keyToIndex.size()][keyToIndex.size()];
+		Vertex<E>[][] p1 = (Vertex<E>[][])new Vertex[d1.length][d1.length];
+		for(int i = 0; i < d1.length; i++) {
+			for (int j = 0; j < d1[i].length; j++) {
+				d1[i][j] = edges[i][j];
+				p1[i][j] = edges[i][j] != 0 ? vertices[keyToIndex.get(i)]: null;
+			}
+		}
+		
 		for(int k = 0; k < keyToIndex.size(); k++) {
-			d2 = d1.clone();
+			allPairsminimumDistances = d1.clone();
+			allPairsShortestPath = p1.clone();
 			for(int i = 0; i < keyToIndex.size(); i++) {
 				for(int j = 0; j < keyToIndex.size(); j++) {
-					d2[i][j] = Math.min(d1[i][j], d1[i][k] + d1[k][j]);
+					if(d1[i][j] > d1[i][k] + d1[k][j]) {
+						allPairsminimumDistances[i][j] = d1[i][k] + d1[k][j];
+						allPairsShortestPath[i][j] = p1[k][j];
+					}
 				}
 			}
 		}
@@ -319,5 +332,13 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 
 	public int getFreeRow() {
 		return freeRow;
+	}
+
+	public int[][] getAllPairsminimumDistances() {
+		return allPairsminimumDistances;
+	}
+
+	public Vertex<E>[][] getAllPairsShortestPath() {
+		return allPairsShortestPath;
 	}
 }

@@ -278,7 +278,7 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 	}
 
 	@Override
-	public void FloydWarshall(E src, E dst) {
+	public void FloydWarshall() {
 		// TODO Auto-generated method stub
 
 	}

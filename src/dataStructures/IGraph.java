@@ -27,7 +27,7 @@ public interface IGraph<E> {
 	
 	void Dijkstra(E src) ;
 	
-	void FloydWarshall(E src, E dst) ;
+	void FloydWarshall() ;
 
 	ArrayList<E> getPath(E dst);
 }

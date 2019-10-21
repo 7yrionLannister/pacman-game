@@ -411,7 +411,15 @@ public class AdjacencyMatrixGraphTest {
 
 	@Test
 	public void FloydWarshallTest() {
-		//TODO implementar
+		linkVerticesInDirectedGraphTest();
+		graph.FloydWarshall();
+		int[][] minimumDistances = graph.getAllPairsminimumDistances();
+		Vertex<Integer>[][] minimumPaths = graph.getAllPairsShortestPath();
+		for(int i = 0; i < minimumDistances.length; i++) {
+			for (int j = 0; j < minimumDistances[i].length; j++) {
+				//TODO aqui los asserts
+			}
+		}
 	}
 
 	private void vertexInsertionLoop() {
