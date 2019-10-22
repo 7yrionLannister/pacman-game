@@ -1,10 +1,8 @@
 package dataStructures;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.PriorityQueue;
-import java.util.function.BiConsumer;
 
 
 public class AdjacencyMatrixGraph<E> implements IGraph<E> {
@@ -21,6 +19,12 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 	//usar size mas grande que los vertices presupuestados para reducir las veces que se debe crear matriz por falta de espacio
 	public AdjacencyMatrixGraph(int size, boolean isDIrected) {
 		edges = new int[size][size];
+		for(int i = 0; i < size; i++) {
+			for(int j = 0; j < size; j++) {
+				edges[i][j] = Integer.MAX_VALUE;
+			}
+			edges[i][i] = 0;
+		}
 		this.isDirected = isDIrected;
 		keyToIndex = new HashMap<>();
 		vertices = (Vertex<E>[])new Vertex[size];
@@ -36,10 +40,15 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 			if(freeRow >= edges.length) {
 				int[][] newedges = new int[edges.length+10][edges.length+10];
 				Vertex<E>[] newvertices = (Vertex<E>[])new Vertex[edges.length+10];
-				for(int i = 0; i < edges.length; i++) {
-					newvertices[i] = vertices[i];
-					for (int j = 0; j < edges.length; j++) {
-						newedges[i][j] = edges[i][j];
+				for(int i = 0; i < newedges.length; i++) {
+					if(i < vertices.length) {
+						newvertices[i] = vertices[i];
+					}
+					for (int j = 0; j < newedges.length; j++) {
+						newedges[i][j] = i==j?0:Integer.MAX_VALUE;
+						if(i < edges.length && j < edges.length) {
+							newedges[i][j] = edges[i][j];
+						}
 					}
 				}
 				edges = newedges;
@@ -58,11 +67,11 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 			vertices[keyToIndex.size()-1] = null;
 			for(int i = 0; i < keyToIndex.size(); i++) { 
 				edges[indexToDelete][i] = edges[keyToIndex.size()-1][i];
-				edges[keyToIndex.size()-1][i] = 0;
+				edges[keyToIndex.size()-1][i] = Integer.MAX_VALUE;
 				edges[i][indexToDelete] = edges[i][keyToIndex.size()-1];
-				edges[i][keyToIndex.size()-1] = 0;
+				edges[i][keyToIndex.size()-1] = Integer.MAX_VALUE;
 			}
-			
+
 			freeRow--;
 			if(freeRow > 0 && indexToDelete < keyToIndex.size()-1) {
 				keyToIndex.put(vertices[indexToDelete].getElement(), indexToDelete);
@@ -90,9 +99,9 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 		Integer s = keyToIndex.get(src);
 		Integer d = keyToIndex.get(dst);
 		if(s != null && d != null) {
-			edges[s][d] = 0;
+			edges[s][d] = Integer.MAX_VALUE;
 			if(!isDirected) { //Remove the other edge if this graph is undirected
-				edges[d][s] = 0;
+				edges[d][s] = Integer.MAX_VALUE;
 			}
 			return true;
 		}
@@ -137,7 +146,7 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 				int[] adj = edges[keyToIndex.get(u.getElement())];
 				for(int i = 0; i < vertices.length; i++) {
 					Vertex<E> v = vertices[i];
-					if(u != v && adj[i] != 0 && v.getColor() == State.WHITE) { // no self loop && edge exists && no visited yet
+					if(u != v && adj[i] != Integer.MAX_VALUE && v.getColor() == State.WHITE) { // no self loop && edge exists && no visited yet
 						v.setColor(State.GRAY);
 						v.setDistance(u.getDistance()+1); //TODO considerar en vez de sumar 1, sumar el peso de la arista(u,v), esto porque sumando de uno en uno va a dar el mismo resultado que si alguien le da a getPath el .size(), asi que no brinda mucha informacion adicional
 						v.setPredecessor(u);
@@ -202,7 +211,7 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 		for(int i = 0; i < keyToIndex.size(); i++) {
 			Vertex<E> v = vertices[i];
 			int vIndex = keyToIndex.get(v.getElement());
-			if(edges[uIndex][vIndex] != 0 && v.getColor() == State.WHITE) { //edge exists && vertex has not been visited
+			if(edges[uIndex][vIndex] != Integer.MAX_VALUE && v.getColor() == State.WHITE) { //edge exists && vertex has not been visited
 				v.setPredecessor(u);
 				DFSVisit(v);
 			}
@@ -232,7 +241,7 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 				for(int i = 0; i < keyToIndex.size(); i++) {
 					Vertex<E> v = vertices[i];
 					int vIndex = keyToIndex.get(v.getElement());
-					if(edges[uIndex][vIndex] != 0 && v.getColor() == State.WHITE) { //edge exists && vertex has not been visited
+					if(edges[uIndex][vIndex] != Integer.MAX_VALUE && v.getColor() == State.WHITE) { //edge exists && vertex has not been visited
 						DFStime++;
 						v.setColor(State.GRAY);
 						v.setDiscovered(DFStime);
@@ -246,7 +255,7 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 			}
 		}
 	}
-	
+
 	@Override
 	public void Dijkstra(E src) {
 		PriorityQueue<Vertex<E>> pq = new PriorityQueue<Vertex<E>>();
@@ -265,7 +274,7 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 				Vertex<E> u = pq.poll();
 				int uIndex = keyToIndex.get(u.getElement());
 				for(int i = 0; i < keyToIndex.size(); i++) {
-					if(edges[uIndex][i] != 0 && vertices[i].getDistance() > vertices[uIndex].getDistance() + edges[uIndex][i]) { //edge exists && the current shortest path can be improved
+					if(edges[uIndex][i] != Integer.MAX_VALUE && vertices[i].getDistance() > vertices[uIndex].getDistance() + edges[uIndex][i]) { //edge exists && the current shortest path can be improved
 						pq.remove(vertices[i]);
 						vertices[i].setDistance(vertices[uIndex].getDistance() + edges[uIndex][i]);
 						vertices[i].setPredecessor(vertices[uIndex]);
@@ -283,16 +292,16 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 		for(int i = 0; i < d1.length; i++) {
 			for (int j = 0; j < d1[i].length; j++) {
 				d1[i][j] = edges[i][j];
-				p1[i][j] = edges[i][j] != 0 ? vertices[keyToIndex.get(i)]: null;
+				p1[i][j] = (edges[i][j] != 0 && edges[i][j] != Integer.MAX_VALUE) ? vertices[i]: null;
 			}
 		}
-		
+
 		for(int k = 0; k < keyToIndex.size(); k++) {
 			allPairsminimumDistances = d1.clone();
 			allPairsShortestPath = p1.clone();
 			for(int i = 0; i < keyToIndex.size(); i++) {
 				for(int j = 0; j < keyToIndex.size(); j++) {
-					if(d1[i][j] > d1[i][k] + d1[k][j]) {
+					if((long)d1[i][j] > (long)d1[i][k] + (long)d1[k][j]) {
 						allPairsminimumDistances[i][j] = d1[i][k] + d1[k][j];
 						allPairsShortestPath[i][j] = p1[k][j];
 					}
@@ -300,7 +309,7 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 			}
 		}
 	}
-	
+
 	public int getEdgeWeight(E u, E v) throws Exception {
 		Integer uIndex = keyToIndex.get(u);
 		Integer vIndex = keyToIndex.get(v);

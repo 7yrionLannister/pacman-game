@@ -3,6 +3,8 @@ package dataStructures;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+
 import org.junit.jupiter.api.Test;
 
 import dataStructures.State;
@@ -12,8 +14,8 @@ public class AdjacencyMatrixGraphTest {
 	private AdjacencyMatrixGraph<Integer> graph;
 	private ArrayList<Pair> edges;
 	private ArrayList<Pair> removedEdges;
-	
-	
+
+
 	private void setupStageDirected() {
 		graph = new AdjacencyMatrixGraph<>(4, true);
 		edges = new ArrayList<>();
@@ -49,61 +51,61 @@ public class AdjacencyMatrixGraphTest {
 		setupStageDirected();
 		assertTrue(graph.isEmpty(), "Graph must be initially empty");
 		setupStageGraphWithIsolatedVertices();
-		
+
 		int src = 1;
 		int dst = 2;
 		int weight = 4;
 		edges.add(new Pair(graph.getKeyToIndex().get(src)+1, graph.getKeyToIndex().get(dst)+1, weight));
 		graph.link(src, dst, weight);
-		
+
 		src = 2;
 		dst = 1;
 		weight = 3;
 		edges.add(new Pair(graph.getKeyToIndex().get(src)+1, graph.getKeyToIndex().get(dst)+1, weight));
 		graph.link(src, dst, weight);
-		
+
 		src = 2;
 		dst = 3;
 		weight = 9;
 		edges.add(new Pair(graph.getKeyToIndex().get(src)+1, graph.getKeyToIndex().get(dst)+1, weight));
 		graph.link(src, dst, weight);
-		
+
 		src = 2;
 		dst = 7;
 		weight = 5;
 		edges.add(new Pair(graph.getKeyToIndex().get(src)+1, graph.getKeyToIndex().get(dst)+1, weight));
 		graph.link(src, dst, weight);
-		
+
 		src = 2;
 		dst = 8;
 		weight = 5;
 		edges.add(new Pair(graph.getKeyToIndex().get(src)+1, graph.getKeyToIndex().get(dst)+1, weight));
 		graph.link(src, dst, weight);
-		
+
 		src = 8;
 		dst = 3;
 		weight = 10;
 		edges.add(new Pair(graph.getKeyToIndex().get(src)+1, graph.getKeyToIndex().get(dst)+1, weight));
 		graph.link(src, dst, weight);
-		
+
 		src = 8;
 		dst = 5;
 		weight = 7;
 		edges.add(new Pair(graph.getKeyToIndex().get(src)+1, graph.getKeyToIndex().get(dst)+1, weight));
 		graph.link(src, dst, weight);
-		
+
 		src = 5;
 		dst = 8;
 		weight = 2;
 		edges.add(new Pair(graph.getKeyToIndex().get(src)+1, graph.getKeyToIndex().get(dst)+1, weight));
 		graph.link(src, dst, weight);
-		
+
 		src = 6;
 		dst = 1;
 		weight = 8;
 		edges.add(new Pair(graph.getKeyToIndex().get(src)+1, graph.getKeyToIndex().get(dst)+1, weight));
 		graph.link(src, dst, weight);
-		
+
 		verifyGraphContainsAllEdgesItShould();
 	}
 
@@ -112,7 +114,7 @@ public class AdjacencyMatrixGraphTest {
 		setupStageUndirected();
 		assertTrue(graph.isEmpty(), "Graph must be initially empty");
 		setupStageGraphWithIsolatedVertices();
-		
+
 		int src = 1;
 		int dst = 6;
 		int weight = 1;
@@ -120,93 +122,93 @@ public class AdjacencyMatrixGraphTest {
 		edges.add(new Pair(graph.getKeyToIndex().get(src)+1, graph.getKeyToIndex().get(dst)+1, weight));
 		edges.add(new Pair(graph.getKeyToIndex().get(src)+1, graph.getKeyToIndex().get(dst)+1, weight));
 		graph.link(src, dst, weight);
-		
+
 		src = 6;
 		dst = 7;
 		weight = 2;
 		edges.add(new Pair(graph.getKeyToIndex().get(src)+1, graph.getKeyToIndex().get(dst)+1, weight));
 		edges.add(new Pair(graph.getKeyToIndex().get(src)+1, graph.getKeyToIndex().get(dst)+1, weight));
 		graph.link(src, dst, weight);
-		
+
 		src = 7;
 		dst = 2;
 		weight = 9;
 		edges.add(new Pair(graph.getKeyToIndex().get(src)+1, graph.getKeyToIndex().get(dst)+1, weight));
 		edges.add(new Pair(graph.getKeyToIndex().get(src)+1, graph.getKeyToIndex().get(dst)+1, weight));
 		graph.link(src, dst, weight);
-		
+
 		src = 7;
 		dst = 8;
 		weight = 6;
 		edges.add(new Pair(graph.getKeyToIndex().get(src)+1, graph.getKeyToIndex().get(dst)+1, weight));
 		edges.add(new Pair(graph.getKeyToIndex().get(src)+1, graph.getKeyToIndex().get(dst)+1, weight));
 		graph.link(src, dst, weight);
-		
+
 		src = 7;
 		dst = 5;
 		weight = 8;
 		edges.add(new Pair(graph.getKeyToIndex().get(src)+1, graph.getKeyToIndex().get(dst)+1, weight));
 		edges.add(new Pair(graph.getKeyToIndex().get(src)+1, graph.getKeyToIndex().get(dst)+1, weight));
 		graph.link(src, dst, weight);
-		
+
 		src = 8;
 		dst = 3;
 		weight = 10;
 		edges.add(new Pair(graph.getKeyToIndex().get(src)+1, graph.getKeyToIndex().get(dst)+1, weight));
 		edges.add(new Pair(graph.getKeyToIndex().get(src)+1, graph.getKeyToIndex().get(dst)+1, weight));
 		graph.link(src, dst, weight);
-		
+
 		src = 8;
 		dst = 4;
 		weight = 5;
 		edges.add(new Pair(graph.getKeyToIndex().get(src)+1, graph.getKeyToIndex().get(dst)+1, weight));
 		edges.add(new Pair(graph.getKeyToIndex().get(src)+1, graph.getKeyToIndex().get(dst)+1, weight));
 		graph.link(src, dst, weight);
-		
+
 		src = 3;
 		dst = 4;
 		weight = 4;
 		edges.add(new Pair(graph.getKeyToIndex().get(src)+1, graph.getKeyToIndex().get(dst)+1, weight));
 		edges.add(new Pair(graph.getKeyToIndex().get(src)+1, graph.getKeyToIndex().get(dst)+1, weight));
 		graph.link(src, dst, weight);
-		
+
 		verifyGraphContainsAllEdgesItShould();
 	}
-	
+
 	@Test
 	public void unlinkVerticesInDirectedGraphTest() {
 		linkVerticesInDirectedGraphTest();
 		try {
 			graph.unlink(2, 8);
-			assertTrue(graph.getEdgeWeight(2, 8) == 0, "The edge was not removed");
+			assertTrue(graph.getEdgeWeight(2, 8) == Integer.MAX_VALUE, "The edge was not removed");
 			graph.unlink(6, 1);
-			assertTrue(graph.getEdgeWeight(6, 1) == 0, "The edge was not removed");
+			assertTrue(graph.getEdgeWeight(6, 1) == Integer.MAX_VALUE, "The edge was not removed");
 		} catch (Exception e) {
 			fail("All requested vertices were in the graph so an exception was not expected");
 		}
 	}
-	
+
 	@Test
 	public void unlinkVerticesInUndirectedGraphTest() {
 		linkVerticesInUndirectedGraphTest();
 		try {
 			graph.unlink(7, 8);
-			assertTrue(graph.getEdgeWeight(7, 8) == 0, "The edge was not removed");
-			assertTrue(graph.getEdgeWeight(8, 7) == 0, "The edge was not removed");
+			assertTrue(graph.getEdgeWeight(7, 8) == Integer.MAX_VALUE, "The edge was not removed");
+			assertTrue(graph.getEdgeWeight(8, 7) == Integer.MAX_VALUE, "The edge was not removed");
 			graph.unlink(3, 4);
-			assertTrue(graph.getEdgeWeight(3, 4) == 0, "The edge was not removed");
-			assertTrue(graph.getEdgeWeight(4, 3) == 0, "The edge was not removed");
+			assertTrue(graph.getEdgeWeight(3, 4) == Integer.MAX_VALUE, "The edge was not removed");
+			assertTrue(graph.getEdgeWeight(4, 3) == Integer.MAX_VALUE, "The edge was not removed");
 		} catch (Exception e) {
 			fail("All requested vertices were in the graph so an exception was not expected");
 		}
 	}
-	
+
 	@Test
 	public void BFSInUndirectedGraphTest() throws Exception {
 		linkVerticesInUndirectedGraphTest();
 		int src = 8;
 		graph.BFS(src);
-		
+
 		Vertex<Integer>[] vertices = graph.getVertices();
 		for(int i = 0; i < graph.getKeyToIndex().size(); i++) {
 			assertTrue(vertices[i].getColor() == State.BLACK);
@@ -215,13 +217,13 @@ public class AdjacencyMatrixGraphTest {
 		assertTrue(leastStopsPath.get(0) == src && graph.getLastSrc().getElement() == src, "Source is not the expected");
 		assertTrue(leastStopsPath.get(1) == 7, "It is not the least stops path");
 		assertTrue(leastStopsPath.get(2) == 5, "It is not the least stops path");
-		
+
 		leastStopsPath = graph.getPath(1);
 		assertTrue(leastStopsPath.get(0) == src && graph.getLastSrc().getElement() == src, "Source is not the expected");
 		assertTrue(leastStopsPath.get(1) == 7, "It is not the least stops path");
 		assertTrue(leastStopsPath.get(2) == 6, "It is not the least stops path");
 		assertTrue(leastStopsPath.get(3) == 1, "It is not the least stops path");
-		
+
 		src = 1;
 		graph.BFS(src);
 		for(int i = 0; i < graph.getKeyToIndex().size(); i++) {
@@ -233,7 +235,7 @@ public class AdjacencyMatrixGraphTest {
 		assertTrue(leastStopsPath.get(2) == 7, "It is not the least stops path");
 		assertTrue(leastStopsPath.get(3) == 8, "It is not the least stops path");
 		assertTrue(leastStopsPath.get(4) == 4, "It is not the least stops path");
-		
+
 		src = 1;
 		graph.BFS(src);
 		for(int i = 0; i < graph.getKeyToIndex().size(); i++) {
@@ -246,7 +248,7 @@ public class AdjacencyMatrixGraphTest {
 		assertTrue(leastStopsPath.get(3) == 8, "It is not the least stops path");
 		assertTrue(leastStopsPath.get(4) == 3, "It is not the least stops path");
 	}
-	
+
 	@Test
 	public void BFSInDirectedGraphTest() throws Exception {
 		linkVerticesInDirectedGraphTest();
@@ -263,10 +265,10 @@ public class AdjacencyMatrixGraphTest {
 		ArrayList<Integer> leastStopsPath = graph.getPath(5);
 		assertTrue(leastStopsPath.get(0) == src && graph.getLastSrc().getElement() == src, "Source is not the expected");
 		assertTrue(leastStopsPath.get(1) == 5, "It is not the least stops path");
-		
+
 		leastStopsPath = graph.getPath(1);
 		assertTrue(leastStopsPath.isEmpty(), "Vertex 1 is not reachable from source "+src+" so the path must be empty");
-		
+
 		src = 1;
 		graph.BFS(src);
 		assertTrue(graph.searchVertex(src).getColor() == State.BLACK);
@@ -279,7 +281,7 @@ public class AdjacencyMatrixGraphTest {
 		assertTrue(graph.searchVertex(4).getColor() == State.WHITE);
 		leastStopsPath = graph.getPath(4);
 		assertTrue(leastStopsPath.isEmpty(), "Vertex 4 is not reachable from any vertex so the path must be empty");
-		
+
 		src = 6;
 		graph.BFS(src);
 		assertTrue(graph.searchVertex(src).getColor() == State.BLACK);
@@ -296,19 +298,19 @@ public class AdjacencyMatrixGraphTest {
 		assertTrue(leastStopsPath.get(2) == 2, "It is not the least stops path");
 		assertTrue(leastStopsPath.get(3) == 8, "It is not the least stops path");
 		assertTrue(leastStopsPath.get(4) == 5, "It is not the least stops path");
-		
+
 		leastStopsPath = graph.getPath(3);
 		assertTrue(leastStopsPath.get(0) == src && graph.getLastSrc().getElement() == src, "Source is not the expected");
 		assertTrue(leastStopsPath.get(1) == 1, "It is not the least stops path");
 		assertTrue(leastStopsPath.get(2) == 2, "It is not the least stops path");
 		assertTrue(leastStopsPath.get(3) == 3, "It is not the least stops path");
 	}
-	
+
 	@Test
 	public void DFSTest() {
 		linkVerticesInUndirectedGraphTest();
 		graph.DFS();
-		
+
 		Vertex<Integer>[] vertices = graph.getVertices();
 		for(int i = 0; i < graph.getKeyToIndex().size(); i++) {
 			assertTrue(vertices[i].getColor() == State.BLACK);
@@ -360,35 +362,35 @@ public class AdjacencyMatrixGraphTest {
 		linkVerticesInDirectedGraphTest();
 		int src = 6;
 		graph.Dijkstra(src);
-		
+
 		ArrayList<Integer> shortestPath = graph.getPath(5);
 		assertTrue(shortestPath.get(0) == src && graph.getLastSrc().getElement() == src, "Source is not the expected");
 		assertTrue(shortestPath.get(1) == 1, "It is not the shortest path");
 		assertTrue(shortestPath.get(2) == 2, "It is not the shortest path");
 		assertTrue(shortestPath.get(3) == 8, "It is not the shortest path");
 		assertTrue(shortestPath.get(4) == 5, "It is not the shortest path");
-		
+
 		shortestPath = graph.getPath(3);
 		assertTrue(shortestPath.get(0) == src && graph.getLastSrc().getElement() == src, "Source is not the expected");
 		assertTrue(shortestPath.get(1) == 1, "It is not the shortest path");
 		assertTrue(shortestPath.get(2) == 2, "It is not the shortest path");
 		assertTrue(shortestPath.get(3) == 3, "It is not the shortest path");
-		
+
 		linkVerticesInUndirectedGraphTest();
-		
+
 		src = 8;
 		graph.Dijkstra(src);
 		shortestPath = graph.getPath(5);
 		assertTrue(shortestPath.get(0) == src && graph.getLastSrc().getElement() == src, "Source is not the expected");
 		assertTrue(shortestPath.get(1) == 7, "It is not the shortest path");
 		assertTrue(shortestPath.get(2) == 5, "It is not the shortest path");
-		
+
 		shortestPath = graph.getPath(1);
 		assertTrue(shortestPath.get(0) == src && graph.getLastSrc().getElement() == src, "Source is not the expected");
 		assertTrue(shortestPath.get(1) == 7, "It is not the shortest path");
 		assertTrue(shortestPath.get(2) == 6, "It is not the shortest path");
 		assertTrue(shortestPath.get(3) == 1, "It is not the shortest path");
-		
+
 		src = 1;
 		graph.Dijkstra(src);
 		shortestPath = graph.getPath(4);
@@ -397,7 +399,7 @@ public class AdjacencyMatrixGraphTest {
 		assertTrue(shortestPath.get(2) == 7, "It is not the shortest path");
 		assertTrue(shortestPath.get(3) == 8, "It is not the shortest path");
 		assertTrue(shortestPath.get(4) == 4, "It is not the shortest path");
-		
+
 		src = 1;
 		graph.Dijkstra(src);
 		shortestPath = graph.getPath(3);
@@ -416,9 +418,13 @@ public class AdjacencyMatrixGraphTest {
 		int[][] minimumDistances = graph.getAllPairsminimumDistances();
 		Vertex<Integer>[][] minimumPaths = graph.getAllPairsShortestPath();
 		for(int i = 0; i < minimumDistances.length; i++) {
+			System.out.println(Arrays.toString(minimumDistances[i]));
+			String line = "";
 			for (int j = 0; j < minimumDistances[i].length; j++) {
 				//TODO aqui los asserts
+				line += (minimumPaths[i][j] != null?minimumPaths[i][j].getElement():"n") + " ";
 			}
+			System.out.println(line);
 		}
 	}
 
@@ -435,20 +441,21 @@ public class AdjacencyMatrixGraphTest {
 			int[][] edges = graph.getEdges();
 			int v = graph.getKeyToIndex().get(r);
 			for(int j = 0; j < graph.getKeyToIndex().size(); j++) {
-				assertTrue(edges[v][j] == 0, "The vertex just added should not have any edges");
+
+				assertTrue(edges[v][j] == (v==j ? 0:Integer.MAX_VALUE), "The vertex just added should not have any edges");
 			}
-			assertFalse(graph.isEmpty(), "Graph must not be empty after insertion");
 		}
+		assertFalse(graph.isEmpty(), "Graph must not be empty after insertion");
 		assertNull(graph.searchVertex(200), "No vertex with key 200 was added so it should not have been found");
 	}
-	
+
 	private void verifyGraphContainsAllEdgesItShould() {
 		for (Pair edge : edges) {
 			assertTrue(graph.getEdges()[graph.getKeyToIndex().get(edge.i)][graph.getKeyToIndex().get(edge.j)] != 0, "A missing edge was found");
 			assertTrue(edge.weight == graph.getEdges()[graph.getKeyToIndex().get(edge.i)][graph.getKeyToIndex().get(edge.j)], "The edge was found but it does not have the correct weight");
 		}
 	}
-	
+
 	static class Pair {
 		int i,j,weight;
 		public Pair(int i, int j, int weight) {
@@ -456,7 +463,7 @@ public class AdjacencyMatrixGraphTest {
 			this.j = j;
 			this.weight = weight;
 		}
-		
+
 		@Override
 		public boolean equals(Object another) {
 			Pair a = (Pair)another; //throws exception if another is not a Pair
