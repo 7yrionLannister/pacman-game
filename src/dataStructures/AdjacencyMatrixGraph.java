@@ -332,8 +332,12 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 		return keyToIndex;
 	}
 
-	public Vertex<E>[] getVertices() {
-		return vertices;
+	public ArrayList<E> getVertices() {
+		ArrayList<E> verts = new ArrayList<E>();
+		for(int i = 0; i < keyToIndex.size(); i++) {
+			verts.add(vertices[i].getElement());
+		}
+		return verts;
 	}
 
 	public Vertex<E> getLastSrc() {
@@ -362,37 +366,55 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 
 	@Override
 	public int getDFSDiscoveredTime(E key) {
-		// TODO Auto-generated method stub
+		if(keyToIndex.containsKey(key)) {
+			return vertices[keyToIndex.get(key)].getDiscovered();
+		}
 		return 0;
 	}
 
 	@Override
 	public int getDFSFinishedTime(E key) {
-		// TODO Auto-generated method stub
+		if(keyToIndex.containsKey(key)) {
+			return vertices[keyToIndex.get(key)].getFinished();
+		}
 		return 0;
 	}
 
 	@Override
 	public State getVertexColor(E key) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public E getElement() {
-		// TODO Auto-generated method stub
+		if(keyToIndex.containsKey(key)) {
+			return vertices[keyToIndex.get(key)].getColor();
+		}
 		return null;
 	}
 
 	@Override
 	public E getSingleSourcePredecessor(E key) {
-		// TODO Auto-generated method stub
+		if(keyToIndex.containsKey(key)) {
+			return vertices[keyToIndex.get(key)].getPredecessor().getElement();
+		}
 		return null;
 	}
 
 	@Override
-	public ArrayList<E> getPath(E dst) {
-		// TODO Auto-generated method stub
+	public ArrayList<E> getPath(E src, E dst) {
+		//TODO implementar
 		return null;
+	}
+
+	@Override
+	public int getDistance(E src, E dst) {
+		if(allPairsminimumDistances != null && keyToIndex.containsKey(src) && keyToIndex.containsKey(dst)) {
+			return allPairsminimumDistances[keyToIndex.get(src)][keyToIndex.get(dst)];
+		}
+		return 0;
+	}
+
+	@Override
+	public boolean containsEdge(E src, E dst) {
+		if(true) {
+			//TODO implementar
+		}
+		return false;
 	}
 }

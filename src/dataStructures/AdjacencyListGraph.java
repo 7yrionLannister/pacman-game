@@ -297,13 +297,16 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 		return lastSrc.getElement();
 	}
 
-	/*public HashMap<E, Vertex<E>> getVertices() {
-		return vertices;
-	}*///TODO no devolver vertices
-
-	/*public HashMap<E, ArrayList<AdjacencyListEdge<E>>> getAdjacencyLists() {
-		return adjacencyLists;
-	}*///TODO no devolver vertices
+	public ArrayList<E> getVertices() {
+		ArrayList<E> verts = new ArrayList<>();
+		vertices.forEach(new BiConsumer<E, Vertex<E>>() {
+			@Override
+			public void accept(E t, Vertex<E> u) {
+				verts.add(t);	
+			}
+		});
+		return verts;
+	}
 
 	@Override
 	public int getSingleSourceDistance(E dst) {
@@ -315,37 +318,58 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 
 	@Override
 	public int getDFSDiscoveredTime(E key) {
-		// TODO Auto-generated method stub
+		if(vertices.containsKey(key)) {
+			return vertices.get(key).getDiscovered();
+		}
 		return 0;
 	}
 
 	@Override
 	public int getDFSFinishedTime(E key) {
-		// TODO Auto-generated method stub
+		if(vertices.containsKey(key)) {
+			return vertices.get(key).getFinished();
+		}
 		return 0;
 	}
 
 	@Override
 	public State getVertexColor(E key) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public E getElement() {
-		// TODO Auto-generated method stub
+		if(vertices.containsKey(key)) {
+			return vertices.get(key).getColor();
+		}
 		return null;
 	}
 
 	@Override
 	public E getSingleSourcePredecessor(E key) {
-		// TODO Auto-generated method stub
+		if(vertices.containsKey(key)) {
+			return vertices.get(key).getPredecessor().getElement();
+		}
 		return null;
 	}
 
 	@Override
-	public ArrayList<E> getPath(E dst) {
-		// TODO Auto-generated method stub
+	public ArrayList<E> getPath(E src, E dst) {
+		ArrayList<E> path = new ArrayList<>();
+		if(vertices.containsKey(src) && vertices.containsKey(dst)) {
+			//TODO implementar
+		}
 		return null;
+	}
+
+	@Override
+	public int getDistance(E src, E dst) {
+		if(vertices.containsKey(src) && vertices.containsKey(dst)) {
+			//TODO implementar
+		}
+		return Integer.MAX_VALUE;
+	}
+
+	@Override
+	public boolean containsEdge(E src, E dst) {
+		if(vertices.containsKey(src) && vertices.containsKey(dst)) {
+			return adjacencyLists.get(src).contains(new AdjacencyListEdge<E>(new Vertex<E>(src), new Vertex<E>(dst), Integer.MAX_VALUE));
+		}
+		return false;
 	}
 }

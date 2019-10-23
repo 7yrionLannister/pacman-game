@@ -34,7 +34,7 @@ public interface IGraph<E> {
 	int getSingleSourceDistance(E dst);
 	
 	//for the all pairs shortest path
-	ArrayList<E> getPath(E dst);
+	ArrayList<E> getPath(E src, E dst);
 	
 	//for the all pairs shortest path
 	int getDistance(E src, E dst);
@@ -45,7 +45,7 @@ public interface IGraph<E> {
 	
 	State getVertexColor(E key);
 	
-	E getElement();
-	
 	E getSingleSourcePredecessor(E key);
+	
+	boolean containsEdge(E src, E dst);
 }

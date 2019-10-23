@@ -418,8 +418,7 @@ public class AdjacencyListGraphTest {
 			if(graph.insertVertex(r)) {
 				vertexCount++;
 			}
-			Vertex<Integer> found = graph.containsVertex(r);
-			assertNotNull(found, "The vertex with key "+r+" must have been found as it was added either in a previous iteration of the for loop or in this iteration");
+			assertTrue(graph.containsVertex(r), "The vertex with key "+r+" must have been found as it was added either in a previous iteration of the for loop or in this iteration");
 			assertTrue(graph.getOrder() == vertexCount, "The order is not the expected");
 			assertTrue(graph.getAdjacencyLists().get(r).isEmpty(), "The vertex just added should not have any edges");
 			assertFalse(graph.isEmpty(), "Graph must not be empty after insertion");
