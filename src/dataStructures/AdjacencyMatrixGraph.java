@@ -124,7 +124,7 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 	}
 
 	@Override
-	public boolean BFS(E src) throws Exception {
+	public boolean BFS(E src) {
 		if(keyToIndex.containsKey(src)) {
 			Vertex<E> s = vertices[keyToIndex.get(src)];
 			lastSrc = s;
@@ -138,19 +138,23 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 			//s.predecessor is already null so skip that step
 			Queue<Vertex<E>> queue = new Queue<>();
 			queue.enqueue(s);
-			while(!queue.isEmpty()) {
-				Vertex<E> u = queue.dequeue();
-				int[] adj = edges[keyToIndex.get(u.getElement())];
-				for(int i = 0; i < vertices.length; i++) {
-					Vertex<E> v = vertices[i];
-					if(u != v && adj[i] != Integer.MAX_VALUE && v.getColor() == State.WHITE) { // no self loop && edge exists && no visited yet
-						v.setColor(State.GRAY);
-						v.setDistance(u.getDistance()+1); //TODO considerar en vez de sumar 1, sumar el peso de la arista(u,v), esto porque sumando de uno en uno va a dar el mismo resultado que si alguien le da a getPath el .size(), asi que no brinda mucha informacion adicional
-						v.setPredecessor(u);
-						queue.enqueue(v);
+			try {
+				while(!queue.isEmpty()) {
+					Vertex<E> u = queue.dequeue();
+					int[] adj = edges[keyToIndex.get(u.getElement())];
+					for(int i = 0; i < vertices.length; i++) {
+						Vertex<E> v = vertices[i];
+						if(u != v && adj[i] != Integer.MAX_VALUE && v.getColor() == State.WHITE) { // no self loop && edge exists && no visited yet
+							v.setColor(State.GRAY);
+							v.setDistance(u.getDistance()+1); //TODO considerar en vez de sumar 1, sumar el peso de la arista(u,v), esto porque sumando de uno en uno va a dar el mismo resultado que si alguien le da a getPath el .size(), asi que no brinda mucha informacion adicional
+							v.setPredecessor(u);
+							queue.enqueue(v);
+						}
 					}
+					u.setColor(State.BLACK);
 				}
-				u.setColor(State.BLACK);
+			} catch(Exception emptyQueueException) {
+				//-_-
 			}
 			return true;
 		}
@@ -162,7 +166,7 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 	//it is the least stops path
 	//returns empty arraylist if the dst vertex was not reachable from lastSrcInBST, or if dst == null
 	@Override
-	public ArrayList<E> getPath(E dst) {
+	public ArrayList<E> getSingleSourcePath(E dst) {
 		Vertex<E> d = vertices[keyToIndex.get(dst)];
 		ArrayList<E> path = new ArrayList<E>();
 		if(d != null && d.getPredecessor() != null) {
@@ -354,5 +358,41 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 			return vertices[keyToIndex.get(dst)].getDistance();
 		}
 		return Integer.MAX_VALUE;
+	}
+
+	@Override
+	public int getDFSDiscoveredTime(E key) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int getDFSFinishedTime(E key) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public State getVertexColor(E key) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public E getElement() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public E getSingleSourcePredecessor(E key) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ArrayList<E> getPath(E dst) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

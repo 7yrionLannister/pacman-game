@@ -19,7 +19,7 @@ public interface IGraph<E> {
 	
 	boolean isEmpty();
 	
-	boolean BFS(E src) throws Exception;
+	boolean BFS(E src);
 	
 	void DFS();
 	
@@ -29,9 +29,15 @@ public interface IGraph<E> {
 	
 	void FloydWarshall() ;
 
-	ArrayList<E> getPath(E dst);
+	ArrayList<E> getSingleSourcePath(E dst);
 	
 	int getSingleSourceDistance(E dst);
+	
+	//for the all pairs shortest path
+	ArrayList<E> getPath(E dst);
+	
+	//for the all pairs shortest path
+	int getDistance(E src, E dst);
 	
 	int getDFSDiscoveredTime(E key);
 	
@@ -41,5 +47,5 @@ public interface IGraph<E> {
 	
 	E getElement();
 	
-	E getSingleSOurcePredecessor(E key);
+	E getSingleSourcePredecessor(E key);
 }

@@ -67,7 +67,7 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 		sEdges.add(newedge1);
 		if(!isDirected) { //Add the additional edge if this graph is undirected
 			AdjacencyListEdge<E> newedge2 = new AdjacencyListEdge<>(d, s, weight);
-			
+
 			ArrayList<AdjacencyListEdge<E>> dEdges = adjacencyLists.get(dst);
 			dEdges.remove(newedge2); //if the edge already exists remove it
 			dEdges.add(newedge2); 
@@ -105,7 +105,7 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 
 	//traverses all vertices reachable from src
 	@Override
-	public boolean BFS(E src) throws Exception {
+	public boolean BFS(E src) {
 		if(vertices.containsKey(src)) {
 			Vertex<E> s = vertices.get(src);
 			lastSrc = s;
@@ -122,19 +122,23 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 			//s.predecessor is already null so skip that step
 			Queue<Vertex<E>> queue = new Queue<>();
 			queue.enqueue(s);
-			while(!queue.isEmpty()) {
-				Vertex<E> u = queue.dequeue();
-				ArrayList<AdjacencyListEdge<E>> adj = adjacencyLists.get(u.getElement());
-				for(AdjacencyListEdge<E> ale: adj) {
-					Vertex<E> v = ale.getDst();
-					if(v.getColor() == State.WHITE) {
-						v.setColor(State.GRAY);
-						v.setDistance(u.getDistance()+1); //TODO considerar en vez de sumar 1, sumar el peso de la arista(u,v), esto porque sumando de uno en uno va a dar el mismo resultado que si alguien le da a getPath el .size(), asi que no brinda mucha informacion adicional
-						v.setPredecessor(u);
-						queue.enqueue(v);
+			try {
+				while(!queue.isEmpty()) {
+					Vertex<E> u = queue.dequeue();
+					ArrayList<AdjacencyListEdge<E>> adj = adjacencyLists.get(u.getElement());
+					for(AdjacencyListEdge<E> ale: adj) {
+						Vertex<E> v = ale.getDst();
+						if(v.getColor() == State.WHITE) {
+							v.setColor(State.GRAY);
+							v.setDistance(u.getDistance()+1); //TODO considerar en vez de sumar 1, sumar el peso de la arista(u,v), esto porque sumando de uno en uno va a dar el mismo resultado que si alguien le da a getPath el .size(), asi que no brinda mucha informacion adicional
+							v.setPredecessor(u);
+							queue.enqueue(v);
+						}
 					}
+					u.setColor(State.BLACK);
 				}
-				u.setColor(State.BLACK);
+			} catch (Exception emptyQueueException) {
+				//-_-
 			}
 			return true;
 		}
@@ -146,7 +150,7 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 	//it is the least stops path
 	//returns empty arraylist if the dst vertex was not reachable from lastSrcInBST, or if dst == null
 	@Override
-	public ArrayList<E> getPath(E dst) {
+	public ArrayList<E> getSingleSourcePath(E dst) {
 		Vertex<E> d = vertices.get(dst);
 		ArrayList<E> path = new ArrayList<E>();
 		if(d != null && d.getPredecessor() != null) {
@@ -216,6 +220,8 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 			vertices.forEach(new BiConsumer<E, Vertex<E>>() { //Fix the vertices configuration to make DFS
 				@Override
 				public void accept(E e, Vertex<E> u) {
+					u.setDiscovered(0);
+					u.setFinished(0);
 					u.setColor(State.WHITE);
 					u.setPredecessor(null);
 				}
@@ -305,5 +311,41 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 			return vertices.get(dst).getDistance();
 		}
 		return Integer.MAX_VALUE;
+	}
+
+	@Override
+	public int getDFSDiscoveredTime(E key) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int getDFSFinishedTime(E key) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public State getVertexColor(E key) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public E getElement() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public E getSingleSourcePredecessor(E key) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ArrayList<E> getPath(E dst) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

@@ -205,12 +205,12 @@ public class AdjacencyListGraphTest {
 				assertTrue(u.getColor() == State.BLACK);
 			}
 		});
-		ArrayList<Integer> leastStopsPath = graph.getPath(5);
+		ArrayList<Integer> leastStopsPath = graph.getSingleSourcePath(5);
 		assertTrue(leastStopsPath.get(0) == src && graph.getLastSrc() == src, "Source is not the expected");
 		assertTrue(leastStopsPath.get(1) == 7, "It is not the least stops path");
 		assertTrue(leastStopsPath.get(2) == 5, "It is not the least stops path");
 
-		leastStopsPath = graph.getPath(1);
+		leastStopsPath = graph.getSingleSourcePath(1);
 		assertTrue(leastStopsPath.get(0) == src && graph.getLastSrc() == src, "Source is not the expected");
 		assertTrue(leastStopsPath.get(1) == 7, "It is not the least stops path");
 		assertTrue(leastStopsPath.get(2) == 6, "It is not the least stops path");
@@ -224,7 +224,7 @@ public class AdjacencyListGraphTest {
 				assertTrue(u.getColor() == State.BLACK);
 			}
 		});
-		leastStopsPath = graph.getPath(4);
+		leastStopsPath = graph.getSingleSourcePath(4);
 		assertTrue(leastStopsPath.get(0) == src && graph.getLastSrc() == src, "Source is not the expected");
 		assertTrue(leastStopsPath.get(1) == 6, "It is not the least stops path");
 		assertTrue(leastStopsPath.get(2) == 7, "It is not the least stops path");
@@ -233,13 +233,11 @@ public class AdjacencyListGraphTest {
 
 		src = 1;
 		graph.BFS(src);
-		graph.getVertices().forEach(new BiConsumer<Integer, Vertex<Integer>>() {
-			@Override
-			public void accept(Integer t, Vertex<Integer> u) {
-				assertTrue(u.getColor() == State.BLACK);
-			}
-		});
-		leastStopsPath = graph.getPath(3);
+		for(int i = 0; i < 8; i++) {
+			assertTrue(graph.getVertexColor(i+1) == State.BLACK && graph.getSingleSourceDistance(i+1) > 0);
+			assertNotNull(graph.getSingleSourcePredecessor(i+1), (i+1)+" is reachable from 8 so it must have a predecessor");
+		}
+		leastStopsPath = graph.getSingleSourcePath(3);
 		assertTrue(leastStopsPath.get(0) == src && graph.getLastSrc() == src, "Source is not the expected");
 		assertTrue(leastStopsPath.get(1) == 6, "It is not the least stops path");
 		assertTrue(leastStopsPath.get(2) == 7, "It is not the least stops path");
@@ -252,52 +250,52 @@ public class AdjacencyListGraphTest {
 		linkVerticesInDirectedGraphTest();
 		int src = 8;
 		graph.BFS(src);
-		assertTrue(graph.containsVertex(src).getColor() == State.BLACK);
-		assertTrue(graph.containsVertex(3).getColor() == State.BLACK);
-		assertTrue(graph.containsVertex(5).getColor() == State.BLACK);
-		assertTrue(graph.containsVertex(6).getColor() == State.WHITE);
-		assertTrue(graph.containsVertex(1).getColor() == State.WHITE);
-		assertTrue(graph.containsVertex(2).getColor() == State.WHITE);
-		assertTrue(graph.containsVertex(4).getColor() == State.WHITE);
-		assertTrue(graph.containsVertex(7).getColor() == State.WHITE);
-		ArrayList<Integer> leastStopsPath = graph.getPath(5);
+		assertTrue(graph.getVertexColor(src) == State.BLACK && graph.getSingleSourceDistance(src) == 0);
+		assertTrue(graph.getVertexColor(3) == State.BLACK && graph.getSingleSourceDistance(3) > 0);
+		assertTrue(graph.getVertexColor(5) == State.BLACK && graph.getSingleSourceDistance(5) > 0);
+		assertTrue(graph.getVertexColor(6) == State.WHITE && graph.getSingleSourceDistance(6) == Integer.MAX_VALUE);
+		assertTrue(graph.getVertexColor(1) == State.WHITE && graph.getSingleSourceDistance(1) == Integer.MAX_VALUE);
+		assertTrue(graph.getVertexColor(2) == State.WHITE && graph.getSingleSourceDistance(2) == Integer.MAX_VALUE);
+		assertTrue(graph.getVertexColor(4) == State.WHITE && graph.getSingleSourceDistance(4) == Integer.MAX_VALUE);
+		assertTrue(graph.getVertexColor(7) == State.WHITE && graph.getSingleSourceDistance(7) == Integer.MAX_VALUE);
+		ArrayList<Integer> leastStopsPath = graph.getSingleSourcePath(5);
 		assertTrue(leastStopsPath.get(0) == src && graph.getLastSrc() == src, "Source is not the expected");
 		assertTrue(leastStopsPath.get(1) == 5, "It is not the least stops path");
 
-		leastStopsPath = graph.getPath(1);
+		leastStopsPath = graph.getSingleSourcePath(1);
 		assertTrue(leastStopsPath.isEmpty(), "Vertex 1 is not reachable from source "+src+" so the path must be empty");
 
 		src = 1;
 		graph.BFS(src);
-		assertTrue(graph.containsVertex(src).getColor() == State.BLACK);
-		assertTrue(graph.containsVertex(3).getColor() == State.BLACK);
-		assertTrue(graph.containsVertex(5).getColor() == State.BLACK);
-		assertTrue(graph.containsVertex(2).getColor() == State.BLACK);
-		assertTrue(graph.containsVertex(7).getColor() == State.BLACK);
-		assertTrue(graph.containsVertex(8).getColor() == State.BLACK);
-		assertTrue(graph.containsVertex(6).getColor() == State.WHITE);
-		assertTrue(graph.containsVertex(4).getColor() == State.WHITE);
-		leastStopsPath = graph.getPath(4);
+		assertTrue(graph.getVertexColor(src) == State.BLACK && graph.getSingleSourceDistance(src) > 0);
+		assertTrue(graph.getVertexColor(3) == State.BLACK && graph.getSingleSourceDistance(3) > 0);
+		assertTrue(graph.getVertexColor(5) == State.BLACK && graph.getSingleSourceDistance(5) > 0);
+		assertTrue(graph.getVertexColor(2) == State.BLACK && graph.getSingleSourceDistance(2) > 0);
+		assertTrue(graph.getVertexColor(7) == State.BLACK && graph.getSingleSourceDistance(7) > 0);
+		assertTrue(graph.getVertexColor(8) == State.BLACK && graph.getSingleSourceDistance(8) > 0);
+		assertTrue(graph.getVertexColor(6) == State.WHITE && graph.getSingleSourceDistance(6) == Integer.MAX_VALUE);
+		assertTrue(graph.getVertexColor(4) == State.WHITE && graph.getSingleSourceDistance(4) == Integer.MAX_VALUE);
+		leastStopsPath = graph.getSingleSourcePath(4);
 		assertTrue(leastStopsPath.isEmpty(), "Vertex 4 is not reachable from any vertex so the path must be empty");
 
 		src = 6;
 		graph.BFS(src);
-		assertTrue(graph.containsVertex(src).getColor() == State.BLACK);
-		assertTrue(graph.containsVertex(3).getColor() == State.BLACK);
-		assertTrue(graph.containsVertex(5).getColor() == State.BLACK);
-		assertTrue(graph.containsVertex(2).getColor() == State.BLACK);
-		assertTrue(graph.containsVertex(7).getColor() == State.BLACK);
-		assertTrue(graph.containsVertex(8).getColor() == State.BLACK);
-		assertTrue(graph.containsVertex(6).getColor() == State.BLACK);
-		assertTrue(graph.containsVertex(4).getColor() == State.WHITE);
-		leastStopsPath = graph.getPath(5);
+		assertTrue(graph.getVertexColor(src) == State.BLACK);
+		assertTrue(graph.getVertexColor(3) == State.BLACK);
+		assertTrue(graph.getVertexColor(5) == State.BLACK);
+		assertTrue(graph.getVertexColor(2) == State.BLACK);
+		assertTrue(graph.getVertexColor(7) == State.BLACK);
+		assertTrue(graph.getVertexColor(8) == State.BLACK);
+		assertTrue(graph.getVertexColor(6) == State.BLACK);
+		assertTrue(graph.getVertexColor(4) == State.WHITE);
+		leastStopsPath = graph.getSingleSourcePath(5);
 		assertTrue(leastStopsPath.get(0) == src && graph.getLastSrc() == src, "Source is not the expected");
 		assertTrue(leastStopsPath.get(1) == 1, "It is not the least stops path");
 		assertTrue(leastStopsPath.get(2) == 2, "It is not the least stops path");
 		assertTrue(leastStopsPath.get(3) == 8, "It is not the least stops path");
 		assertTrue(leastStopsPath.get(4) == 5, "It is not the least stops path");
 
-		leastStopsPath = graph.getPath(3);
+		leastStopsPath = graph.getSingleSourcePath(3);
 		assertTrue(leastStopsPath.get(0) == src && graph.getLastSrc() == src, "Source is not the expected");
 		assertTrue(leastStopsPath.get(1) == 1, "It is not the least stops path");
 		assertTrue(leastStopsPath.get(2) == 2, "It is not the least stops path");
@@ -309,35 +307,32 @@ public class AdjacencyListGraphTest {
 		linkVerticesInUndirectedGraphTest();
 		graph.DFS();
 
-		graph.getVertices().forEach(new BiConsumer<Integer, Vertex<Integer>>() {
-			@Override
-			public void accept(Integer t, Vertex<Integer> u) {
-				assertTrue(u.getColor() == State.BLACK);
-				assertTrue(u.getDiscovered() > 0 && u.getFinished() > 0, "There is a vertex that was not marked as discovered or finished");
-			}
-		});
+		for(int i = 0; i < 8; i++) {
+			assertTrue(graph.getVertexColor(i+1) == State.BLACK && graph.getDFSDiscoveredTime(i+1) > 0 && graph.getDFSFinishedTime(i+1) > 0);
+			assertNotNull(graph.getSingleSourcePredecessor(i+1), (i+1)+" is reachable from 8 so it must have a predecessor");
+		}
 	}
 
 	@Test
 	public void DFSWithGivenSourceTest() {
 		linkVerticesInDirectedGraphTest();
 		graph.DFS(8);
-		assertTrue(graph.containsVertex(1).getColor() == State.WHITE && graph.containsVertex(1).getDiscovered() == 0 && graph.containsVertex(1).getFinished() == 0);
-		assertNull(graph.containsVertex(1).getPredecessor(), "1 is not reachable from 8 so it must not have a predecessor");
-		assertTrue(graph.containsVertex(2).getColor() == State.WHITE && graph.containsVertex(2).getDiscovered() == 0 && graph.containsVertex(2).getFinished() == 0);
-		assertNull(graph.containsVertex(2).getPredecessor(), "2 is not reachable from 8 so it must not have a predecessor");
-		assertTrue(graph.containsVertex(3).getColor() == State.BLACK && graph.containsVertex(3).getDiscovered() > 0 && graph.containsVertex(3).getFinished() > 0);
-		assertNotNull(graph.containsVertex(3).getPredecessor(), "3 is reachable from 8 so it must have a predecessor");
-		assertTrue(graph.containsVertex(4).getColor() == State.WHITE && graph.containsVertex(4).getDiscovered() == 0 && graph.containsVertex(4).getFinished() == 0);
-		assertNull(graph.containsVertex(4).getPredecessor(), "4 is not reachable from 8 so it must not have a predecessor");
-		assertTrue(graph.containsVertex(5).getColor() == State.BLACK && graph.containsVertex(5).getDiscovered() > 0 && graph.containsVertex(5).getFinished() > 0);
-		assertNotNull(graph.containsVertex(5).getPredecessor(), "5 is reachable from 8 so it must have a predecessor");
-		assertTrue(graph.containsVertex(6).getColor() == State.WHITE && graph.containsVertex(6).getDiscovered() == 0 && graph.containsVertex(6).getFinished() == 0);
-		assertNull(graph.containsVertex(6).getPredecessor(), "6 is not reachable from 8 so it must not have a predecessor");
-		assertTrue(graph.containsVertex(7).getColor() == State.WHITE && graph.containsVertex(7).getDiscovered() == 0 && graph.containsVertex(7).getFinished() == 0);
-		assertNull(graph.containsVertex(7).getPredecessor(), "7 is not reachable from 8 so it must not have a predecessor");
-		assertTrue(graph.containsVertex(8).getColor() == State.BLACK && graph.containsVertex(8).getDiscovered() > 0 && graph.containsVertex(8).getFinished() > 0);
-		assertNull(graph.containsVertex(8).getPredecessor(), "8 is the source vertex so it must not have a predecessor");
+		assertTrue(graph.getVertexColor(1) == State.WHITE && graph.getDFSDiscoveredTime(1) == 0 && graph.getDFSFinishedTime(1) == 0);
+		assertNull(graph.getSingleSourcePredecessor(1), "1 is not reachable from 8 so it must not have a predecessor");
+		assertTrue(graph.getVertexColor(2) == State.WHITE && graph.getDFSDiscoveredTime(2) == 0 && graph.getDFSFinishedTime(2) == 0);
+		assertNull(graph.getSingleSourcePredecessor(2), "2 is not reachable from 8 so it must not have a predecessor");
+		assertTrue(graph.getVertexColor(3) == State.BLACK && graph.getDFSDiscoveredTime(3) > 0 && graph.getDFSFinishedTime(3) > 0);
+		assertNotNull(graph.getSingleSourcePredecessor(3), "3 is reachable from 8 so it must have a predecessor");
+		assertTrue(graph.getVertexColor(4) == State.WHITE && graph.getDFSDiscoveredTime(4) == 0 && graph.getDFSFinishedTime(4) == 0);
+		assertNull(graph.getSingleSourcePredecessor(4), "4 is not reachable from 8 so it must not have a predecessor");
+		assertTrue(graph.getVertexColor(5) == State.BLACK && graph.getDFSDiscoveredTime(5) > 0);
+		assertNotNull(graph.getSingleSourcePredecessor(5), "5 is reachable from 8 so it must have a predecessor");
+		assertTrue(graph.getVertexColor(6) == State.WHITE && graph.getDFSDiscoveredTime(6) == 0 && graph.getDFSFinishedTime(6) == 0);
+		assertNull(graph.getSingleSourcePredecessor(6), "6 is not reachable from 8 so it must not have a predecessor");
+		assertTrue(graph.getVertexColor(7) == State.WHITE && graph.getDFSDiscoveredTime(7) == 0 && graph.getDFSFinishedTime(7) == 0);
+		assertNull(graph.getSingleSourcePredecessor(7), "7 is not reachable from 8 so it must not have a predecessor");
+		assertTrue(graph.getVertexColor(8) == State.BLACK && graph.getDFSDiscoveredTime(8) > 0 && graph.getDFSFinishedTime(8) > 0);
+		assertNull(graph.getSingleSourcePredecessor(8), "8 is the source vertex so it must not have a predecessor");
 	}
 
 	@Test
@@ -363,14 +358,14 @@ public class AdjacencyListGraphTest {
 		int src = 6;
 		graph.Dijkstra(src);
 
-		ArrayList<Integer> shortestPath = graph.getPath(5);
+		ArrayList<Integer> shortestPath = graph.getSingleSourcePath(5);
 		assertTrue(shortestPath.get(0) == src && graph.getLastSrc() == src, "Source is not the expected");
 		assertTrue(shortestPath.get(1) == 1, "It is not the shortest path");
 		assertTrue(shortestPath.get(2) == 2, "It is not the shortest path");
 		assertTrue(shortestPath.get(3) == 8, "It is not the shortest path");
 		assertTrue(shortestPath.get(4) == 5, "It is not the shortest path");
 
-		shortestPath = graph.getPath(3);
+		shortestPath = graph.getSingleSourcePath(3);
 		assertTrue(shortestPath.get(0) == src && graph.getLastSrc() == src, "Source is not the expected");
 		assertTrue(shortestPath.get(1) == 1, "It is not the shortest path");
 		assertTrue(shortestPath.get(2) == 2, "It is not the shortest path");
@@ -380,12 +375,12 @@ public class AdjacencyListGraphTest {
 
 		src = 8;
 		graph.Dijkstra(src);
-		shortestPath = graph.getPath(5);
+		shortestPath = graph.getSingleSourcePath(5);
 		assertTrue(shortestPath.get(0) == src && graph.getLastSrc() == src, "Source is not the expected");
 		assertTrue(shortestPath.get(1) == 7, "It is not the shortest path");
 		assertTrue(shortestPath.get(2) == 5, "It is not the shortest path");
 
-		shortestPath = graph.getPath(1);
+		shortestPath = graph.getSingleSourcePath(1);
 		assertTrue(shortestPath.get(0) == src && graph.getLastSrc() == src, "Source is not the expected");
 		assertTrue(shortestPath.get(1) == 7, "It is not the shortest path");
 		assertTrue(shortestPath.get(2) == 6, "It is not the shortest path");
@@ -393,7 +388,7 @@ public class AdjacencyListGraphTest {
 
 		src = 1;
 		graph.Dijkstra(src);
-		shortestPath = graph.getPath(4);
+		shortestPath = graph.getSingleSourcePath(4);
 		assertTrue(shortestPath.get(0) == src && graph.getLastSrc() == src, "Source is not the expected");
 		assertTrue(shortestPath.get(1) == 6, "It is not the shortest path");
 		assertTrue(shortestPath.get(2) == 7, "It is not the shortest path");
@@ -402,7 +397,7 @@ public class AdjacencyListGraphTest {
 
 		src = 1;
 		graph.Dijkstra(src);
-		shortestPath = graph.getPath(3);
+		shortestPath = graph.getSingleSourcePath(3);
 		assertTrue(shortestPath.get(0) == src && graph.getLastSrc() == src, "Source is not the expected");
 		assertTrue(shortestPath.get(1) == 6, "It is not the shortest path");
 		assertTrue(shortestPath.get(2) == 7, "It is not the shortest path");
