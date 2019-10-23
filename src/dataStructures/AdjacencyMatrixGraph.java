@@ -109,11 +109,8 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 	}
 
 	@Override
-	public Vertex<E> searchVertex(E key) {
-		if(keyToIndex.containsKey(key)) {
-			return vertices[keyToIndex.get(key)];
-		}
-		return null;
+	public boolean containsVertex(E key) {
+		return keyToIndex.containsKey(key);
 	}
 
 	@Override
@@ -349,5 +346,13 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 
 	public Vertex<E>[][] getAllPairsShortestPath() {
 		return allPairsShortestPath;
+	}
+
+	@Override
+	public int getSingleSourceDistance(E dst) {
+		if(keyToIndex.containsKey(dst)) {
+			return vertices[keyToIndex.get(dst)].getDistance();
+		}
+		return Integer.MAX_VALUE;
 	}
 }

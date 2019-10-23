@@ -89,8 +89,8 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 	}
 
 	@Override
-	public Vertex<E> searchVertex(E key) {
-		return vertices.get(key);
+	public boolean containsVertex(E key) {
+		return vertices.containsKey(key);
 	}
 
 	@Override
@@ -287,15 +287,23 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 		return isDirected;
 	}
 
-	public Vertex<E> getLastSrc() {
-		return lastSrc;
+	public E getLastSrc() {
+		return lastSrc.getElement();
 	}
 
-	public HashMap<E, Vertex<E>> getVertices() {
+	/*public HashMap<E, Vertex<E>> getVertices() {
 		return vertices;
-	}
+	}*///TODO no devolver vertices
 
-	public HashMap<E, ArrayList<AdjacencyListEdge<E>>> getAdjacencyLists() {
+	/*public HashMap<E, ArrayList<AdjacencyListEdge<E>>> getAdjacencyLists() {
 		return adjacencyLists;
+	}*///TODO no devolver vertices
+
+	@Override
+	public int getSingleSourceDistance(E dst) {
+		if(vertices.containsKey(dst)) {
+			return vertices.get(dst).getDistance();
+		}
+		return Integer.MAX_VALUE;
 	}
 }

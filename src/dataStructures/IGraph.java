@@ -13,7 +13,7 @@ public interface IGraph<E> {
 	
 	boolean unlink(E src, E dst);
 	
-	Vertex<E> searchVertex(E key);
+	boolean containsVertex(E key);
 	
 	int getOrder();
 	
@@ -30,4 +30,16 @@ public interface IGraph<E> {
 	void FloydWarshall() ;
 
 	ArrayList<E> getPath(E dst);
+	
+	int getSingleSourceDistance(E dst);
+	
+	int getDFSDiscoveredTime(E key);
+	
+	int getDFSFinishedTime(E key);
+	
+	State getVertexColor(E key);
+	
+	E getElement();
+	
+	E getSingleSOurcePredecessor(E key);
 }
