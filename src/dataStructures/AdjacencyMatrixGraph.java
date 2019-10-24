@@ -146,7 +146,7 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 						Vertex<E> v = vertices[i];
 						if(u != v && adj[i] != Integer.MAX_VALUE && v.getColor() == State.WHITE) { // no self loop && edge exists && no visited yet
 							v.setColor(State.GRAY);
-							v.setDistance(u.getDistance()+1); //TODO considerar en vez de sumar 1, sumar el peso de la arista(u,v), esto porque sumando de uno en uno va a dar el mismo resultado que si alguien le da a getPath el .size(), asi que no brinda mucha informacion adicional
+							v.setDistance(u.getDistance()+1);
 							v.setPredecessor(u);
 							queue.enqueue(v);
 						}
@@ -170,7 +170,7 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 		Vertex<E> d = vertices[keyToIndex.get(dst)];
 		ArrayList<E> path = new ArrayList<E>();
 		if(d != null && d.getPredecessor() != null) {
-			pathFill(lastSrc, d, path);
+			singleSourcePathFill(lastSrc, d, path);
 		} else if(d == lastSrc && d != null) {
 			path.add(d.getElement());
 		}
@@ -178,11 +178,11 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 		return path;
 	}
 
-	private void pathFill(Vertex<E> src, Vertex<E> dst, ArrayList<E> path) {
+	private void singleSourcePathFill(Vertex<E> src, Vertex<E> dst, ArrayList<E> path) {
 		if(src == dst) {
 			path.add(src.getElement());
 		} else {
-			pathFill(src, dst.getPredecessor(), path);
+			singleSourcePathFill(src, dst.getPredecessor(), path);
 			path.add(dst.getElement());
 		}
 	}
@@ -311,13 +311,12 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 		}
 	}
 
-	public int getEdgeWeight(E u, E v) throws Exception {
-		Integer uIndex = keyToIndex.get(u);
-		Integer vIndex = keyToIndex.get(v);
-		if(uIndex == null && vIndex == null) {
-			throw new Exception("Graph does not contain the requested keys");
+	@Override
+	public int getEdgeWeight(E src, E dst) {
+		if(keyToIndex.containsKey(src) && keyToIndex.containsKey(dst)) {
+			return edges[keyToIndex.get(src)][keyToIndex.get(dst)];
 		}
-		return edges[uIndex][vIndex];
+		return Integer.MAX_VALUE;
 	}
 
 	public int[][] getEdges() {
@@ -328,10 +327,6 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 		return isDirected;
 	}
 
-	public HashMap<E, Integer> getKeyToIndex() {
-		return keyToIndex;
-	}
-
 	public ArrayList<E> getVertices() {
 		ArrayList<E> verts = new ArrayList<E>();
 		for(int i = 0; i < keyToIndex.size(); i++) {
@@ -340,20 +335,12 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 		return verts;
 	}
 
-	public Vertex<E> getLastSrc() {
-		return lastSrc;
+	public E getLastSrc() {
+		return lastSrc.getElement();
 	}
 
 	public int getFreeRow() {
 		return freeRow;
-	}
-
-	public int[][] getAllPairsminimumDistances() {
-		return allPairsminimumDistances;
-	}
-
-	public Vertex<E>[][] getAllPairsShortestPath() {
-		return allPairsShortestPath;
 	}
 
 	@Override
@@ -390,7 +377,7 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 
 	@Override
 	public E getSingleSourcePredecessor(E key) {
-		if(keyToIndex.containsKey(key)) {
+		if(keyToIndex.containsKey(key) && vertices[keyToIndex.get(key)].getPredecessor() != null) {
 			return vertices[keyToIndex.get(key)].getPredecessor().getElement();
 		}
 		return null;
@@ -398,8 +385,26 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 
 	@Override
 	public ArrayList<E> getPath(E src, E dst) {
-		//TODO implementar
-		return null;
+		Vertex<E> d = vertices[keyToIndex.get(dst)];
+		Vertex<E> s = vertices[keyToIndex.get(src)];
+		ArrayList<E> path = new ArrayList<E>();
+		if(allPairsShortestPath != null && d != null && s != null) {
+			if(d.getPredecessor() != null) {
+				pathFill(s, d, path);
+			} else if(d == s && d != null) {
+				path.add(d.getElement());
+			}
+		}
+		return path;
+	}
+
+	private void pathFill(Vertex<E> src, Vertex<E> dst, ArrayList<E> path) {
+		if(src == dst) {
+			path.add(src.getElement());
+		} else {
+			pathFill(src, allPairsShortestPath[keyToIndex.get(src.getElement())][keyToIndex.get(dst.getElement())], path);
+			path.add(dst.getElement());
+		}
 	}
 
 	@Override
@@ -412,9 +417,24 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 
 	@Override
 	public boolean containsEdge(E src, E dst) {
-		if(true) {
-			//TODO implementar
+		if(keyToIndex.containsKey(src) && keyToIndex.containsKey(dst)) {
+			int i = keyToIndex.get(src);
+			int j = keyToIndex.get(dst);
+			return edges[i][j] != 0 && edges[i][j] != Integer.MAX_VALUE;
 		}
 		return false;
+	}
+
+	@Override
+	public ArrayList<E> getAdjacent(E key) {
+		ArrayList<E> adj = new ArrayList<>();
+		if(keyToIndex.containsKey(key)) {
+			for(int i = 0; i < keyToIndex.size(); i++) {
+				if(edges[keyToIndex.get(key)][i] != 0 && edges[keyToIndex.get(key)][i] != Integer.MAX_VALUE) {
+					adj.add(vertices[i].getElement());
+				}
+			}
+		}
+		return adj;
 	}
 }

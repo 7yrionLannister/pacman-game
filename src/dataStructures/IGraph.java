@@ -48,4 +48,8 @@ public interface IGraph<E> {
 	E getSingleSourcePredecessor(E key);
 	
 	boolean containsEdge(E src, E dst);
+
+	ArrayList<E> getAdjacent(E key);
+
+	int getEdgeWeight(E src, E dst);
 }

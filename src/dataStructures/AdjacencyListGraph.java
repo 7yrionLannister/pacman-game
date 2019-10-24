@@ -130,7 +130,7 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 						Vertex<E> v = ale.getDst();
 						if(v.getColor() == State.WHITE) {
 							v.setColor(State.GRAY);
-							v.setDistance(u.getDistance()+1); //TODO considerar en vez de sumar 1, sumar el peso de la arista(u,v), esto porque sumando de uno en uno va a dar el mismo resultado que si alguien le da a getPath el .size(), asi que no brinda mucha informacion adicional
+							v.setDistance(u.getDistance()+1);
 							v.setPredecessor(u);
 							queue.enqueue(v);
 						}
@@ -342,7 +342,7 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 
 	@Override
 	public E getSingleSourcePredecessor(E key) {
-		if(vertices.containsKey(key)) {
+		if(vertices.containsKey(key) && vertices.get(key).getPredecessor() != null) {
 			return vertices.get(key).getPredecessor().getElement();
 		}
 		return null;
@@ -354,7 +354,7 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 		if(vertices.containsKey(src) && vertices.containsKey(dst)) {
 			//TODO implementar
 		}
-		return null;
+		return path;
 	}
 
 	@Override
@@ -371,5 +371,32 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 			return adjacencyLists.get(src).contains(new AdjacencyListEdge<E>(new Vertex<E>(src), new Vertex<E>(dst), Integer.MAX_VALUE));
 		}
 		return false;
+	}
+	
+	@Override
+	public ArrayList<E> getAdjacent(E key) {
+		ArrayList<E> adj = new ArrayList<>();
+		if(vertices.containsKey(key)) {
+			for(AdjacencyListEdge<E> ale : adjacencyLists.get(key)) {
+				adj.add(ale.getDst().getElement());
+			}
+		}
+		return adj;
+	}
+
+	@Override
+	public int getEdgeWeight(E src, E dst) {
+		if(vertices.containsKey(src) && vertices.containsKey(dst)) {
+			ArrayList<AdjacencyListEdge<E>> srcAdj = adjacencyLists.get(src);
+			for(int i = 0; i < srcAdj.size(); i++) {
+				if(srcAdj.get(i).getDst().getElement().equals(dst)) {
+					return srcAdj.get(i).getWeight();
+				}
+			}
+			if(src.equals(dst)) {
+				return 0;
+			}
+		}
+		return Integer.MAX_VALUE;
 	}
 }
