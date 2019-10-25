@@ -440,6 +440,17 @@ public class AdjacencyMatrixGraphTest {
 		assertTrue(byDijkstra.get(2) == byFW.get(2), "It is not the shortest path");
 		assertTrue(byDijkstra.get(3) == byFW.get(3), "It is not the shortest path");
 		assertTrue(byDijkstra.get(4) == byFW.get(4), "It is not the shortest path");
+		
+		byFW = graph.getPath(1, 5);
+		assertTrue(byDijkstra.get(1) == byFW.get(0), "It is not the shortest path");
+		assertTrue(byDijkstra.get(2) == byFW.get(1), "It is not the shortest path");
+		assertTrue(byDijkstra.get(3) == byFW.get(2), "It is not the shortest path");
+		assertTrue(byDijkstra.get(4) == byFW.get(3), "It is not the shortest path");
+		
+		byFW = graph.getPath(2, 5);
+		assertTrue(byDijkstra.get(2) == byFW.get(0), "It is not the shortest path");
+		assertTrue(byDijkstra.get(3) == byFW.get(1), "It is not the shortest path");
+		assertTrue(byDijkstra.get(4) == byFW.get(2), "It is not the shortest path");
 
 		byDijkstra = graph.getSingleSourcePath(3);
 		byFW = graph.getPath(src, 3);
@@ -447,6 +458,37 @@ public class AdjacencyMatrixGraphTest {
 		assertTrue(byDijkstra.get(1) == byFW.get(1), "It is not the shortest path");
 		assertTrue(byDijkstra.get(2) == byFW.get(2), "It is not the shortest path");
 		assertTrue(byDijkstra.get(3) == byFW.get(3), "It is not the shortest path");
+		
+		byFW = graph.getPath(8, 4);
+		assertTrue(byFW.isEmpty(), "The path must be empty as 4 is unreachable from 8");
+		
+		linkVerticesInUndirectedGraphTest();
+		graph.FloydWarshall();
+		
+		src = 8;
+		graph.Dijkstra(src);
+		byDijkstra = graph.getSingleSourcePath(5);
+		byFW = graph.getPath(src, 5);
+		assertTrue(byDijkstra.get(0) == byFW.get(0), "It is not the shortest path");
+		assertTrue(byDijkstra.get(1) == byFW.get(1), "It is not the shortest path");
+		assertTrue(byDijkstra.get(2) == byFW.get(2), "It is not the shortest path");
+
+		byDijkstra = graph.getSingleSourcePath(1);
+		byFW = graph.getPath(7, 1);
+		assertTrue(byDijkstra.get(1) == byFW.get(0));
+		assertTrue(byDijkstra.get(2) == byFW.get(1), "It is not the shortest path");
+		assertTrue(byDijkstra.get(3) == byFW.get(2), "It is not the shortest path");
+
+		src = 1;
+		graph.Dijkstra(src);
+		byDijkstra = graph.getSingleSourcePath(3);
+		byFW = graph.getPath(1, 3);
+		assertTrue(byDijkstra.get(0) == byFW.get(0), "It is not the shortest path");
+		assertTrue(byDijkstra.get(1) == byFW.get(1), "It is not the shortest path");
+		assertTrue(byDijkstra.get(2) == byFW.get(2), "It is not the shortest path");
+		assertTrue(byDijkstra.get(3) == byFW.get(3), "It is not the shortest path");
+		assertTrue(byDijkstra.get(4) == byFW.get(4), "It is not the shortest path");
+		assertTrue(byDijkstra.get(5) == byFW.get(5), "It is not the shortest path");
 	}
 
 	private void vertexInsertionLoop() {

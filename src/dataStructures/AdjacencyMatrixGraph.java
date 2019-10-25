@@ -20,7 +20,6 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 	 * @param size is an Integer that represents the size if the Adjacency Matrix. 
 	 * @param isDIrected is a boolean that indicates if the Adjacency Matrix is going to represent a directed graph or not.
 	 */
-	//usar size mas grande que los vertices presupuestados para reducir las veces que se debe crear matriz por falta de espacio
 	public AdjacencyMatrixGraph(int size, boolean isDIrected) {
 		edges = new int[size][size];
 		for(int i = 0; i < size; i++) {
@@ -94,6 +93,7 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 	 */
 	@Override
 	public void link(E src, E dst, int weight) {
+<<<<<<< HEAD
 		Integer s = keyToIndex.get(src);
 		Integer d = keyToIndex.get(dst);
 		if(s != null && d != null) {
@@ -101,6 +101,15 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 			if(!isDirected) { 
 				edges[d][s] = weight;
 			}
+=======
+		insertVertex(src); //Inserts src if not currently in the graph
+		insertVertex(dst); //Inserts dst if not currently in the graph
+		int s = keyToIndex.get(src);
+		int d = keyToIndex.get(dst);
+		edges[s][d] = weight;
+		if(!isDirected) { //Add the additional edge if this graph is undirected
+			edges[d][s] = weight;
+>>>>>>> ce637ff58d95ae66c0f2762c8372949195dc8f56
 		}
 	}
 	/**This method unlinks a source vertex with another vertex denoted as dst where the other edge is removed if the graph is undirected. 
@@ -436,7 +445,7 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 		Vertex<E> s = vertices[keyToIndex.get(src)];
 		ArrayList<E> path = new ArrayList<E>();
 		if(allPairsShortestPath != null && d != null && s != null) {
-			if(d.getPredecessor() != null) {
+			if(allPairsShortestPath[keyToIndex.get(src)][keyToIndex.get(dst)] != null) {
 				pathFill(s, d, path);
 			} else if(d == s && d != null) {
 				path.add(d.getElement());
