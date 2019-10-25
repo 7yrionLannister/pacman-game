@@ -4,14 +4,14 @@ public class Node<E> {
 	private E element;
 	private Node<E> nextNode;
 	
-	/**This creates a new Node as from an E element.
+	/**This creates a new Node as from an object of type E.
 	 * @param element It represents the object that will be associated with the node.
 	 */
 	public Node(E element) {
 		this.element = element;
 	}
 	/**This method allows to get the element E.
-	 * @return It represents the object that is associated with the actual node.
+	 * @return An E object that represents the object that is associated with the actual node.
 	 */
 	public E getElement() {
 		return element;

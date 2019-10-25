@@ -17,7 +17,6 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 	private Vertex<E>[][] allPairsShortestPath;
 	
 	/**
-	 * 
 	 * @param size
 	 * @param isDIrected
 	 */
@@ -36,7 +35,6 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 		freeRow = 0;
 	}
 	/**
-	 * 
 	 */
 	@Override
 	public boolean insertVertex(E e) {
@@ -66,7 +64,6 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 		return false;
 	}
 	/**
-	 * 
 	 */
 	@Override
 	public boolean deleteVertex(E e) {
@@ -91,7 +88,6 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 		return false;
 	}
 	/**
-	 * 
 	 */
 	@Override
 	public void link(E src, E dst, int weight) {
@@ -105,7 +101,6 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 		}
 	}
 	/**
-	 * 
 	 */
 	@Override
 	public boolean unlink(E src, E dst) {
@@ -121,28 +116,24 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 		return false;
 	}
 	/**
-	 * 
 	 */
 	@Override
 	public boolean containsVertex(E key) {
 		return keyToIndex.containsKey(key);
 	}
 	/**
-	 * 
 	 */
 	@Override
 	public int getOrder() {
 		return keyToIndex.size();
 	}
 	/**
-	 * 
 	 */
 	@Override
 	public boolean isEmpty() {
 		return keyToIndex.isEmpty();
 	}
 	/**
-	 * 
 	 */
 	@Override
 	public boolean BFS(E src) {
@@ -182,7 +173,6 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 		return false;
 	}
 	/**
-	 * 
 	 */
 	//pre: bfs, dfs or dijkstra have been called
 	//it is only the shortest path in unweighted graphs, else is just a path
@@ -201,7 +191,6 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 		return path;
 	}
 	/**
-	 * 
 	 * @param src
 	 * @param dst
 	 * @param path
@@ -215,7 +204,6 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 		}
 	}
 	/**
-	 * 
 	 */
 	//dfs that traverses every vertex independent if it is not reachable from certain vertices
 	//it uses stack of recursive calls in dfsvisit method
@@ -233,7 +221,6 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 		}
 	}
 	/**
-	 * 
 	 * @param u
 	 */
 	//recursive method for traversing every reachable vertex from u
@@ -255,7 +242,6 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 		u.setFinished(DFStime);
 	}
 	/**
-	 * 
 	 */
 	@Override
 	public void DFS(E src) {
@@ -292,7 +278,6 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 		}
 	}
 	/**
-	 * 
 	 */
 	@Override
 	public void Dijkstra(E src) {
@@ -323,7 +308,6 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 		}
 	}
 	/**
-	 * 
 	 */
 	@Override
 	public void FloydWarshall() {
@@ -350,7 +334,6 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 		}
 	}
 	/**
-	 * 
 	 */
 	@Override
 	public int getEdgeWeight(E src, E dst) {
@@ -360,21 +343,18 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 		return Integer.MAX_VALUE;
 	}
 	/**
-	 * 
 	 * @return
 	 */
 	public int[][] getEdges() {
 		return edges;
 	}
 	/**
-	 * 
 	 * @return
 	 */
 	public boolean isDirected() {
 		return isDirected;
 	}
 	/**
-	 * 
 	 * @return
 	 */
 	public ArrayList<E> getVertices() {
@@ -385,21 +365,18 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 		return verts;
 	}
 	/**
-	 * 
 	 * @return
 	 */
 	public E getLastSrc() {
 		return lastSrc.getElement();
 	}
 	/**
-	 * 
 	 * @return
 	 */
 	public int getFreeRow() {
 		return freeRow;
 	}
 	/**
-	 * 
 	 */
 	@Override
 	public int getSingleSourceDistance(E dst) {
@@ -409,7 +386,6 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 		return Integer.MAX_VALUE;
 	}
 	/**
-	 * 
 	 */
 	@Override
 	public int getDFSDiscoveredTime(E key) {
@@ -419,7 +395,6 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 		return 0;
 	}
 	/**
-	 * 
 	 */
 	@Override
 	public int getDFSFinishedTime(E key) {
@@ -429,7 +404,6 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 		return 0;
 	}
 	/**
-	 * 
 	 */
 	@Override
 	public State getVertexColor(E key) {
@@ -439,7 +413,6 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 		return null;
 	}
 	/**
-	 * 
 	 */
 	@Override
 	public E getSingleSourcePredecessor(E key) {
@@ -449,7 +422,6 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 		return null;
 	}
 	/**
-	 * 
 	 */
 	@Override
 	public ArrayList<E> getPath(E src, E dst) {
@@ -466,7 +438,6 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 		return path;
 	}
 	/**
-	 * 
 	 * @param src
 	 * @param dst
 	 * @param path
@@ -480,7 +451,6 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 		}
 	}
 	/**
-	 * 
 	 */
 	@Override
 	public int getDistance(E src, E dst) {
@@ -490,7 +460,6 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 		return 0;
 	}
 	/**
-	 * 
 	 */
 	@Override
 	public boolean containsEdge(E src, E dst) {
@@ -502,7 +471,6 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 		return false;
 	}
 	/**
-	 * 
 	 */
 	@Override
 	public ArrayList<E> getAdjacent(E key) {

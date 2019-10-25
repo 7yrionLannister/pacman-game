@@ -6,7 +6,6 @@ public class AdjacencyListEdge<E> {
 	private int weight;
 	
 	/**
-	 * 
 	 * @param src
 	 * @param dst
 	 * @param weight
@@ -17,49 +16,42 @@ public class AdjacencyListEdge<E> {
 		this.weight = weight;
 	}
 	/**
-	 * 
 	 * @return
 	 */
 	public Vertex<E> getSrc() {
 		return src;
 	}
 	/**
-	 * 
 	 * @param src
 	 */
 	public void setSrc(Vertex<E> src) {
 		this.src = src;
 	}
 	/**
-	 * 
 	 * @return
 	 */
 	public Vertex<E> getDst() {
 		return dst;
 	}
 	/**
-	 * 
 	 * @param dst
 	 */
 	public void setDst(Vertex<E> dst) {
 		this.dst = dst;
 	}
 	/**
-	 * 
 	 * @return
 	 */
 	public int getWeight() {
 		return weight;
 	}
 	/**
-	 * 
 	 * @param weight
 	 */
 	public void setWeight(int weight) {
 		this.weight = weight;
 	}
 	/**
-	 * 
 	 */
 	@Override
 	public boolean equals(Object another) {
