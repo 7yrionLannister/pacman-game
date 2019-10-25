@@ -285,8 +285,22 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 
 	@Override
 	public void FloydWarshall() {
-		// TODO Auto-generated method stub
-
+		graphForWarshall = new AdjacencyMatrixGraph<>(vertices.size(), isDirected);
+		vertices.forEach(new BiConsumer<E, Vertex<E>> () {
+			@Override
+			public void accept(E t, Vertex<E> u) {
+				graphForWarshall.insertVertex(t);
+			}
+		});
+		adjacencyLists.forEach(new BiConsumer<E, ArrayList<AdjacencyListEdge<E>>>() {
+			@Override
+			public void accept(E t, ArrayList<AdjacencyListEdge<E>> u) {
+				for(AdjacencyListEdge<E> ale : u) {
+					graphForWarshall.link(ale.getSrc().getElement(), ale.getDst().getElement(), ale.getWeight());
+				}
+			}
+		});
+		graphForWarshall.FloydWarshall();
 	}
 
 	public boolean isDirected() {
@@ -350,19 +364,12 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 
 	@Override
 	public ArrayList<E> getPath(E src, E dst) {
-		ArrayList<E> path = new ArrayList<>();
-		if(vertices.containsKey(src) && vertices.containsKey(dst)) {
-			//TODO implementar
-		}
-		return path;
+		return graphForWarshall.getPath(src, dst);
 	}
 
 	@Override
 	public int getDistance(E src, E dst) {
-		if(vertices.containsKey(src) && vertices.containsKey(dst)) {
-			//TODO implementar
-		}
-		return Integer.MAX_VALUE;
+		return graphForWarshall.getDistance(src, dst);
 	}
 
 	@Override
