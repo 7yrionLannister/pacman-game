@@ -93,7 +93,7 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 	 */
 	@Override
 	public void link(E src, E dst, int weight) {
-<<<<<<< HEAD
+
 		Integer s = keyToIndex.get(src);
 		Integer d = keyToIndex.get(dst);
 		if(s != null && d != null) {
@@ -101,17 +101,17 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 			if(!isDirected) { 
 				edges[d][s] = weight;
 			}
-=======
+
 		insertVertex(src); //Inserts src if not currently in the graph
 		insertVertex(dst); //Inserts dst if not currently in the graph
-		int s = keyToIndex.get(src);
-		int d = keyToIndex.get(dst);
+		s = keyToIndex.get(src);
+		d = keyToIndex.get(dst);
 		edges[s][d] = weight;
 		if(!isDirected) { //Add the additional edge if this graph is undirected
 			edges[d][s] = weight;
->>>>>>> ce637ff58d95ae66c0f2762c8372949195dc8f56
 		}
 	}
+}
 	/**This method unlinks a source vertex with another vertex denoted as dst where the other edge is removed if the graph is undirected. 
 	 */
 	@Override
