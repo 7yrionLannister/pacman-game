@@ -3,44 +3,38 @@ package dataStructures;
 public class Node<E> {
 	private E element;
 	private Node<E> nextNode;
-	/**
-	 * 
-	 * @param element
+	
+	/**This creates a new Node as from an E element.
+	 * @param element It represents the object that will be associated with the node.
 	 */
 	public Node(E element) {
 		this.element = element;
 	}
-	/**
-	 * 
-	 * @return
+	/**This method allows to get the element E.
+	 * @return It represents the object that is associated with the actual node.
 	 */
 	public E getElement() {
 		return element;
 	}
-	/**
-	 * 
-	 * @param element
+	/**This method allows to set the element E.
+	 * @param element It represents the object that will be associated with actual the node.
 	 */
 	public void setElement(E element) {
 		this.element = element;
 	}
-	/**
-	 * 
-	 * @return
+	/**This method allows to get the next node of E type.
+	 * @return Node<E> that represents the next node of the actual node. 
 	 */
 	public Node<E> getNextNode() {
 		return nextNode;
 	}
-	/**
-	 * 
-	 * @param nextNode
+	/**This method allows to set the next node of E type.
+	 * @param nextNode represents the next node of the actual node.
 	 */
 	public void setNextNode(Node<E> nextNode) {
 		this.nextNode = nextNode;
 	}
-	/**
-	 * 
-	 */
+	
 	@Override
 	public String toString() {
 		return element+"";
