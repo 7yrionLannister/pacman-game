@@ -15,13 +15,17 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 	private Vertex<E> lastSrc;
 	private static int DFStime;
 	private AdjacencyMatrixGraph<E> graphForWarshall;
-
+	
+	/**
+	 * @param isDirected
+	 */
 	public AdjacencyListGraph(boolean isDirected) {
 		this.isDirected = isDirected;
 		vertices = new HashMap<>();
 		adjacencyLists = new HashMap<>();
 	}
-
+	/**
+	 */
 	@Override
 	public boolean insertVertex(E e) {
 		if(!vertices.containsKey(e)) {
@@ -31,7 +35,8 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 		}
 		return false;
 	}
-
+	/**
+	 */
 	@Override
 	public boolean deleteVertex(E sk) {
 		if(vertices.containsKey(sk)) {
@@ -53,7 +58,8 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 		}
 		return false;
 	}
-
+	/**
+	 */
 	@Override
 	public void link(E src, E dst, int weight) {
 		insertVertex(src); //Inserts src if not currently in the graph
@@ -73,7 +79,8 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 			dEdges.add(newedge2); 
 		}
 	}
-
+	/**
+	 */
 	@Override
 	public boolean unlink(E src, E dst) {
 		Vertex<E> s = vertices.get(src);
@@ -87,22 +94,26 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 		}
 		return false;
 	}
-
+	/**
+	 */
 	@Override
 	public boolean containsVertex(E key) {
 		return vertices.containsKey(key);
 	}
-
+	/**
+	 */
 	@Override
 	public int getOrder() {
 		return vertices.size();
 	}
-
+	/**
+	 */
 	@Override
 	public boolean isEmpty() {
 		return vertices.isEmpty();
 	}
-
+	/**
+	 */
 	//traverses all vertices reachable from src
 	@Override
 	public boolean BFS(E src) {
@@ -144,7 +155,8 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 		}
 		return false;
 	}
-
+	/**
+	 */
 	//pre: bfs, dfs or dijkstra have been called
 	//it is only the shortest path in unweighted graphs, else is just a path
 	//it is the least stops path
@@ -161,7 +173,11 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 
 		return path;
 	}
-
+	/**
+	 * @param src
+	 * @param dst
+	 * @param path
+	 */
 	private void pathFill(Vertex<E> src, Vertex<E> dst, ArrayList<E> path) {
 		if(src == dst) {
 			path.add(src.getElement());
@@ -170,7 +186,8 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 			path.add(dst.getElement());
 		}
 	}
-
+	/**
+	 */
 	//dfs that traverses every vertex independent if it is not reachable from certain vertices
 	//it uses stack of recursive calls in dfsvisit method
 	@Override
@@ -192,7 +209,9 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 			}
 		});
 	}
-
+	/**
+	 * @param u
+	 */
 	//recursive method for traversing every reachable vertex from u
 	private void DFSVisit(Vertex<E> u) {
 		DFStime++;
@@ -210,7 +229,8 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 		DFStime++;
 		u.setFinished(DFStime);
 	}
-
+	/**
+	 */
 	//iterative dfs using stack data structure
 	//it does not traverses all the vertices as the main implementation of dfs, instead
 	//it traverses the reachable vertices starting from src
@@ -252,7 +272,8 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 			}
 		}
 	}
-
+	/**
+	 */
 	@Override
 	public void Dijkstra(E src) {
 		PriorityQueue<Vertex<E>> pq = new PriorityQueue<Vertex<E>>();
@@ -282,7 +303,8 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 			}
 		}
 	}
-
+	/**
+	 */
 	@Override
 	public void FloydWarshall() {
 		graphForWarshall = new AdjacencyMatrixGraph<>(vertices.size(), isDirected);
@@ -302,15 +324,21 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 		});
 		graphForWarshall.FloydWarshall();
 	}
-
+	/**
+	 * @return
+	 */
 	public boolean isDirected() {
 		return isDirected;
 	}
-
+	/**
+	 * @return
+	 */
 	public E getLastSrc() {
 		return lastSrc.getElement();
 	}
-
+	/**
+	 * @return
+	 */
 	public ArrayList<E> getVertices() {
 		ArrayList<E> verts = new ArrayList<>();
 		vertices.forEach(new BiConsumer<E, Vertex<E>>() {
@@ -321,7 +349,8 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 		});
 		return verts;
 	}
-
+	/**
+	 */
 	@Override
 	public int getSingleSourceDistance(E dst) {
 		if(vertices.containsKey(dst)) {
@@ -329,7 +358,8 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 		}
 		return Integer.MAX_VALUE;
 	}
-
+	/**
+	 */
 	@Override
 	public int getDFSDiscoveredTime(E key) {
 		if(vertices.containsKey(key)) {
@@ -337,7 +367,8 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 		}
 		return 0;
 	}
-
+	/**
+	 */
 	@Override
 	public int getDFSFinishedTime(E key) {
 		if(vertices.containsKey(key)) {
@@ -345,7 +376,8 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 		}
 		return 0;
 	}
-
+	/**
+	 */
 	@Override
 	public State getVertexColor(E key) {
 		if(vertices.containsKey(key)) {
@@ -353,7 +385,8 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 		}
 		return null;
 	}
-
+	/**
+	 */
 	@Override
 	public E getSingleSourcePredecessor(E key) {
 		if(vertices.containsKey(key) && vertices.get(key).getPredecessor() != null) {
@@ -361,17 +394,20 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 		}
 		return null;
 	}
-
+	/**
+	 */
 	@Override
 	public ArrayList<E> getPath(E src, E dst) {
 		return graphForWarshall.getPath(src, dst);
 	}
-
+	/**
+	 */
 	@Override
 	public int getDistance(E src, E dst) {
 		return graphForWarshall.getDistance(src, dst);
 	}
-
+	/**
+	 */
 	@Override
 	public boolean containsEdge(E src, E dst) {
 		if(vertices.containsKey(src) && vertices.containsKey(dst)) {
@@ -379,7 +415,8 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 		}
 		return false;
 	}
-	
+	/**
+	 */
 	@Override
 	public ArrayList<E> getAdjacent(E key) {
 		ArrayList<E> adj = new ArrayList<>();
@@ -390,7 +427,8 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 		}
 		return adj;
 	}
-
+	/**
+	 */
 	@Override
 	public int getEdgeWeight(E src, E dst) {
 		if(vertices.containsKey(src) && vertices.containsKey(dst)) {
