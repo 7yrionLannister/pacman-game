@@ -207,7 +207,7 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 	/**This method appoints a path between two vertices that arrive as parameters inside a ArrayList.
 	 * @param src A Vertex<E> that represents the source where dst is associated.
 	 * @param dst A Vertex<E> that represents the vertex which src is connected with.
-	 * @param path An ArrayList<E> that represents a path between src and dst.
+	 * @param path An ArrayList<E> that contains a path between src and dst.
 	 */
 	private void singleSourcePathFill(Vertex<E> src, Vertex<E> dst, ArrayList<E> path) {
 		if(src == dst) {
@@ -219,7 +219,7 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 	}
 	/**This performs DFS which is iterative and traverses every vertex independent if it is not reachable from certain vertices
 	 *where is needed a stack of recursive calls in DFSVisit method. Moreover, some vertices configuration have to fixed in 
-	 * order to complete DFS rightly
+	 * order to complete DFS rightly.
 	 */
 	@Override
 	public void DFS() {
