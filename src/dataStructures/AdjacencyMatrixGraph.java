@@ -17,7 +17,7 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 	private Vertex<E>[][] allPairsShortestPath;
 	
 	/**It creates a matrix as a array of edges of a graph either directed or undirected with a size that arrives as parameter.
-	 * @param size is an Integer that represents the size if the Adjacency Matrix. 
+	 * @param size is an Integer that represents the size of the Adjacency Matrix. 
 	 * @param isDIrected is a boolean that indicates if the Adjacency Matrix is going to represent a directed graph or not.
 	 */
 	public AdjacencyMatrixGraph(int size, boolean isDIrected) {
@@ -33,7 +33,7 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 		vertices = (Vertex<E>[])new Vertex[size];
 		freeRow = 0;
 	}
-	/**This inserts a vertex, defined with a E object that arrives as parameter, in a free row and verifies if the insertion process 
+	/**This inserts a vertex, defined with an element of type E that arrives as parameter, in a free row and verifies if the insertion process 
 	 * was done rightly. 
 	 */
 	@Override

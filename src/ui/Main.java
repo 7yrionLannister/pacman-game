@@ -14,6 +14,7 @@ public class Main extends Application {
 		Scene scene = new Scene(root);
 		primaryStage.setTitle("Pac-Man");
 		primaryStage.setScene(scene);
+		primaryStage.setResizable(false);
 		primaryStage.show();
 	}
 
