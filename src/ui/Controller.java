@@ -67,11 +67,88 @@ public class Controller {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
 	}
 	
 	@FXML
-	void printMapCoordinates(MouseEvent event) {    	
+	public void printMapCoordinates(MouseEvent event) {    	
 		System.out.println(event.getX() + "," + event.getY());
+		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+		System.out.println(inky.getLayoutX()+","+inky.getLayoutY());
+		System.out.println(pinky.getLayoutX()+","+pinky.getLayoutY());
+		System.out.println(blinky.getLayoutX()+","+blinky.getLayoutY());
+		System.out.println(clyde.getLayoutX()+","+clyde.getLayoutY());
+		System.out.println(pacman.getLayoutX()+","+pacman.getLayoutY());
+		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+		//inky.setLayoutX(54);inky.setLayoutY(37);
+		inky.relocate(301,318);
 	}
 
+	public FlowPane getLivesContainer() {
+		return livesContainer;
+	}
+
+	public FlowPane getBonusFruitsContainer() {
+		return bonusFruitsContainer;
+	}
+
+	public ImageView getInky() {
+		return inky;
+	}
+
+	public ImageView getPinky() {
+		return pinky;
+	}
+
+	public ImageView getClyde() {
+		return clyde;
+	}
+
+	public ImageView getBlinky() {
+		return blinky;
+	}
+
+	public ImageView getPacman() {
+		return pacman;
+	}
+
+	public ImageView getInfo() {
+		return info;
+	}
+
+	public ImageView getKey() {
+		return key;
+	}
+
+	public ImageView getBell() {
+		return bell;
+	}
+
+	public ImageView getGalaxian() {
+		return galaxian;
+	}
+
+	public ImageView getMelon() {
+		return melon;
+	}
+
+	public ImageView getApple() {
+		return apple;
+	}
+
+	public ImageView getPeach() {
+		return peach;
+	}
+
+	public ImageView getStrawberry() {
+		return strawberry;
+	}
+
+	public ImageView getCherry() {
+		return cherry;
+	}
+
+	public Game getGame() {
+		return game;
+	}
 }

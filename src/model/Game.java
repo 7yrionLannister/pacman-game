@@ -15,10 +15,30 @@ public class Game {
 	public final static String GRAPH_RESOURCE = "resources/map.txt";
 	private IGraph<Coordinate> map;
 	private ArrayList<Level> levels;
-	private Level currentLevel;
+	private int currentLevel;
+	
+	private Pacman pacman;
+	
+	private Ghost inky;
+	private Ghost pinky;
+	private Ghost blinky;
+	private Ghost clyde;
 	
 	public Game() throws IOException {
 		initGraph();
+		initLevels();
+		initCharacters();
+	}
+
+	private void initCharacters() {
+		pacman = new Pacman();
+		inky = new Inky(new Coordinate(153,156,false,false,false,false));
+		pinky = new Pinky(new Coordinate(153,156,false,false,false,false));
+		blinky = new Blinky(new Coordinate(153,156,false,false,false,false));
+		clyde = new Clyde(new Coordinate(153,156,false,false,false,false));
+	}
+
+	private void initLevels() {
 		levels = new ArrayList<>();
 		//levels.add(new Level(stage, bonus, pacmanSpeed, pacmanEatingDotsSpeed, ghostsSpeed, ghostsTunelSpeed, cruiseElroyDotsLeft1, cruiseElroySpeed1, cruiseElroyDotsLeft2, cruiseElroySpeed2, pacmanWithEnergizerSpeed, pacmanWithEnergizerEatingDotsSpeed, frightGhostsSpeed, frightTime))
 		//1
@@ -74,5 +94,45 @@ public class Game {
 		map.FloydWarshall();
 		fr.close();
 		br.close();
+	}
+
+	public IGraph<Coordinate> getMap() {
+		return map;
+	}
+
+	public void setMap(IGraph<Coordinate> map) {
+		this.map = map;
+	}
+
+	public ArrayList<Level> getLevels() {
+		return levels;
+	}
+
+	public void setLevels(ArrayList<Level> levels) {
+		this.levels = levels;
+	}
+
+	public int getCurrentLevel() {
+		return currentLevel;
+	}
+
+	public Ghost getInky() {
+		return inky;
+	}
+
+	public Ghost getPinky() {
+		return pinky;
+	}
+
+	public Ghost getBlinky() {
+		return blinky;
+	}
+
+	public Ghost getClyde() {
+		return clyde;
+	}
+
+	public Pacman getPacman() {
+		return pacman;
 	}
 }
