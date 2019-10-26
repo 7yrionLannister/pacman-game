@@ -313,7 +313,7 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 			}
 		}
 	}
-	/**This performs FloydMarshall which find the shortest distance between every pair of vertices. 
+	/**This performs FloydWarshall which find the shortest distance between every pair of vertices. 
 	 */
 	@Override
 	public void FloydWarshall() {
