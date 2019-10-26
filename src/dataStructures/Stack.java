@@ -3,7 +3,12 @@ package dataStructures;
 import java.util.EmptyStackException;
 
 public class Stack<E> implements IStack<E> {
+	
+	/**
+	 */
 	private Node<E> top;
+	/**
+	 */
 	private int size;
 
 	/**Creates an empty stack

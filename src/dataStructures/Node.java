@@ -1,7 +1,12 @@
 package dataStructures;
 
 public class Node<E> {
+	
+	/**
+	 */
 	private E element;
+	/**
+	 */
 	private Node<E> nextNode;
 	
 	/**This creates a new Node as from an object of type E.

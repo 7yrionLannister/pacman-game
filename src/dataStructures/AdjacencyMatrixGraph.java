@@ -6,14 +6,33 @@ import java.util.PriorityQueue;
 
 
 public class AdjacencyMatrixGraph<E> implements IGraph<E> {
+	
+	/**
+	 */
 	private int[][] edges;
+	/**
+	 */
 	private boolean isDirected;
+	/**
+	 */
 	private HashMap<E, Integer> keyToIndex;
+	/**
+	 */
 	private Vertex<E>[] vertices;
+	/**
+	 */
 	private Vertex<E> lastSrc;
+	/**
+	 */
 	private int freeRow;
+	/**
+	 */
 	private static int DFStime;
+	/**
+	 */
 	private int[][] allPairsminimumDistances;
+	/**
+	 */
 	private Vertex<E>[][] allPairsShortestPath;
 	
 	/**It creates a matrix as a array of edges of a graph either directed or undirected with a size that arrives as parameter.

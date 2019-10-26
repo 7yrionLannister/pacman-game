@@ -2,18 +2,26 @@ package dataStructures;
 
 public class Vertex<E> implements Comparable<Vertex<E>> {
 	//TODO poner las cosas que los vertices de list y matrix tengan en comun aqui
-	private E element;
-
-	private State color;
 	
+	/**
+	 */
+	private E element;
+	/**
+	 */
+	private State color;
+	/**
+	 */
 	private Vertex<E> predecessor;
-
+	/**
+	 */
 	//BFS and Dijkstra Attributes
 	private int distance;
-
+	/**
+	 */
 	//DFS Attributes
 	private int discovered;
-
+	/**
+	 */
 	private int finished;
 	
 	/**This creates a new vertex as from an object of type E with its state in white and its predecessor in null.

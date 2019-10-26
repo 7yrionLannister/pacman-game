@@ -1,8 +1,15 @@
 package dataStructures;
 
 public class AdjacencyListEdge<E> {
+	
+	/**
+	 */
 	private Vertex<E> src;
+	/**
+	 */
 	private Vertex<E> dst;
+	/**
+	 */
 	private int weight;
 	
 	/**This creates a Adjacency List Edge assigning it two vertices and a weight.
@@ -52,6 +59,8 @@ public class AdjacencyListEdge<E> {
 		this.weight = weight;
 	}
 	/***This method compares if another Adjacency List Edge of E type is equals to the actual Adjacency List Edge.
+	 * @return A boolean 
+	 * @param another
 	 * @throws ClassCastException if another is not an AdjacencyListEdge<E>.
 	 */
 	@Override
