@@ -21,7 +21,7 @@ public class Pacman {
 	}
 
 	public void moveForward() {
-		//System.out.println((Game.coordinates.indexOf(position)+1));
+		System.out.println((Game.coordinates.indexOf(position)+1));
 		switch(direction) {
 		case DOWN:
 			posY++;
@@ -43,6 +43,11 @@ public class Pacman {
 				for(Coordinate neighbor : map.getAdjacent(position)) {
 					if(neighbor.getY() == position.getY() && neighbor.getX() < posX) {
 						position = neighbor;
+						if(position.equals(Game.leftTileOfTheTunel)) {
+							position = Game.rightTileOfTheTunel;
+							setPosX(position.getX());
+							setPosY(position.getY());
+						}
 						break;
 					}
 				}
@@ -57,6 +62,11 @@ public class Pacman {
 				for(Coordinate neighbor : map.getAdjacent(position)) {
 					if(neighbor.getY() == position.getY() && neighbor.getX() > posX) {
 						position = neighbor;
+						if(position.equals(Game.rightTileOfTheTunel)) {
+							position = Game.leftTileOfTheTunel;
+							setPosX(position.getX());
+							setPosY(position.getY());
+						}
 						break;
 					}
 				}

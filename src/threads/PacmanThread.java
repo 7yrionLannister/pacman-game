@@ -31,7 +31,7 @@ public class PacmanThread extends Thread {
 
 	@Override
 	public void run() {
-		while(true) {
+		while(!c.isOnPause()) {
 			pacmanImage.setImage(new Image(new File(MOVEMENTS+movementSprite+".png").toURI().toString()));
 			movement_counter++;
 			if(movement_counter % 3== 0) {

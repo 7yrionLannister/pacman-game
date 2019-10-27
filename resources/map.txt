@@ -82,8 +82,8 @@
 273,104,true,true,false,false
 273,165,true,true,false,false
 273,225,true,true,false,false
-273,255,true,true,true,false
-273,285,true,true,false,false
+273,255,true,false,false,true
+273,285,true,true,true,false
 273,316,true,true,false,false
 292,34,false,true,false,true
 292,53,false,false,true,true
@@ -94,6 +94,8 @@
 292,255,false,true,true,false
 292,285,false,true,false,true
 292,316,false,true,true,false
+20,165,true,true,false,false
+317,165,true,true,false,false
 edges:
 1,2,1
 1,10,1
@@ -105,7 +107,7 @@ edges:
 4,3,1
 4,12,1
 5,13,2
-5,92,3
+5,97,3
 6,14,1
 6,7,1
 7,6,1
@@ -318,7 +320,7 @@ edges:
 91,82,1
 91,90,1
 92,83,2
-92,5,3
+92,98,3
 93,84,1
 93,94,1
 94,93,1
@@ -327,3 +329,7 @@ edges:
 95,96,1
 96,95,1
 96,87,1
+97,5,3
+97,98,3
+98,97,3
+98,92,3

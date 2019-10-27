@@ -16,7 +16,10 @@ public class Game {
 	public final static String GRAPH_RESOURCE = "resources/map.txt";
 	public static enum Food {
 		NOTHING, PACDOT, ENERGIZER, BONUS;
-	} 
+	}
+	public static Coordinate leftTileOfTheTunel;
+	public static Coordinate rightTileOfTheTunel;
+	
 	private IGraph<Coordinate> map;
 	private ArrayList<Level> levels;
 	private int currentLevel;
@@ -35,6 +38,8 @@ public class Game {
 		initGraph();
 		setGameToInitialState();
 		initLevels();
+		leftTileOfTheTunel = coordinates.get(96);
+		rightTileOfTheTunel = coordinates.get(97);
 	}
 
 	private void initCharacters() {
@@ -122,7 +127,7 @@ public class Game {
 		food.put(coordinates.get(62), Food.NOTHING);
 		food.put(coordinates.get(63), Food.NOTHING);
 		food.put(coordinates.get(64), Food.NOTHING);
-		//System.out.println("hashmap has size "+food.size());
+		
 		initCharacters();
 	}
 

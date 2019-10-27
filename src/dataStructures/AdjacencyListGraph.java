@@ -223,7 +223,7 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 			path.add(dst.getElement());
 		}
 	}
-	/**This performs DFS which is iterative and traverses every vertex independent if it is not reachable from certain vertices
+	/**This performs DFS which is recursive and traverses every vertex independent if it is not reachable from certain vertices
 	 *where is needed a stack of recursive calls in DFSVisit method. Moreover, some vertices configuration have to fixed in 
 	 * order to complete DFS rightly.
 	 */

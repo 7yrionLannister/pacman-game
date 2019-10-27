@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -17,7 +18,6 @@ import threads.PacmanThread;
 
 
 public class Controller {
-	static int coor = 0;
 	@FXML
 	private FlowPane livesContainer;
 
@@ -76,6 +76,8 @@ public class Controller {
 
 	private PacmanThread pt;
 
+	private boolean onPause;
+
 	@FXML
 	public void initialize() {
 		try {
@@ -83,8 +85,12 @@ public class Controller {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		pt = new PacmanThread(this);
-		pt.start();
+
+		readyImage.setVisible(false);
+		gameOverImage.setVisible(false);
+		bonusImage.setVisible(false);
+
+		onPause = true;
 	}
 
 	@FXML
@@ -103,8 +109,29 @@ public class Controller {
 
 	@FXML
 	public void printMapCoordinates(MouseEvent event) {
-		System.out.println(pacman.getLayoutX()+","+pacman.getLayoutY());
+		System.out.println(event.getX()+","+event.getY());
+//		System.out.println(pacman.getLayoutX()+","+pacman.getLayoutY());
 		System.out.println("bonus: "+bonusImage.getLayoutX()+","+bonusImage.getLayoutY());
+	}
+
+	@FXML
+	public void highScoresButtonPressed(ActionEvent event) {
+
+	}
+
+	@FXML
+	public void newGameButtonPressed(ActionEvent event) {
+		System.out.println("hola mundo");
+	}
+
+	@FXML
+	public void startPlayPauseButtonPressed(ActionEvent event) {
+		//newGameButtonPressed(event);
+		onPause = !onPause;
+		if(!onPause) {
+			pt = new PacmanThread(this);
+			pt.start();
+		}
 	}
 
 	public FlowPane getLivesContainer() {
@@ -181,5 +208,13 @@ public class Controller {
 
 	public Game getGame() {
 		return game;
+	}
+
+	public boolean isOnPause() {
+		return onPause;
+	}
+
+	public void setOnPause(boolean onPause) {
+		this.onPause = onPause;
 	}
 }
