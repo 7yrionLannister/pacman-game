@@ -3,24 +3,24 @@ package dataStructures;
 public class Vertex<E> implements Comparable<Vertex<E>> {
 	//TODO poner las cosas que los vertices de list y matrix tengan en comun aqui
 	
-	/**
+	/**It represents the object that is contained in the vertex nowadays.
 	 */
 	private E element;
-	/**
+	/**It represents the vertex color in the search algorithms. 
 	 */
 	private State color;
-	/**
+	/**It represents the associated predecessor vertex of the actual vertex. 
 	 */
 	private Vertex<E> predecessor;
-	/**
+	/**It represents the distance between two vertices.
 	 */
 	//BFS and Dijkstra Attributes
 	private int distance;
-	/**
+	/**It represents the state of a discovered vertex when DFS is applied. 
 	 */
 	//DFS Attributes
 	private int discovered;
-	/**
+	/**It represents the state of a finished vertex when DFS is applied.
 	 */
 	private int finished;
 	
@@ -93,6 +93,8 @@ public class Vertex<E> implements Comparable<Vertex<E>> {
 		this.discovered = discovered;
 	}
 	/**This method compares if another vertex of E type is equals to the actual vertex.
+	 * @return A boolean that indicates if the vertex another is equal to the actual one.
+	 * @param another is a vertex which is going to be compare with the actual one.
 	 * @throws ClassCastException if another is not a Vertex<E>.
 	 */
 	@Override
@@ -101,6 +103,8 @@ public class Vertex<E> implements Comparable<Vertex<E>> {
 		return a.element.equals(element);
 	}
 	/**This method compares the actual vertex distance with another one that arrives as parameter.
+	 * @return An integer that indicates if the other vertex distance is bigger, less or equal than the actual vertex.
+	 * @param other is a vertex which is going to be compare with the actual one. 
 	 */
 	@Override
 	public int compareTo(Vertex<E> other) {
