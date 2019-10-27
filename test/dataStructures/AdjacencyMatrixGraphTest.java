@@ -7,7 +7,7 @@ import java.util.Arrays;
 
 import org.junit.jupiter.api.Test;
 
-import dataStructures.State;
+import dataStructures.Vertex.State;
 
 
 public class AdjacencyMatrixGraphTest {

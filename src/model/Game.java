@@ -16,6 +16,8 @@ public class Game {
 	private IGraph<Coordinate> map;
 	private ArrayList<Level> levels;
 	private int currentLevel;
+	//TODO temporalmente estatico por razones de pruebas, cuando todo funcione bien sera private solamente
+	static ArrayList<Coordinate> coordinates;
 	
 	private Pacman pacman;
 	
@@ -31,7 +33,8 @@ public class Game {
 	}
 
 	private void initCharacters() {
-		pacman = new Pacman();
+		Coordinate pacmanC = coordinates.get(45);
+		pacman = new Pacman(pacmanC, map, pacmanC.getX()+20, pacmanC.getY());
 		inky = new Inky(new Coordinate(153,156,false,false,false,false));
 		pinky = new Pinky(new Coordinate(153,156,false,false,false,false));
 		blinky = new Blinky(new Coordinate(153,156,false,false,false,false));
@@ -73,9 +76,9 @@ public class Game {
 		FileReader fr = new FileReader(new File(GRAPH_RESOURCE));
 		BufferedReader br = new BufferedReader(fr);
 		
-		map = new AdjacencyListGraph<>(true);
+		map = new AdjacencyListGraph<Coordinate>(true);
 		//map = new AdjacencyMatrixGraph<>(96, true);
-		ArrayList<Coordinate> coordinates = new ArrayList<>();
+		coordinates = new ArrayList<>();
 		
 		String line = br.readLine();
 		while(!line.equalsIgnoreCase("edges:")) {
@@ -112,8 +115,8 @@ public class Game {
 		this.levels = levels;
 	}
 
-	public int getCurrentLevel() {
-		return currentLevel;
+	public Level getCurrentLevel() {
+		return levels.get(currentLevel);
 	}
 
 	public Ghost getInky() {
@@ -134,5 +137,9 @@ public class Game {
 
 	public Pacman getPacman() {
 		return pacman;
+	}
+
+	public ArrayList<Coordinate> getCoordinates() {
+		return coordinates;
 	}
 }

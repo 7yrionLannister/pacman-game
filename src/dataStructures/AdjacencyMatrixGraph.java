@@ -3,6 +3,7 @@ package dataStructures;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.PriorityQueue;
+import dataStructures.Vertex.State;
 
 
 public class AdjacencyMatrixGraph<E> implements IGraph<E> {

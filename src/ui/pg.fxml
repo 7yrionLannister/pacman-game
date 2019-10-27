@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: black;" stylesheets="@pg.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.Controller">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#changeDirection" style="-fx-background-color: black;" stylesheets="@pg.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.Controller">
    <center>
       <StackPane BorderPane.alignment="CENTER">
          <children>
@@ -23,32 +23,32 @@
             </ImageView>
             <AnchorPane onMouseClicked="#printMapCoordinates">
                <children>
-                  <ImageView fx:id="inky" fitHeight="25.0" fitWidth="25.0" layoutX="156.0" layoutY="159.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="inky" fitHeight="25.0" fitWidth="25.0" layoutX="148.0" layoutY="159.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../resources/sprites/ghosts/inky/d0.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="pinky" fitHeight="25.0" fitWidth="25.0" layoutX="175.0" layoutY="167.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="pinky" fitHeight="25.0" fitWidth="25.0" layoutX="168.0" layoutY="167.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../resources/sprites/ghosts/pinky/u0.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="clyde" fitHeight="25.0" fitWidth="25.0" layoutX="194.0" layoutY="160.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="clyde" fitHeight="25.0" fitWidth="25.0" layoutX="187.0" layoutY="160.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../resources/sprites/ghosts/clyde/d0.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="blinky" fitHeight="25.0" fitWidth="25.0" layoutX="175.0" layoutY="135.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="blinky" fitHeight="25.0" fitWidth="25.0" layoutX="168.0" layoutY="135.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../resources/sprites/ghosts/blinky/l0.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="pacman" fitHeight="25.0" fitWidth="25.0" layoutX="175.0" layoutY="255.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="pacman" fitHeight="25.0" fitWidth="25.0" layoutX="168.0" layoutY="255.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../resources/sprites/pacman/movements/0.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="info" fitHeight="22.0" fitWidth="68.0" layoutX="154.0" layoutY="201.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="info" fitHeight="22.0" fitWidth="68.0" layoutX="149.0" layoutY="201.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../resources/ready.png" />
                      </image>

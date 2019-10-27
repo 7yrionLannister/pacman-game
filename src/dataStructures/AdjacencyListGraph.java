@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.PriorityQueue;
 import java.util.function.BiConsumer;
 
-import dataStructures.State;
+import dataStructures.Vertex.State;
 
 
 public class AdjacencyListGraph<E> implements IGraph<E>{

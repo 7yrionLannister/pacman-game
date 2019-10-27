@@ -2,6 +2,8 @@ package dataStructures;
 
 import java.util.ArrayList;
 
+import dataStructures.Vertex.State;
+
 //IMPOTANT: E must override equals
 public interface IGraph<E> {
 	

@@ -1,8 +1,7 @@
 package dataStructures;
 
 public class Vertex<E> implements Comparable<Vertex<E>> {
-	//TODO poner las cosas que los vertices de list y matrix tengan en comun aqui
-	
+	public static enum State {WHITE, GRAY, BLACK}
 	/**It represents the object that is contained in the vertex nowadays.
 	 */
 	private E element;
