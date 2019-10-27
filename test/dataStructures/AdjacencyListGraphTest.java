@@ -10,8 +10,8 @@ import dataStructures.State;
 
 public class AdjacencyListGraphTest {
 	private AdjacencyListGraph<Integer> graph;
-	private ArrayList<AdjacencyListEdge<Integer>> edges;
-	private ArrayList<AdjacencyListEdge<Integer>> removedEdges;
+	private ArrayList<Edge<Integer>> edges;
+	private ArrayList<Edge<Integer>> removedEdges;
 
 
 	private void setupStageDirected() {
@@ -50,55 +50,55 @@ public class AdjacencyListGraphTest {
 		int src = 1;
 		int dst = 2;
 		int weight = 4;
-		edges.add(new AdjacencyListEdge<Integer>(new Vertex<Integer>(src), new Vertex<Integer>(dst), weight));
+		edges.add(new Edge<Integer>(src, dst, weight));
 		graph.link(src, dst, weight);
 
 		src = 2;
 		dst = 1;
 		weight = 3;
-		edges.add(new AdjacencyListEdge<Integer>(new Vertex<Integer>(src), new Vertex<Integer>(dst), weight));
+		edges.add(new Edge<Integer>(src, dst, weight));
 		graph.link(src, dst, weight);
 
 		src = 2;
 		dst = 3;
 		weight = 9;
-		edges.add(new AdjacencyListEdge<Integer>(new Vertex<Integer>(src), new Vertex<Integer>(dst), weight));
+		edges.add(new Edge<Integer>(src, dst, weight));
 		graph.link(src, dst, weight);
 
 		src = 2;
 		dst = 7;
 		weight = 5;
-		edges.add(new AdjacencyListEdge<Integer>(new Vertex<Integer>(src), new Vertex<Integer>(dst), weight));
+		edges.add(new Edge<Integer>(src, dst, weight));
 		graph.link(src, dst, weight);
 
 		src = 2;
 		dst = 8;
 		weight = 5;
-		edges.add(new AdjacencyListEdge<Integer>(new Vertex<Integer>(src), new Vertex<Integer>(dst), weight));
+		edges.add(new Edge<Integer>(src, dst, weight));
 		graph.link(src, dst, weight);
 
 		src = 8;
 		dst = 3;
 		weight = 10;
-		edges.add(new AdjacencyListEdge<Integer>(new Vertex<Integer>(src), new Vertex<Integer>(dst), weight));
+		edges.add(new Edge<Integer>(src, dst, weight));
 		graph.link(src, dst, weight);
 
 		src = 8;
 		dst = 5;
 		weight = 7;
-		edges.add(new AdjacencyListEdge<Integer>(new Vertex<Integer>(src), new Vertex<Integer>(dst), weight));
+		edges.add(new Edge<Integer>(src, dst, weight));
 		graph.link(src, dst, weight);
 
 		src = 5;
 		dst = 8;
 		weight = 2;
-		edges.add(new AdjacencyListEdge<Integer>(new Vertex<Integer>(src), new Vertex<Integer>(dst), weight));
+		edges.add(new Edge<Integer>(src, dst, weight));
 		graph.link(src, dst, weight);
 
 		src = 6;
 		dst = 1;
 		weight = 8;
-		edges.add(new AdjacencyListEdge<Integer>(new Vertex<Integer>(src), new Vertex<Integer>(dst), weight));
+		edges.add(new Edge<Integer>(src, dst, weight));
 		graph.link(src, dst, weight);
 
 		verifyGraphContainsAllEdgesItShould();
@@ -114,57 +114,57 @@ public class AdjacencyListGraphTest {
 		int dst = 6;
 		int weight = 1;
 		edges = new ArrayList<>();
-		edges.add(new AdjacencyListEdge<Integer>(new Vertex<Integer>(src), new Vertex<Integer>(dst), weight));
-		edges.add(new AdjacencyListEdge<Integer>(new Vertex<Integer>(dst), new Vertex<Integer>(src), weight));
+		edges.add(new Edge<Integer>(src, dst, weight));
+		edges.add(new Edge<Integer>(dst, src, weight));
 		graph.link(src, dst, weight);
 
 		src = 6;
 		dst = 7;
 		weight = 2;
-		edges.add(new AdjacencyListEdge<Integer>(new Vertex<Integer>(src), new Vertex<Integer>(dst), weight));
-		edges.add(new AdjacencyListEdge<Integer>(new Vertex<Integer>(dst), new Vertex<Integer>(src), weight));
+		edges.add(new Edge<Integer>(src, dst, weight));
+		edges.add(new Edge<Integer>(dst, src, weight));
 		graph.link(src, dst, weight);
 
 		src = 7;
 		dst = 2;
 		weight = 9;
-		edges.add(new AdjacencyListEdge<Integer>(new Vertex<Integer>(src), new Vertex<Integer>(dst), weight));
-		edges.add(new AdjacencyListEdge<Integer>(new Vertex<Integer>(dst), new Vertex<Integer>(src), weight));
+		edges.add(new Edge<Integer>(src, dst, weight));
+		edges.add(new Edge<Integer>(dst, src, weight));
 		graph.link(src, dst, weight);
 
 		src = 7;
 		dst = 8;
 		weight = 6;
-		edges.add(new AdjacencyListEdge<Integer>(new Vertex<Integer>(src), new Vertex<Integer>(dst), weight));
-		edges.add(new AdjacencyListEdge<Integer>(new Vertex<Integer>(dst), new Vertex<Integer>(src), weight));
+		edges.add(new Edge<Integer>(src, dst, weight));
+		edges.add(new Edge<Integer>(dst, src, weight));
 		graph.link(src, dst, weight);
 
 		src = 7;
 		dst = 5;
 		weight = 8;
-		edges.add(new AdjacencyListEdge<Integer>(new Vertex<Integer>(src), new Vertex<Integer>(dst), weight));
-		edges.add(new AdjacencyListEdge<Integer>(new Vertex<Integer>(dst), new Vertex<Integer>(src), weight));
+		edges.add(new Edge<Integer>(src, dst, weight));
+		edges.add(new Edge<Integer>(dst, src, weight));
 		graph.link(src, dst, weight);
 
 		src = 8;
 		dst = 3;
 		weight = 10;
-		edges.add(new AdjacencyListEdge<Integer>(new Vertex<Integer>(src), new Vertex<Integer>(dst), weight));
-		edges.add(new AdjacencyListEdge<Integer>(new Vertex<Integer>(dst), new Vertex<Integer>(src), weight));
+		edges.add(new Edge<Integer>(src, dst, weight));
+		edges.add(new Edge<Integer>(dst, src, weight));
 		graph.link(src, dst, weight);
 
 		src = 8;
 		dst = 4;
 		weight = 5;
-		edges.add(new AdjacencyListEdge<Integer>(new Vertex<Integer>(src), new Vertex<Integer>(dst), weight));
-		edges.add(new AdjacencyListEdge<Integer>(new Vertex<Integer>(dst), new Vertex<Integer>(src), weight));
+		edges.add(new Edge<Integer>(src, dst, weight));
+		edges.add(new Edge<Integer>(dst, src, weight));
 		graph.link(src, dst, weight);
 
 		src = 3;
 		dst = 4;
 		weight = 4;
-		edges.add(new AdjacencyListEdge<Integer>(new Vertex<Integer>(src), new Vertex<Integer>(dst), weight));
-		edges.add(new AdjacencyListEdge<Integer>(new Vertex<Integer>(dst), new Vertex<Integer>(src), weight));
+		edges.add(new Edge<Integer>(src, dst, weight));
+		edges.add(new Edge<Integer>(dst, src, weight));
 		graph.link(src, dst, weight);
 
 		verifyGraphContainsAllEdgesItShould();
@@ -351,10 +351,10 @@ public class AdjacencyListGraphTest {
 		assertFalse(graph.containsVertex(8), "The vertex should have been deleted");
 		assertTrue(orderBeforeDeletion == graph.getOrder()+1, "The order after insertion should be a unit less");
 		removedEdges = new ArrayList<>();
-		removedEdges.add(new AdjacencyListEdge<Integer>(new Vertex<Integer>(2), new Vertex<Integer>(8), Integer.MAX_VALUE));
-		removedEdges.add(new AdjacencyListEdge<Integer>(new Vertex<Integer>(8), new Vertex<Integer>(3), Integer.MAX_VALUE));
-		removedEdges.add(new AdjacencyListEdge<Integer>(new Vertex<Integer>(8), new Vertex<Integer>(5), Integer.MAX_VALUE));
-		removedEdges.add(new AdjacencyListEdge<Integer>(new Vertex<Integer>(5), new Vertex<Integer>(8), Integer.MAX_VALUE));
+		removedEdges.add(new Edge<Integer>(2, 8, Integer.MAX_VALUE));
+		removedEdges.add(new Edge<Integer>(8, 3, Integer.MAX_VALUE));
+		removedEdges.add(new Edge<Integer>(8, 5, Integer.MAX_VALUE));
+		removedEdges.add(new Edge<Integer>(5, 8, Integer.MAX_VALUE));
 		edges.removeAll(removedEdges);
 		verifyGraphContainsAllEdgesItShould();
 	}
@@ -497,9 +497,9 @@ public class AdjacencyListGraphTest {
 	}
 
 	private void verifyGraphContainsAllEdgesItShould() {
-		for (AdjacencyListEdge<Integer> ale : edges) {
-			assertTrue(graph.containsEdge(ale.getSrc().getElement(), ale.getDst().getElement()), "A missing edge was found");
-			assertTrue(graph.getEdgeWeight(ale.getSrc().getElement(), ale.getDst().getElement()) == ale.getWeight(), "The edge was found but it does not have the correct weight");
+		for (Edge<Integer> ale : edges) {
+			assertTrue(graph.containsEdge(ale.getSrc(), ale.getDst()), "A missing edge was found");
+			assertTrue(graph.getEdgeWeight(ale.getSrc(), ale.getDst()) == ale.getWeight(), "The edge was found but it does not have the correct weight");
 		}
 	}
 }

@@ -80,8 +80,8 @@ public class Controller {
 		System.out.println(clyde.getLayoutX()+","+clyde.getLayoutY());
 		System.out.println(pacman.getLayoutX()+","+pacman.getLayoutY());
 		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-		//inky.setLayoutX(54);inky.setLayoutY(37);
-		inky.relocate(301,318);
+		inky.setLayoutX(54);inky.setLayoutY(37);
+		//inky.relocate(301,318);
 	}
 
 	public FlowPane getLivesContainer() {

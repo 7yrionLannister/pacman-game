@@ -519,4 +519,16 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 		}
 		return adj;
 	}
+	
+	@Override
+	public ArrayList<Edge<E>> primMinimumSpanningTree(E src) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public ArrayList<Edge<E>> kruskalMinimumSpannigTree() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

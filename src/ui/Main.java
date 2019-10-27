@@ -14,8 +14,9 @@ public class Main extends Application {
 		Scene scene = new Scene(root);
 		primaryStage.setTitle("Pac-Man");
 		primaryStage.setScene(scene);
-		primaryStage.setResizable(false);
 		primaryStage.show();
+		primaryStage.setResizable(false); //TODO esta linea causa que las imagenes salgan unos pixeles mas lejos del lugar que les corresponde en Windows
+		                                  //TODO pero comentarla no es opcion porque si el usuario hace zoom la interfaz se desacomoda
 	}
 
 	public static void main(String[] args) {

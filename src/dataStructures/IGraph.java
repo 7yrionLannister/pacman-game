@@ -27,8 +27,12 @@ public interface IGraph<E> {
 	
 	void Dijkstra(E src) ;
 	
-	void FloydWarshall() ;
+	void FloydWarshall();
 
+	ArrayList<Edge<E>> primMinimumSpanningTree(E src);
+	
+	ArrayList<Edge<E>> kruskalMinimumSpannigTree();
+	
 	ArrayList<E> getSingleSourcePath(E dst);
 	
 	int getSingleSourceDistance(E dst);

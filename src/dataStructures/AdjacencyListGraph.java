@@ -15,7 +15,7 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 	private HashMap<E, Vertex<E>> vertices;
 	/**
 	 */
-	private HashMap<E, ArrayList<AdjacencyListEdge<E>>> adjacencyLists;
+	private HashMap<E, ArrayList<Edge<E>>> adjacencyLists;
 	/**
 	 */
 	private boolean isDirected;
@@ -63,9 +63,9 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 			vertices.forEach(new BiConsumer<E, Vertex<E>>() { //and remove all edges where it is dst
 				@Override
 				public void accept(E t, Vertex<E> u) {
-					ArrayList<AdjacencyListEdge<E>> toremove = new ArrayList<>();
-					for(AdjacencyListEdge<E> ale : adjacencyLists.get(t)) {
-						if(ale.getDst().getElement().equals(sk)) {
+					ArrayList<Edge<E>> toremove = new ArrayList<>();
+					for(Edge<E> ale : adjacencyLists.get(t)) {
+						if(ale.getDst().equals(sk)) {
 							toremove.add(ale);
 						}
 					}
@@ -89,15 +89,15 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 		insertVertex(dst); //Inserts dst if not currently in the graph
 		Vertex<E> s = vertices.get(src);
 		Vertex<E> d = vertices.get(dst);
-		AdjacencyListEdge<E> newedge1 = new AdjacencyListEdge<>(s, d, weight);
+		Edge<E> newedge1 = new Edge<>(s.getElement(), d.getElement(), weight);
 
-		ArrayList<AdjacencyListEdge<E>> sEdges = adjacencyLists.get(src);
+		ArrayList<Edge<E>> sEdges = adjacencyLists.get(src);
 		sEdges.remove(newedge1); //if the edge already exists remove it
 		sEdges.add(newedge1);
 		if(!isDirected) { //Add the additional edge if this graph is undirected
-			AdjacencyListEdge<E> newedge2 = new AdjacencyListEdge<>(d, s, weight);
+			Edge<E> newedge2 = new Edge<>(d.getElement(), s.getElement(), weight);
 
-			ArrayList<AdjacencyListEdge<E>> dEdges = adjacencyLists.get(dst);
+			ArrayList<Edge<E>> dEdges = adjacencyLists.get(dst);
 			dEdges.remove(newedge2); //if the edge already exists remove it
 			dEdges.add(newedge2); 
 		}
@@ -112,9 +112,9 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 		Vertex<E> s = vertices.get(src);
 		Vertex<E> d = vertices.get(dst);
 		if(s != null && d != null) {
-			adjacencyLists.get(src).remove(new AdjacencyListEdge<>(s, d, 1)); //remove edge (s,d)
+			adjacencyLists.get(src).remove(new Edge<E>(s.getElement(), d.getElement(), 1)); //remove edge (s,d)
 			if(!isDirected) { //Remove the other edge if this graph is undirected
-				adjacencyLists.get(dst).remove(new AdjacencyListEdge<E>(d, s, 1));
+				adjacencyLists.get(dst).remove(new Edge<E>(d.getElement(), s.getElement(), 1));
 			}
 			return true;
 		}
@@ -168,9 +168,9 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 			try {
 				while(!queue.isEmpty()) {
 					Vertex<E> u = queue.dequeue();
-					ArrayList<AdjacencyListEdge<E>> adj = adjacencyLists.get(u.getElement());
-					for(AdjacencyListEdge<E> ale: adj) {
-						Vertex<E> v = ale.getDst();
+					ArrayList<Edge<E>> adj = adjacencyLists.get(u.getElement());
+					for(Edge<E> ale: adj) {
+						Vertex<E> v = vertices.get(ale.getDst());
 						if(v.getColor() == State.WHITE) {
 							v.setColor(State.GRAY);
 							v.setDistance(u.getDistance()+1);
@@ -256,9 +256,9 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 		DFStime++;
 		u.setDiscovered(DFStime);
 		u.setColor(State.GRAY);
-		ArrayList<AdjacencyListEdge<E>> adj = adjacencyLists.get(u.getElement());
-		for(AdjacencyListEdge<E> ale : adj) {
-			Vertex<E> v = ale.getDst();
+		ArrayList<Edge<E>> adj = adjacencyLists.get(u.getElement());
+		for(Edge<E> ale : adj) {
+			Vertex<E> v = vertices.get(ale.getDst());
 			if(v.getColor() == State.WHITE) {
 				v.setPredecessor(u);
 				DFSVisit(v);
@@ -296,9 +296,9 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 			stack.push(s);
 			while(!stack.isEmpty()) {
 				Vertex<E> u = stack.pop();
-				ArrayList<AdjacencyListEdge<E>> adj = adjacencyLists.get(u.getElement());
-				for(AdjacencyListEdge<E> ale: adj) {
-					Vertex<E> v = ale.getDst();
+				ArrayList<Edge<E>> adj = adjacencyLists.get(u.getElement());
+				for(Edge<E> ale: adj) {
+					Vertex<E> v = vertices.get(ale.getDst());
 					if(v.getColor() == State.WHITE) {
 						DFStime++;
 						v.setColor(State.GRAY);
@@ -335,12 +335,14 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 			pq.offer(lastSrc);
 			while(!pq.isEmpty()) {
 				Vertex<E> u = pq.poll();
-				for(AdjacencyListEdge<E> ale : adjacencyLists.get(u.getElement())) {
-					if(ale.getDst().getDistance() > ale.getSrc().getDistance() + ale.getWeight()) {
+				for(Edge<E> ale : adjacencyLists.get(u.getElement())) {
+					Vertex<E> s = vertices.get(ale.getSrc());
+					Vertex<E> d = vertices.get(ale.getDst());
+					if(d.getDistance() > s.getDistance() + ale.getWeight()) {
 						pq.remove(ale.getDst());
-						ale.getDst().setDistance(ale.getSrc().getDistance() + ale.getWeight());
-						ale.getDst().setPredecessor(ale.getSrc());
-						pq.offer(ale.getDst());
+						d.setDistance(s.getDistance() + ale.getWeight());
+						d.setPredecessor(s);
+						pq.offer(d);
 					}
 				}
 			}
@@ -357,11 +359,11 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 				graphForWarshall.insertVertex(t);
 			}
 		});
-		adjacencyLists.forEach(new BiConsumer<E, ArrayList<AdjacencyListEdge<E>>>() {
+		adjacencyLists.forEach(new BiConsumer<E, ArrayList<Edge<E>>>() {
 			@Override
-			public void accept(E t, ArrayList<AdjacencyListEdge<E>> u) {
-				for(AdjacencyListEdge<E> ale : u) {
-					graphForWarshall.link(ale.getSrc().getElement(), ale.getDst().getElement(), ale.getWeight());
+			public void accept(E t, ArrayList<Edge<E>> u) {
+				for(Edge<E> ale : u) {
+					graphForWarshall.link(ale.getSrc(), ale.getDst(), ale.getWeight());
 				}
 			}
 		});
@@ -473,7 +475,7 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 	@Override
 	public boolean containsEdge(E src, E dst) {
 		if(vertices.containsKey(src) && vertices.containsKey(dst)) {
-			return adjacencyLists.get(src).contains(new AdjacencyListEdge<E>(new Vertex<E>(src), new Vertex<E>(dst), Integer.MAX_VALUE));
+			return adjacencyLists.get(src).contains(new Edge<E>(src, dst, Integer.MAX_VALUE));
 		}
 		return false;
 	}
@@ -485,8 +487,8 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 	public ArrayList<E> getAdjacent(E key) {
 		ArrayList<E> adj = new ArrayList<>();
 		if(vertices.containsKey(key)) {
-			for(AdjacencyListEdge<E> ale : adjacencyLists.get(key)) {
-				adj.add(ale.getDst().getElement());
+			for(Edge<E> ale : adjacencyLists.get(key)) {
+				adj.add(ale.getDst());
 			}
 		}
 		return adj;
@@ -499,9 +501,9 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 	@Override
 	public int getEdgeWeight(E src, E dst) {
 		if(vertices.containsKey(src) && vertices.containsKey(dst)) {
-			ArrayList<AdjacencyListEdge<E>> srcAdj = adjacencyLists.get(src);
+			ArrayList<Edge<E>> srcAdj = adjacencyLists.get(src);
 			for(int i = 0; i < srcAdj.size(); i++) {
-				if(srcAdj.get(i).getDst().getElement().equals(dst)) {
+				if(srcAdj.get(i).getDst().equals(dst)) {
 					return srcAdj.get(i).getWeight();
 				}
 			}
@@ -510,5 +512,17 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 			}
 		}
 		return Integer.MAX_VALUE;
+	}
+	
+	@Override
+	public ArrayList<Edge<E>> primMinimumSpanningTree(E src) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public ArrayList<Edge<E>> kruskalMinimumSpannigTree() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
