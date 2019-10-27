@@ -48,9 +48,19 @@
                         <Image url="@../../resources/sprites/pacman/movements/0.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="info" fitHeight="22.0" fitWidth="68.0" layoutX="149.0" layoutY="201.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="readyImage" fitHeight="22.0" fitWidth="68.0" layoutX="149.0" layoutY="201.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../resources/ready.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="gameOverImage" fitHeight="16.0" fitWidth="106.0" layoutX="127.0" layoutY="200.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../resources/game_over.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="bonusImage" fitHeight="25.0" fitWidth="25.0" layoutX="168.0" layoutY="196.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../resources/sprites/food/bonus/cherry.png" />
                      </image>
                   </ImageView>
                </children></AnchorPane>

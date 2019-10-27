@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import dataStructures.AdjacencyListGraph;
 import dataStructures.AdjacencyMatrixGraph;
@@ -13,23 +14,27 @@ import dataStructures.IGraph;
 
 public class Game {
 	public final static String GRAPH_RESOURCE = "resources/map.txt";
+	public static enum Food {
+		NOTHING, PACDOT, ENERGIZER, BONUS;
+	} 
 	private IGraph<Coordinate> map;
 	private ArrayList<Level> levels;
 	private int currentLevel;
-	//TODO temporalmente estatico por razones de pruebas, cuando todo funcione bien sera private solamente
+	//TODO temporalmente estatico por razones de pruebas, cuando todo funcione puede ponerse private
 	static ArrayList<Coordinate> coordinates;
-	
+	private HashMap<Coordinate, Food> food;
+
 	private Pacman pacman;
-	
+
 	private Ghost inky;
 	private Ghost pinky;
 	private Ghost blinky;
 	private Ghost clyde;
-	
+
 	public Game() throws IOException {
 		initGraph();
+		setGameToInitialState();
 		initLevels();
-		initCharacters();
 	}
 
 	private void initCharacters() {
@@ -75,11 +80,11 @@ public class Game {
 	private void initGraph() throws IOException {
 		FileReader fr = new FileReader(new File(GRAPH_RESOURCE));
 		BufferedReader br = new BufferedReader(fr);
-		
+
 		map = new AdjacencyListGraph<Coordinate>(true);
 		//map = new AdjacencyMatrixGraph<>(96, true);
 		coordinates = new ArrayList<>();
-		
+		food = new HashMap<>();
 		String line = br.readLine();
 		while(!line.equalsIgnoreCase("edges:")) {
 			String[] coord = line.split(",");
@@ -97,6 +102,28 @@ public class Game {
 		map.FloydWarshall();
 		fr.close();
 		br.close();
+	}
+	
+	public void setGameToInitialState() {
+		for(Coordinate coor : coordinates) {
+			food.put(coor, Food.PACDOT);
+		}
+		food.put(coordinates.get(2), Food.ENERGIZER);
+		food.put(coordinates.get(89), Food.ENERGIZER);
+		food.put(coordinates.get(7), Food.ENERGIZER);
+		food.put(coordinates.get(94), Food.ENERGIZER);
+		food.put(coordinates.get(33), Food.NOTHING);
+		food.put(coordinates.get(34), Food.NOTHING);
+		food.put(coordinates.get(35), Food.NOTHING);
+		food.put(coordinates.get(43), Food.NOTHING);
+		food.put(coordinates.get(44), Food.NOTHING);
+		food.put(coordinates.get(53), Food.NOTHING);
+		food.put(coordinates.get(54), Food.NOTHING);
+		food.put(coordinates.get(62), Food.NOTHING);
+		food.put(coordinates.get(63), Food.NOTHING);
+		food.put(coordinates.get(64), Food.NOTHING);
+		//System.out.println("hashmap has size "+food.size());
+		initCharacters();
 	}
 
 	public IGraph<Coordinate> getMap() {
@@ -141,5 +168,9 @@ public class Game {
 
 	public ArrayList<Coordinate> getCoordinates() {
 		return coordinates;
+	}
+
+	public HashMap<Coordinate, Food> getFood() {
+		return food;
 	}
 }

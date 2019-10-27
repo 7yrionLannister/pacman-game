@@ -1,9 +1,11 @@
 package ui;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
 import javafx.fxml.FXML;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -38,7 +40,13 @@ public class Controller {
 	private ImageView pacman;
 
 	@FXML
-	private ImageView info;
+	private ImageView readyImage;
+
+	@FXML
+	private ImageView gameOverImage;
+
+	@FXML
+	private ImageView bonusImage;
 
 	@FXML
 	private ImageView key;
@@ -67,7 +75,7 @@ public class Controller {
 	private Game game;
 
 	private PacmanThread pt;
-	
+
 	@FXML
 	public void initialize() {
 		try {
@@ -77,31 +85,10 @@ public class Controller {
 		}
 		pt = new PacmanThread(this);
 		pt.start();
-		//TODO delete this line as it is just for tests
-		inky.relocate(44,34);
 	}
 
 	@FXML
 	public void changeDirection(KeyEvent event) {
-		/*double pacmanX = pacman.getLayoutX();
-		double pacmanY = pacman.getLayoutY();
-		String key = event.getCode().getName().toLowerCase();
-		if(key.equals("up") || key.equals("i") || key.equals("w")) {
-			pacmanY--;
-		} else if(key.equals("down") || key.equals("k") || key.equals("s")) {
-			pacmanY++;
-		} else if(key.equals("right") || key.equals("l") || key.equals("d")) {
-			pacmanX++;
-		} else if(key.equals("left") || key.equals("j") || key.equals("a")) {
-			pacmanX--;
-		}
-		pacman.relocate(pacmanX, pacmanY);
-		if(key.equals("1")) {
-			ArrayList<Coordinate> c = game.getCoordinates();
-			System.out.println(c.get(coor).getX()+","+c.get(coor).getY());
-			pacman.relocate(c.get(coor).getX(), c.get(coor).getY());
-			coor++;
-		}*/
 		String key = event.getCode().getName().toLowerCase();
 		if(key.equals("up") || key.equals("i") || key.equals("w")) {
 			game.getPacman().setDirection(Direction.UP);
@@ -116,14 +103,8 @@ public class Controller {
 
 	@FXML
 	public void printMapCoordinates(MouseEvent event) {
-		/*System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-		System.out.println(inky.getLayoutX()+","+inky.getLayoutY());
-		System.out.println(pinky.getLayoutX()+","+pinky.getLayoutY());
-		System.out.println(blinky.getLayoutX()+","+blinky.getLayoutY());
-		System.out.println(clyde.getLayoutX()+","+clyde.getLayoutY());
 		System.out.println(pacman.getLayoutX()+","+pacman.getLayoutY());
-		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");*/
-		System.out.println(pacman.getLayoutX()+","+pacman.getLayoutY());
+		System.out.println("bonus: "+bonusImage.getLayoutX()+","+bonusImage.getLayoutY());
 	}
 
 	public FlowPane getLivesContainer() {
@@ -154,8 +135,16 @@ public class Controller {
 		return pacman;
 	}
 
-	public ImageView getInfo() {
-		return info;
+	public ImageView getReadyImage() {
+		return readyImage;
+	}
+
+	public ImageView getGameOverImage() {
+		return gameOverImage;
+	}
+
+	public ImageView getBonusImage() {
+		return bonusImage;
 	}
 
 	public ImageView getKey() {

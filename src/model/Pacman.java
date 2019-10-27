@@ -21,20 +21,19 @@ public class Pacman {
 	}
 
 	public void moveForward() {
-		System.out.println((Game.coordinates.indexOf(position)+1));
+		//System.out.println((Game.coordinates.indexOf(position)+1));
 		switch(direction) {
 		case DOWN:
 			posY++;
-			if(position.hasDownTile() || posY < position.getY()) {
+			if(position.hasDownTile() && posY == position.getY()+1) {
 				for(Coordinate neighbor : map.getAdjacent(position)) {
-					if(neighbor.getX() == position.getX()) {
-						if(neighbor.getY() > posY) {
-							position = neighbor;
-							break;
-						}
+					if(neighbor.getX() == position.getX() && neighbor.getY() > posY) {
+						position = neighbor;
+						break;
 					}
 				}
-			} else {
+			} 
+			if(!position.hasDownTile() && posY > position.getY()){
 				posY--;
 			}
 			break;
@@ -49,7 +48,7 @@ public class Pacman {
 				}
 			} 
 			if(!position.hasLeftTile() && posX < position.getX()) {
-				posX++;System.out.println("ddd");
+				posX++;//System.out.println("ddd");
 			}
 			break;
 		case RIGHT:
@@ -68,22 +67,23 @@ public class Pacman {
 			break;
 		case UP:
 			posY--;
-			if(position.hasUpTile() || posY > position.getY()) {
+			if(position.hasUpTile() && posY == position.getY()-1) {
 				for(Coordinate neighbor : map.getAdjacent(position)) {
-					if(neighbor.getX() == position.getX()) {
-						if(neighbor.getY() < posY) {
-							position = neighbor;
-							break;
-						}
+					if(neighbor.getX() == position.getX() && neighbor.getY() < posY) {
+						position = neighbor;
+						break;
 					}
 				}
-			} else {
+			} 
+			if(!position.hasUpTile() && posY < position.getY()) {
 				posY++;
 			}
 			break;
 		}
-		if((posY == position.getY() && (requestedDirection == Direction.RIGHT || requestedDirection == Direction.LEFT)) || (posX == position.getX() && (requestedDirection == Direction.UP || requestedDirection == Direction.DOWN))) {
-			direction = requestedDirection;
+		if(posY == position.getY() && posX == position.getX()) {
+			if(((position.hasRightTile() && requestedDirection == Direction.RIGHT) || (position.hasLeftTile() && requestedDirection == Direction.LEFT)) || ((position.hasUpTile() && requestedDirection == Direction.UP) || (position.hasDownTile() && requestedDirection == Direction.DOWN))) {
+				direction = requestedDirection;
+			}
 		}
 	}
 
