@@ -4,10 +4,10 @@ import java.util.EmptyStackException;
 
 public class Stack<E> implements IStack<E> {
 	
-	/**
+	/**It represents the node of E type that is always put in the top of the stack.
 	 */
 	private Node<E> top;
-	/**
+	/**It represents the number of nodes contained inside the stack.
 	 */
 	private int size;
 

@@ -2,13 +2,13 @@ package dataStructures;
 
 public class AdjacencyListEdge<E> {
 	
-	/**
+	/**It represents the source vertex from the dst vertex is going to be linked. 
 	 */
 	private Vertex<E> src;
-	/**
+	/**It represents the vertex which src is going to be linked with.
 	 */
 	private Vertex<E> dst;
-	/**
+	/**It represents the cost of arriving from src to dst.
 	 */
 	private int weight;
 	
@@ -59,8 +59,8 @@ public class AdjacencyListEdge<E> {
 		this.weight = weight;
 	}
 	/***This method compares if another Adjacency List Edge of E type is equals to the actual Adjacency List Edge.
-	 * @return A boolean 
-	 * @param another
+	 * @return A boolean that indicates if another Adjacency List Edge of E type is equals to the actual Adjacency List Edge.
+	 * @param another An AdjacencyListEdge<E> that is going to be compared with the actual one.
 	 * @throws ClassCastException if another is not an AdjacencyListEdge<E>.
 	 */
 	@Override

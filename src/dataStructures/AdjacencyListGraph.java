@@ -10,22 +10,22 @@ import dataStructures.State;
 
 public class AdjacencyListGraph<E> implements IGraph<E>{
 	
-	/**
+	/**It represents a hash map from E objects to vertices of E type.
 	 */
 	private HashMap<E, Vertex<E>> vertices;
-	/**
+	/**It represents a hash map from E objects to ArrayList of AdjacencyListEdge<E> type.
 	 */
 	private HashMap<E, ArrayList<AdjacencyListEdge<E>>> adjacencyLists;
-	/**
+	/**It indicates if the graph is directed or not.
 	 */
 	private boolean isDirected;
-	/**
+	/**It represents the source vertex that is in the final position of the path. 
 	 */
 	private Vertex<E> lastSrc;
-	/**
+	/**It represents how many time DFS process lasts. 
 	 */
 	private static int DFStime;
-	/**
+	/**It represents a modified Adjacency List in order to perform FloydWarshall correctly.
 	 */
 	private AdjacencyMatrixGraph<E> graphForWarshall; 	
 	
@@ -39,8 +39,8 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 	}
 	/**This inserts a vertex, defined with a E object that arrives as parameter, in a free space and verifies if the insertion process 
 	 * was done rightly.
-	 * @return
-	 * @param 
+	 * @return A boolean that indicates if the insertion process was done rightly.
+	 * @param e is a vertex that is going to be inserted inside the list. 
 	 */
 	@Override
 	public boolean insertVertex(E e) {
@@ -53,8 +53,8 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 	}
 	/**This deletes a vertex, defined with a E object that arrives as parameter, looking for the respective key inside the list and verifies if 
 	 * the deletion process was done rightly. Moreover, the vertex associated edges are deleted too.
-	 * @return
-	 * @param
+	 * @return A boolean that indicates if the deletion process was done rightly.
+	 * @param sk is a vertex that is going to be erased from the list. 
 	 */
 	@Override
 	public boolean deleteVertex(E sk) {
@@ -79,9 +79,9 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 	}
 	/**This method links a source vertex with another vertex denoted as dst assigning it a weight to their respective connection where a edge is 
 	 * added if the graph is undirected.
-	 * @param
-	 * @param
-	 * @param
+	 * @param src is an E object that represents the source vertex from the dst vertex is going to be linked. 
+	 * @param dst is an E object that represents the vertex which src is going to be linked with.
+	 * @param weight is an integer that represents the cost of arriving from src to dst.
 	 */
 	@Override
 	public void link(E src, E dst, int weight) {
@@ -103,9 +103,9 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 		}
 	}
 	/**This method unlinks a source vertex with another vertex denoted as dst where the other edge is removed if the graph is undirected. 
-	 * @return
-	 * @param
-	 * @param
+	 * @return A boolean 
+	 * @param src is an E object that represents the source vertex from the dst vertex is going to be unlinked. 
+	 * @param dst is an E object that represents the vertex which src is going to be unlinked with.
 	 */
 	@Override
 	public boolean unlink(E src, E dst) {
@@ -121,30 +121,30 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 		return false;
 	}
 	/**It verifies if the actual vertices contains a key of E type that arrives as parameter.
-	 * @return
-	 * @param
+	 * @return A boolean that indicates if the actual vertices contains a key of E type that arrives as parameter.
+	 * @param key is vertex that is going to be searched inside the vertices list. 
 	 */
 	@Override
 	public boolean containsVertex(E key) {
 		return vertices.containsKey(key);
 	}
 	/**It allows to get the order as an integer that represents the actual vertices size.
-	 * @return 
+	 * @return An Integer that represents the actual vertices list size.
 	 */
 	@Override
 	public int getOrder() {
 		return vertices.size();
 	}
 	/**It verifies if the actual list of vertices is empty or not.
-	 * @return
+	 * @return A boolean that indicates if the actual list of vertices is empty or not.
 	 */
 	@Override
 	public boolean isEmpty() {
 		return vertices.isEmpty();
 	}
 	/**This performs BFS as from a source vertex where the vertices configuration is going to be fixed in order to BFS can be finished right.
-	 * @return
-	 * @param
+	 * @return A boolean that indicates if BSF was done correctly. 
+	 * @param src is a reference vertex to do BFS.
 	 */
 	//traverses all vertices reachable from src
 	@Override
@@ -190,8 +190,8 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 	/**This method returns an ArrayList of vertices that represents the single path for a specified vertex that arrive as parameter if and only if
 	 * bfs, dfs or dijkstra have been called before to determinate this path where if the ArrayList is empty is because there is no possible path
 	 * to reach that vertex.
-	 * @return
-	 * @param
+	 * @return An ArrayList<E> that represent a single path from vertex dst. 
+	 * @param dst is a vertex that indicates from where the path have to be built.
 	 */
 	//pre: bfs, dfs or dijkstra have been called
 	//it is only the shortest path in unweighted graphs, else is just a path
@@ -270,7 +270,7 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 	}
 	/**This performs the DFS taking into account a source vertex that arrives as parameter where some vertices configuration have to fixed in 
 	 * order to complete DFS rightly.
-	 * @param
+	 * @param src is a reference vertex to start DFS process. 
 	 */
 	//iterative dfs using stack data structure
 	//it does not traverses all the vertices as the main implementation of dfs, instead
@@ -315,7 +315,7 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 	}
 	/**This performs Dijkstra as from a source vertex that arrives as parameter where some vertices configuration have to fixed in 
 	 * order to complete Dijkstra rightly.
-	 * @param
+	 * @param src is a reference vertex to start Dijkstra process.
 	 */
 	@Override
 	public void Dijkstra(E src) {
@@ -393,8 +393,8 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 		return verts;
 	}
 	/**It allows to obtain the distance of a single vertex specified as parameter. 
-	 * @return
-	 * @param
+	 * @return An Integer the distance of the entire single path of dst. 
+	 * @param dst is a vertex from where distance is going to be calculated. 
 	 */
 	@Override
 	public int getSingleSourceDistance(E dst) {
@@ -404,8 +404,8 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 		return Integer.MAX_VALUE;
 	}
 	/**It allows to obtain the time that DFS performs discovering a vertex that arrives as parameter.
-	 * @return
-	 * @param
+	 * @return An Integer that indicates how many time took to discover the inside the list. 
+	 * @param key is a vertex that is going to be discovered inside the list. 
 	 */
 	@Override
 	public int getDFSDiscoveredTime(E key) {
@@ -415,8 +415,8 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 		return 0;
 	}
 	/**It allows to obtain the time that DFS performs finishing a vertex that arrives as parameter.
-	 * @return
-	 * @param
+	 * @return An Integer that indicates how many time took to finish the inside the list. 
+	 * @param key is a vertex that is going to be finished inside the list. 
 	 */
 	@Override
 	public int getDFSFinishedTime(E key) {
@@ -426,8 +426,8 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 		return 0;
 	}
 	/**It allows to obtain the key state as a color. 
-	 * @return
-	 * @param
+	 * @return A State that indicates the vertex color. 
+	 * @param key is a vertex which its color is going to be extracted. 
 	 */
 	@Override
 	public State getVertexColor(E key) {
@@ -437,8 +437,8 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 		return null;
 	}
 	/**It allows to obtain a single predecessor of a determinate vertex that arrives as parameter.
-	 * @return
-	 * @param
+	 * @return A E object that represents the single predecessor. 
+	 * @param key is a ordinary vertex of the list. 
 	 */
 	@Override
 	public E getSingleSourcePredecessor(E key) {
@@ -448,27 +448,27 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 		return null;
 	}
 	/**It allows to obtain the path between two pair of vertices through an ArrayList of vertices.
-	 * @return
-	 * @param
-	 * @param
+	 * @return An ArrayList<E> that represents the path between src and dst. 
+	 * @param src is a vertex from which we can access to dst. 
+	 * @param dst is the vertex which dst can access.
 	 */
 	@Override
 	public ArrayList<E> getPath(E src, E dst) {
 		return graphForWarshall.getPath(src, dst);
 	}
 	/**It allows to get the distance between two pairs of vertices.
-	 * @return
-	 * @param
-	 * @param
+	 * @return An Integer that represents the distance between two pairs of vertices.
+	 * @param src is a vertex from which we can access to dst.
+	 * @param dst is the vertex which dst can access.
 	 */
 	@Override
 	public int getDistance(E src, E dst) {
 		return graphForWarshall.getDistance(src, dst);
 	}
 	/**It allows to determinate if two pairs of vertices have and edge in common.
-	 * @return
-	 * @param
-	 * @param
+	 * @return A boolean that indicates if the list contains this edge.
+	 * @param src is a vertex from which we can access to dst.
+	 * @param dst is the vertex which dst can access.
 	 */
 	@Override
 	public boolean containsEdge(E src, E dst) {
@@ -478,8 +478,8 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 		return false;
 	}
 	/**It allows to obtain all the adjacent vertices of a determinate source that arrives as parameter.
-	 * @return
-	 * @param
+	 * @return An ArrayList<E> that represents all the adjacent vertices of a determinate source that arrives as parameter.
+	 * @param key is a vertex which its adjacent vertices are going to be found. 
 	 */
 	@Override
 	public ArrayList<E> getAdjacent(E key) {
@@ -492,9 +492,9 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 		return adj;
 	}
 	/**It allows to get the weight between two pairs of vertices that arrive as parameters.
-	 * @return
-	 * @param
-	 * @param
+	 * @return An Integer that represents the cost of the entire edge formed by src and dst. 
+	 * @param src is a vertex from which we can access to dst.
+	 * @param dst is the vertex which dst can access.
 	 */
 	@Override
 	public int getEdgeWeight(E src, E dst) {
