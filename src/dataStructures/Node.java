@@ -2,7 +2,7 @@ package dataStructures;
 
 public class Node<E> {
 	
-	/**It represents the object that is contained in the vertex nowadays. 
+	/**It represents the object that is contained in the node nowadays. 
 	 */
 	private E element;
 	/**It represents the associated next node of the actual node. 

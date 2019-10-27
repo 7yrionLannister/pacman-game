@@ -103,7 +103,7 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 		}
 	}
 	/**This method unlinks a source vertex with another vertex denoted as dst where the other edge is removed if the graph is undirected. 
-	 * @return A boolean 
+	 * @return A boolean that indicates if the unlinking process was done correctly.
 	 * @param src is an E object that represents the source vertex from the dst vertex is going to be unlinked. 
 	 * @param dst is an E object that represents the vertex which src is going to be unlinked with.
 	 */

@@ -7,31 +7,31 @@ import java.util.PriorityQueue;
 
 public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 	
-	/**
+	/**It is a matrix of integers that represents all the graph edges. 
 	 */
 	private int[][] edges;
-	/**
+	/**It indicates if the graph is directed or not.
 	 */
 	private boolean isDirected;
-	/**
+	/**It represents a hash map from E objects to integers.
 	 */
 	private HashMap<E, Integer> keyToIndex;
-	/**
+	/**It is a matrix of vertices that represents the all the graph vertices.
 	 */
 	private Vertex<E>[] vertices;
-	/**
+	/**It represents the source vertex that is in the final position of the path.
 	 */
 	private Vertex<E> lastSrc;
-	/**
+	/**It represents a free row where a new vertex can be allocated.
 	 */
 	private int freeRow;
-	/**
+	/**It represents how many time DFS process lasts.
 	 */
 	private static int DFStime;
-	/**
+	/**It is a matrix of integers that represents the minimum distance of all pairs of vertices. 
 	 */
 	private int[][] allPairsminimumDistances;
-	/**
+	/**It is a matrix of vertices that indicates the shortest path of all pairs of vertices. 
 	 */
 	private Vertex<E>[][] allPairsShortestPath;
 	
@@ -54,6 +54,8 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 	}
 	/**This inserts a vertex, defined with an element of type E that arrives as parameter, in a free row and verifies if the insertion process 
 	 * was done rightly. 
+	 * @return A boolean that indicates if the insertion process was done rightly.
+	 * @param e is a vertex that is going to be inserted inside the matrix. 
 	 */
 	@Override
 	public boolean insertVertex(E e) {
@@ -84,6 +86,8 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 	}
 	/**This deletes a vertex, defined with a E object that arrives as parameter, looking for the respective key inside the matrix and verifies if 
 	 * the deletion process was done rightly.
+	 * @return A boolean that indicates if the deletion process was done rightly.
+	 * @param sk is a vertex that is going to be erased from the matrix.
 	 */
 	@Override
 	public boolean deleteVertex(E e) {
@@ -109,6 +113,9 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 	}
 	/**This method links a source vertex with another vertex denoted as dst assigning it a weight to their respective connection where a edge is 
 	 * added if the graph is undirected. 
+	 * @param src is an E object that represents the source vertex from the dst vertex is going to be linked. 
+	 * @param dst is an E object that represents the vertex which src is going to be linked with.
+	 * @param weight is an integer that represents the cost of arriving from src to dst.
 	 */
 	@Override
 	public void link(E src, E dst, int weight) {
@@ -131,7 +138,10 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 		}
 	}
 }
-	/**This method unlinks a source vertex with another vertex denoted as dst where the other edge is removed if the graph is undirected. 
+	/**This method unlinks a source vertex with another vertex denoted as dst where the other edge is removed if the graph is undirected.
+	 * @return A boolean that indicates if the unlinking process was done correctly.
+	 * @param src is an E object that represents the source vertex from the dst vertex is going to be unlinked. 
+	 * @param dst is an E object that represents the vertex which src is going to be unlinked with. 
 	 */
 	@Override
 	public boolean unlink(E src, E dst) {
@@ -147,24 +157,30 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 		return false;
 	}
 	/**It verifies if the actual keyToIndex contains a key of E type that arrives as parameter.
+	 * @return A boolean that indicates if the actual vertices contains a key of E type that arrives as parameter.
+	 * @param key is vertex that is going to be searched inside keyToIndex.
 	 */
 	@Override
 	public boolean containsVertex(E key) {
 		return keyToIndex.containsKey(key);
 	}
 	/**It allows to get the order as an integer that represents the actual keyToIndex size.
+	 * @return An Integer that represents the actual keyToIndex size.
 	 */
 	@Override
 	public int getOrder() {
 		return keyToIndex.size();
 	}
 	/**It verifies if the actual keyToIndex is empty or not.
+	 * @return A boolean that indicates if the actual keyToIndex is empty or not.
 	 */
 	@Override
 	public boolean isEmpty() {
 		return keyToIndex.isEmpty();
 	}
-	/**This performs BFS as from a source vertex where the vertices configuration is going to be fixed in order to BFS can be finished right. 
+	/**This performs BFS as from a source vertex where the vertices configuration is going to be fixed in order to BFS can be finished right.
+	 * @return A boolean that indicates if BSF was done correctly. 
+	 * @param src is a reference vertex to do BFS. 
 	 */
 	@Override
 	public boolean BFS(E src) {
@@ -206,6 +222,7 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 	/**This method returns an ArrayList of vertices that represents the single path for a specified vertex that arrive as parameter if and only if
 	 * bfs, dfs or dijkstra have been called before to determinate this path where if the ArrayList is empty is because there is no possible path
 	 * to reach that vertex.
+	 * @param src is a reference vertex to start DFS process.
 	 */
 	//pre: bfs, dfs or dijkstra have been called
 	//it is only the shortest path in unweighted graphs, else is just a path
@@ -276,6 +293,7 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 	}
 	/**This performs the DFS taking into account a source vertex that arrives as parameter where some vertices configuration have to fixed in 
 	 * order to complete DFS rightly.
+	 * @param src is a reference vertex to start DFS process.
 	 */
 	@Override
 	public void DFS(E src) {
@@ -313,6 +331,7 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 	}
 	/**This performs Dijkstra as from a source vertex that arrives as parameter where some vertices configuration have to fixed in 
 	 * order to complete Dijkstra rightly.
+	 * @param src is a reference vertex to start Dijkstra process.
 	 */
 	@Override
 	public void Dijkstra(E src) {
@@ -369,6 +388,9 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 		}
 	}
 	/**It allows to get the weight between two pairs of vertices that arrive as parameters.
+	 * @return An Integer that represents the cost of the entire edge formed by src and dst. 
+	 * @param src is a vertex from which we can access to dst.
+	 * @param dst is the vertex which dst can access.
 	 */
 	@Override
 	public int getEdgeWeight(E src, E dst) {
@@ -411,7 +433,9 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 	public int getFreeRow() {
 		return freeRow;
 	}
-	/**It allows to obtain the distance of a single vertex specified as parameter. 
+	/**It allows to obtain the distance of a single vertex specified as parameter.
+	 * @return An Integer the distance of the entire single path of dst. 
+	 * @param dst is a vertex from where distance is going to be calculated.
 	 */
 	@Override
 	public int getSingleSourceDistance(E dst) {
@@ -420,7 +444,9 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 		}
 		return Integer.MAX_VALUE;
 	}
-	/**It allows to obtain the time that DFS performs discovering a vertex that arrives as parameter. 
+	/**It allows to obtain the time that DFS performs discovering a vertex that arrives as parameter.
+	 * @return An Integer that indicates how many time took to discover the inside the matrix. 
+	 * @param key is a vertex that is going to be discovered inside the matrix. 
 	 */
 	@Override
 	public int getDFSDiscoveredTime(E key) {
@@ -430,6 +456,8 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 		return 0;
 	}
 	/**It allows to obtain the time that DFS performs finishing a vertex that arrives as parameter.
+	 * @return An Integer that indicates how many time took to finish the inside the matrix. 
+	 * @param key is a vertex that is going to be finished inside the matrix.
 	 */
 	@Override
 	public int getDFSFinishedTime(E key) {
@@ -439,6 +467,8 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 		return 0;
 	}
 	/**It allows to obtain the key state as a color. 
+	 * @return A State that indicates the vertex color. 
+	 * @param key is a vertex which its color is going to be extracted. 
 	 */
 	@Override
 	public State getVertexColor(E key) {
@@ -447,7 +477,9 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 		}
 		return null;
 	}
-	/**It allows to obtain a single predecessor of a determinate vertex that arrives as parameter. 
+	/**It allows to obtain a single predecessor of a determinate vertex that arrives as parameter.
+	 * @return A E object that represents the single predecessor. 
+	 * @param key is a ordinary vertex of the matrix.  
 	 */
 	@Override
 	public E getSingleSourcePredecessor(E key) {
@@ -457,6 +489,9 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 		return null;
 	}
 	/**It allows to obtain the path between two pair of vertices through an ArrayList of vertices.
+	 * @return An ArrayList<E> that represents the path between src and dst. 
+	 * @param src is a vertex from which we can access to dst. 
+	 * @param dst is the vertex which dst can access.
 	 */
 	@Override
 	public ArrayList<E> getPath(E src, E dst) {
@@ -486,6 +521,9 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 		}
 	}
 	/**It allows to get the distance between two pairs of vertices.
+	 * @return An Integer that represents the distance between two pairs of vertices.
+	 * @param src is a vertex from which we can access to dst.
+	 * @param dst is the vertex which dst can access.
 	 */
 	@Override
 	public int getDistance(E src, E dst) {
@@ -495,6 +533,9 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 		return 0;
 	}
 	/**It allows to determinate if two pairs of vertices have and edge in common.
+	 * @return A boolean that indicates if the list contains this edge.
+	 * @param src is a vertex from which we can access to dst.
+	 * @param dst is the vertex which dst can access.
 	 */
 	@Override
 	public boolean containsEdge(E src, E dst) {
@@ -506,6 +547,8 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 		return false;
 	}
 	/**It allows to obtain all the adjacent vertices of a determinate source that arrives as parameter.
+	 * @return An ArrayList<E> that represents all the adjacent vertices of a determinate source that arrives as parameter.
+	 * @param key is a vertex which its adjacent vertices are going to be found.
 	 */
 	@Override
 	public ArrayList<E> getAdjacent(E key) {
