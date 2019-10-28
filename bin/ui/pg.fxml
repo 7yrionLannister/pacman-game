@@ -10,6 +10,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#changeDirection" style="-fx-background-color: black;" stylesheets="@pg.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.Controller">
@@ -63,6 +64,8 @@
                         <Image url="@../../resources/sprites/food/bonus/cherry.png" />
                      </image>
                   </ImageView>
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" height="40.0" layoutY="157.0" stroke="BLACK" strokeType="INSIDE" width="40.0" />
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" height="40.0" layoutX="319.0" layoutY="157.0" stroke="BLACK" strokeType="INSIDE" width="40.0" />
                </children></AnchorPane>
          </children>
       </StackPane>

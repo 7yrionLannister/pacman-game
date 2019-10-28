@@ -1,5 +1,8 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+
 import dataStructures.IGraph;
 
 public class Pacman {
@@ -21,7 +24,7 @@ public class Pacman {
 	}
 
 	public void moveForward() {
-		System.out.println((Game.coordinates.indexOf(position)+1));
+		//System.out.println((Game.coordinates.indexOf(position)+1));
 		switch(direction) {
 		case DOWN:
 			posY++;
@@ -39,21 +42,40 @@ public class Pacman {
 			break;
 		case LEFT:
 			posX--;
-			if(position.hasLeftTile() && posX == position.getX()-1) {
-				for(Coordinate neighbor : map.getAdjacent(position)) {
-					if(neighbor.getY() == position.getY() && neighbor.getX() < posX) {
-						position = neighbor;
-						if(position.equals(Game.leftTileOfTheTunel)) {
-							position = Game.rightTileOfTheTunel;
-							setPosX(position.getX());
-							setPosY(position.getY());
+			if(!position.equals(Game.rightTileOfTheTunel)) {
+				if(position.hasLeftTile() && posX == position.getX()-1) {
+					for(Coordinate neighbor : map.getAdjacent(position)) {
+						if(neighbor.getY() == position.getY() && neighbor.getX() < posX) {
+							position = neighbor;
+							if(position.equals(Game.leftTileOfTheTunel)) {
+								position = Game.rightTileOfTheTunel;
+								setPosX(position.getX()+18);
+								setPosY(position.getY());
+							}
+							break;
 						}
-						break;
 					}
 				}
-			} 
+			} else {
+				if(posX < position.getX()) {
+					ArrayList<Coordinate> adj = map.getAdjacent(position);
+					adj.sort(new Comparator<Coordinate>() {
+						@Override
+						public int compare(Coordinate o1, Coordinate o2) {
+							return Double.compare(o1.getX(), o2.getX());
+						}
+					});
+					Coordinate pos = adj.get(0);
+					for(Coordinate neighbor : map.getAdjacent(position)) {
+						if(neighbor.getX() > pos.getX()) { 
+							pos = neighbor;
+						}
+					}
+					position = pos;
+				}
+			}
 			if(!position.hasLeftTile() && posX < position.getX()) {
-				posX++;//System.out.println("ddd");
+				posX++;
 			}
 			break;
 		case RIGHT:

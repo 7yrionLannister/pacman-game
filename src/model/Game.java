@@ -40,6 +40,19 @@ public class Game {
 		initLevels();
 		leftTileOfTheTunel = coordinates.get(96);
 		rightTileOfTheTunel = coordinates.get(97);
+		
+		System.out.println("adyacentes al mas derecho");
+		for(Coordinate ccc : map.getAdjacent(rightTileOfTheTunel)) {
+			System.out.println(coordinates.indexOf(ccc)+1);
+		}
+		System.out.println("adyacentes al mas izquierdo");
+		for(Coordinate ccc : map.getAdjacent(leftTileOfTheTunel)) {
+			System.out.println(coordinates.indexOf(ccc)+1);
+		}
+		System.out.println("adyacentes al mas 92");
+		for(Coordinate ccc : map.getAdjacent(coordinates.get(91))) {
+			System.out.println(coordinates.indexOf(ccc)+1);
+		}
 	}
 
 	private void initCharacters() {
