@@ -514,13 +514,50 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 		}
 		return Integer.MAX_VALUE;
 	}
-	
+	/**
+	 * @return An ArrayList<Edge<E>>
+	 * @param src
+	 */
 	@Override
 	public ArrayList<Edge<E>> primMinimumSpanningTree(E src) {
-		// TODO Auto-generated method stub
+		PriorityQueue<Vertex<E>> pq = new PriorityQueue<Vertex<E>>();
+		ArrayList<Edge<E>> prim = new ArrayList<Edge<E>>();
+		if(vertices.containsKey(src)) {
+			lastSrc = vertices.get(src);
+			vertices.forEach(new BiConsumer<E, Vertex<E>>() { //Fix the vertices configuration to make Prim
+				@Override
+				public void accept(E t, Vertex<E> u) {
+					u.setDistance(Integer.MAX_VALUE);
+					u.setColor(State.WHITE);
+					u.setPredecessor(null);
+					pq.offer(u);
+				}
+			});
+			pq.remove(lastSrc);
+			lastSrc.setDistance(0);
+			pq.offer(lastSrc);
+			
+			while(!pq.isEmpty()) {
+				Vertex<E> u = pq.poll();
+				for(Edge<E> ale : adjacencyLists.get(u.getElement())) {
+					Vertex<E> s = vertices.get(ale.getSrc());
+					Vertex<E> d = vertices.get(ale.getDst());
+					if(d.getColor() == State.WHITE && d.getDistance() > s.getDistance() + ale.getWeight()) {
+						d.setDistance(ale.getWeight() + s.getDistance());
+						pq.remove(ale.getDst());
+						d.setPredecessor(s);
+						prim.add(ale);
+					}
+				}
+				u.setColor(State.BLACK);
+			}
+			return prim;
+		}
 		return null;
 	}
-	
+	/**
+	 * @return An ArrayList<Edge<E>>
+	 */
 	@Override
 	public ArrayList<Edge<E>> kruskalMinimumSpannigTree() {
 		// TODO Auto-generated method stub
