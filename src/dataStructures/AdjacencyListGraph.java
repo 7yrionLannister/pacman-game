@@ -520,10 +520,10 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 	 */
 	@Override
 	public ArrayList<Edge<E>> primMinimumSpanningTree(E src) {
-		PriorityQueue<Vertex<E>> pq = new PriorityQueue<Vertex<E>>();
 		ArrayList<Edge<E>> prim = new ArrayList<Edge<E>>();
 		if(vertices.containsKey(src)) {
 			lastSrc = vertices.get(src);
+			PriorityQueue<Vertex<E>> pq = new PriorityQueue<Vertex<E>>();
 			vertices.forEach(new BiConsumer<E, Vertex<E>>() { //Fix the vertices configuration to make Prim
 				@Override
 				public void accept(E t, Vertex<E> u) {
@@ -543,17 +543,16 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 					Vertex<E> s = vertices.get(ale.getSrc());
 					Vertex<E> d = vertices.get(ale.getDst());
 					if(d.getColor() == State.WHITE && d.getDistance() > ale.getWeight()) {
-						d.setDistance(ale.getWeight());
 						pq.remove(ale.getDst());
+						d.setDistance(ale.getWeight());
 						d.setPredecessor(s);
 						prim.add(ale);
 					}
 				}
 				u.setColor(State.BLACK);
 			}
-			return prim;
 		}
-		return null;
+		return prim;
 	}
 	/**
 	 * @return An ArrayList<Edge<E>>

@@ -478,7 +478,16 @@ public class AdjacencyListGraphTest {
 		assertTrue(byDijkstra.get(3) == byFW.get(3), "It is not the shortest path");
 		assertTrue(byDijkstra.get(4) == byFW.get(4), "It is not the shortest path");
 		assertTrue(byDijkstra.get(5) == byFW.get(5), "It is not the shortest path");
+	}
 	
+	@Test
+	public void primTest() {
+		
+	}
+	
+	@Test
+	public void kruskalTest() {
+		
 	}
 
 	private void vertexInsertionLoop() {

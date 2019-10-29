@@ -491,6 +491,16 @@ public class AdjacencyMatrixGraphTest {
 		assertTrue(byDijkstra.get(5) == byFW.get(5), "It is not the shortest path");
 	}
 
+	@Test
+	public void primTest() {
+		
+	}
+	
+	@Test
+	public void kruskalTest() {
+		
+	}
+	
 	private void vertexInsertionLoop() {
 		int vertexCount = 0;
 		for(int i = 0; i < 50; i++) {
