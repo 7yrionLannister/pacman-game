@@ -2,14 +2,11 @@ package model;
 
 import java.util.ArrayList;
 
-public abstract class Ghost {
+public class Ghost {
 	private boolean frightened;
 	private Coordinate position;
 	private Coordinate target;
 	private ArrayList<Coordinate> path;
-	
-	public abstract void updatePath();
-	public abstract void searchTarget();
 	
 	public Ghost(Coordinate position) {
 		this.position = position;

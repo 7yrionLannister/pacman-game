@@ -58,10 +58,10 @@ public class Game {
 	private void initCharacters() {
 		Coordinate pacmanC = coordinates.get(45);
 		pacman = new Pacman(pacmanC, map, pacmanC.getX()+20, pacmanC.getY());
-		inky = new Inky(new Coordinate(153,156,false,false,false,false));
-		pinky = new Pinky(new Coordinate(153,156,false,false,false,false));
-		blinky = new Blinky(new Coordinate(153,156,false,false,false,false));
-		clyde = new Clyde(new Coordinate(153,156,false,false,false,false));
+		inky = new Ghost(new Coordinate(153,156,false,false,false,false));
+		pinky = new Ghost(new Coordinate(153,156,false,false,false,false));
+		blinky = new Ghost(new Coordinate(153,156,false,false,false,false));
+		clyde = new Ghost(new Coordinate(153,156,false,false,false,false));
 	}
 
 	private void initLevels() {
