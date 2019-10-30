@@ -5,11 +5,13 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 
 import dataStructures.AdjacencyListGraph;
 import dataStructures.AdjacencyMatrixGraph;
 import dataStructures.IGraph;
+import model.Pacman.Direction;
 
 
 public class Game {
@@ -19,12 +21,11 @@ public class Game {
 	}
 	public static Coordinate leftTileOfTheTunel;
 	public static Coordinate rightTileOfTheTunel;
-	
+
 	private IGraph<Coordinate> map;
 	private ArrayList<Level> levels;
 	private int currentLevel;
-	//TODO temporalmente estatico por razones de pruebas, cuando todo funcione puede ponerse private
-	static ArrayList<Coordinate> coordinates;
+	private ArrayList<Coordinate> coordinates;
 	private HashMap<Coordinate, Food> food;
 
 	private Pacman pacman;
@@ -40,24 +41,11 @@ public class Game {
 		initLevels();
 		leftTileOfTheTunel = coordinates.get(96);
 		rightTileOfTheTunel = coordinates.get(97);
-		
-		System.out.println("adyacentes al mas derecho");
-		for(Coordinate ccc : map.getAdjacent(rightTileOfTheTunel)) {
-			System.out.println(coordinates.indexOf(ccc)+1);
-		}
-		System.out.println("adyacentes al mas izquierdo");
-		for(Coordinate ccc : map.getAdjacent(leftTileOfTheTunel)) {
-			System.out.println(coordinates.indexOf(ccc)+1);
-		}
-		System.out.println("adyacentes al mas 92");
-		for(Coordinate ccc : map.getAdjacent(coordinates.get(91))) {
-			System.out.println(coordinates.indexOf(ccc)+1);
-		}
 	}
 
 	private void initCharacters() {
 		Coordinate pacmanC = coordinates.get(45);
-		pacman = new Pacman(pacmanC, map, pacmanC.getX()+20, pacmanC.getY());
+		pacman = new Pacman(pacmanC, pacmanC.getX()+20, pacmanC.getY());
 		inky = new Ghost(new Coordinate(153,156,false,false,false,false));
 		pinky = new Ghost(new Coordinate(153,156,false,false,false,false));
 		blinky = new Ghost(new Coordinate(153,156,false,false,false,false));
@@ -121,7 +109,7 @@ public class Game {
 		fr.close();
 		br.close();
 	}
-	
+
 	public void setGameToInitialState() {
 		for(Coordinate coor : coordinates) {
 			food.put(coor, Food.PACDOT);
@@ -140,8 +128,121 @@ public class Game {
 		food.put(coordinates.get(62), Food.NOTHING);
 		food.put(coordinates.get(63), Food.NOTHING);
 		food.put(coordinates.get(64), Food.NOTHING);
-		
+
 		initCharacters();
+	}
+
+	public void movePacman() {
+
+		//System.out.println((Game.coordinates.indexOf(position)+1));
+		switch(pacman.getDirection()) {
+		case DOWN:
+			pacman.setPosY(pacman.getPosY()+1);
+			if(pacman.getPosition().hasDownTile() && pacman.getPosY() == pacman.getPosition().getY()+1) {
+				for(Coordinate neighbor : map.getAdjacent(pacman.getPosition())) {
+					if(neighbor.getX() == pacman.getPosition().getX() && neighbor.getY() > pacman.getPosY()) {
+						pacman.setPosition(neighbor);
+						break;
+					}
+				}
+			} 
+			if(!pacman.getPosition().hasDownTile() && pacman.getPosY() > pacman.getPosition().getY()){
+				pacman.setPosY(pacman.getPosY()-1);
+			}
+			break;
+		case LEFT:
+			pacman.setPosX(pacman.getPosX()-1);
+			if(!pacman.getPosition().equals(rightTileOfTheTunel)) {
+				if(pacman.getPosition().hasLeftTile() && pacman.getPosX() == pacman.getPosition().getX()-1) {
+					for(Coordinate neighbor : map.getAdjacent(pacman.getPosition())) {
+						if(neighbor.getY() == pacman.getPosition().getY() && neighbor.getX() < pacman.getPosX()) {
+							pacman.setPosition(neighbor);
+							if(pacman.getPosition().equals(Game.leftTileOfTheTunel)) {
+								pacman.setPosition(rightTileOfTheTunel);
+								pacman.setPosX(pacman.getPosition().getX()+18);
+								pacman.setPosY(pacman.getPosition().getY());
+							}
+							break;
+						}
+					}
+				}
+			} else if(pacman.getPosX() < pacman.getPosition().getX()) {
+				ArrayList<Coordinate> adj = map.getAdjacent(pacman.getPosition());
+				adj.sort(new Comparator<Coordinate>() {
+					@Override
+					public int compare(Coordinate o1, Coordinate o2) {
+						return Double.compare(o1.getX(), o2.getX());
+					}
+				});
+				Coordinate pos = adj.get(0);
+				for(Coordinate neighbor : map.getAdjacent(pacman.getPosition())) {
+					if(neighbor.getX() > pos.getX()) { 
+						pos = neighbor;
+					}
+				}
+				pacman.setPosition(pos);
+			}
+
+			if(!pacman.getPosition().hasLeftTile() && pacman.getPosX() < pacman.getPosition().getX()) {
+				pacman.setPosX(pacman.getPosX()+1);
+			}
+			break;
+		case RIGHT:
+			/*pacman.setPosX(pacman.getPosX()+1);
+			if(pacman.getPosition().hasRightTile() && pacman.getPosX() == pacman.getPosition().getX()+1) {
+				for(Coordinate neighbor : map.getAdjacent(pacman.getPosition())) {
+					if(neighbor.getY() == pacman.getPosition().getY() && neighbor.getX() > pacman.getPosX()) {
+						pacman.setPosition(neighbor);
+						if(pacman.getPosition().equals(Game.rightTileOfTheTunel)) {
+							pacman.setPosition(leftTileOfTheTunel);
+							pacman.setPosX(pacman.getPosition().getX());
+							pacman.setPosY(pacman.getPosition().getY());
+						}
+						break;
+					}
+				}
+			} 
+			if(!pacman.getPosition().hasRightTile() && pacman.getPosX() > pacman.getPosition().getX()){
+				pacman.setPosX(pacman.getPosX()-1);
+			}*/
+			pacman.setPosX(pacman.getPosX()+1);
+			if(pacman.getPosition().hasRightTile() && pacman.getPosX() == pacman.getPosition().getX()+1) {
+				for(Coordinate neighbor : map.getAdjacent(pacman.getPosition())) {
+					if(neighbor.getY() == pacman.getPosition().getY() && neighbor.getX() > pacman.getPosX()) {
+						pacman.setPosition(neighbor);
+						if(pacman.getPosition().equals(Game.rightTileOfTheTunel)) {
+							pacman.setPosition(leftTileOfTheTunel);
+							pacman.setPosX(pacman.getPosition().getX());
+							pacman.setPosY(pacman.getPosition().getY());
+						}
+						break;
+					}
+				}
+			} 
+			if(!pacman.getPosition().hasRightTile() && pacman.getPosX() > pacman.getPosition().getX()){
+				pacman.setPosX(pacman.getPosX()-1);
+			}
+			break;
+		case UP:
+			pacman.setPosY(pacman.getPosY()-1);
+			if(pacman.getPosition().hasUpTile() && pacman.getPosY() == pacman.getPosition().getY()-1) {
+				for(Coordinate neighbor : map.getAdjacent(pacman.getPosition())) {
+					if(neighbor.getX() == pacman.getPosition().getX() && neighbor.getY() < pacman.getPosY()) {
+						pacman.setPosition(neighbor);
+						break;
+					}
+				}
+			} 
+			if(!pacman.getPosition().hasUpTile() && pacman.getPosY() < pacman.getPosition().getY()) {
+				pacman.setPosY(pacman.getPosY()+1);
+			}
+			break;
+		}
+		if(pacman.getPosY() == pacman.getPosition().getY() && pacman.getPosX() == pacman.getPosition().getX()) {
+			if(((pacman.getPosition().hasRightTile() && pacman.getRequestedDirection() == Direction.RIGHT) || (pacman.getPosition().hasLeftTile() && pacman.getRequestedDirection() == Direction.LEFT)) || ((pacman.getPosition().hasUpTile() && pacman.getRequestedDirection() == Direction.UP) || (pacman.getPosition().hasDownTile() && pacman.getRequestedDirection() == Direction.DOWN))) {
+				pacman.setDirection(pacman.getRequestedDirection());
+			}
+		}
 	}
 
 	public IGraph<Coordinate> getMap() {

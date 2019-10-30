@@ -97,13 +97,13 @@ public class Controller {
 	public void changeDirection(KeyEvent event) {
 		String key = event.getCode().getName().toLowerCase();
 		if(key.equals("up") || key.equals("i") || key.equals("w")) {
-			game.getPacman().setDirection(Direction.UP);
+			game.getPacman().setRequestedDirection(Direction.UP);
 		} else if(key.equals("down") || key.equals("k") || key.equals("s")) {
-			game.getPacman().setDirection(Direction.DOWN);
+			game.getPacman().setRequestedDirection(Direction.DOWN);
 		} else if(key.equals("right") || key.equals("l") || key.equals("d")) {
-			game.getPacman().setDirection(Direction.RIGHT);
+			game.getPacman().setRequestedDirection(Direction.RIGHT);
 		} else if(key.equals("left") || key.equals("j") || key.equals("a")) {
-			game.getPacman().setDirection(Direction.LEFT);
+			game.getPacman().setRequestedDirection(Direction.LEFT);
 		}
 	}
 

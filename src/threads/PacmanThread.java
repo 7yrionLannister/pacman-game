@@ -40,7 +40,7 @@ public class PacmanThread extends Thread {
 					movementSprite = 0;
 				}
 			}
-			pacman.moveForward();
+			g.movePacman();
 			Platform.runLater(new Runnable() {
 				@Override
 				public void run() {
