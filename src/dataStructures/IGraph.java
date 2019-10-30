@@ -65,9 +65,14 @@ public interface IGraph<E> {
 	 * @param src is a reference vertex to start Dijkstra process.
 	 */
 	void Dijkstra(E src) ;
-
+	/**
+	 * @param src is a source vertex 
+	 * @return An ArrayList<Edge<E>>
+	 */
 	ArrayList<Edge<E>> primMinimumSpanningTree(E src);
-	
+	/**
+	 * @return An ArrayList<Edge<E>>
+	 */
 	ArrayList<Edge<E>> kruskalMinimumSpannigTree();
 
 	/**This performs FloydWarshall which find the shortest distance between every pair of vertices.

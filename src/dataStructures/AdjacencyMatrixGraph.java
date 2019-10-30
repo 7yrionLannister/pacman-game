@@ -563,11 +563,43 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 		}
 		return adj;
 	}
-	
+	/**
+	 * @param src
+	 * @return An ArrayList<Edge<E>>
+	 */
 	@Override
 	public ArrayList<Edge<E>> primMinimumSpanningTree(E src) {
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<Edge<E>> prim = new ArrayList<Edge<E>>();
+		PriorityQueue<Vertex<E>> pq = new PriorityQueue<Vertex<E>>();
+		if(keyToIndex.containsKey(src)) {
+			Vertex<E> s = vertices[keyToIndex.get(src)];
+			lastSrc = s;
+			for(int i = 0; i < keyToIndex.size(); i++) { //Fix the vertices configuration to make Dijkstra
+				vertices[i].setDistance(Integer.MAX_VALUE);
+				vertices[i].setColor(State.WHITE);
+				vertices[i].setPredecessor(null);
+				pq.offer(vertices[i]);
+			}
+			pq.remove(lastSrc);
+			lastSrc.setDistance(0);
+			pq.offer(lastSrc);
+			while(!pq.isEmpty()) {
+				Vertex<E> u = pq.poll();
+				int uIndex = keyToIndex.get(u.getElement());
+				for(int i = 0; i < keyToIndex.size(); i++) {
+					Edge<E> edge = new Edge(u, vertices[i], edges[keyToIndex.get(u)][keyToIndex.get(vertices[i])]);
+					if(u.getColor() == State.WHITE && vertices[i].getDistance() > edge.getWeight()) { //edge exists && the current shortest path can be improved
+						pq.remove(vertices[i]);
+						vertices[i].setDistance(edge.getWeight());
+						vertices[i].setPredecessor(u);
+						pq.offer(vertices[i]);
+						prim.add(edge);
+					}
+				}
+				u.setColor(State.BLACK);
+			}
+		}
+		return prim;
 	}
 	
 	@Override
