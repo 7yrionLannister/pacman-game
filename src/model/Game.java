@@ -19,8 +19,8 @@ public class Game {
 	public static enum Food {
 		NOTHING, PACDOT, ENERGIZER, BONUS;
 	}
-	public static Coordinate leftTileOfTheTunel;
-	public static Coordinate rightTileOfTheTunel;
+	private  Coordinate leftTileOfTheTunel;
+	private  Coordinate rightTileOfTheTunel;
 
 	private IGraph<Coordinate> map;
 	private ArrayList<Level> levels;
@@ -39,6 +39,7 @@ public class Game {
 		initGraph();
 		setGameToInitialState();
 		initLevels();
+		currentLevel = 0;
 		leftTileOfTheTunel = coordinates.get(96);
 		rightTileOfTheTunel = coordinates.get(97);
 	}
@@ -118,6 +119,8 @@ public class Game {
 		food.put(coordinates.get(89), Food.ENERGIZER);
 		food.put(coordinates.get(7), Food.ENERGIZER);
 		food.put(coordinates.get(94), Food.ENERGIZER);
+		
+		//no food around the ghosts' house
 		food.put(coordinates.get(33), Food.NOTHING);
 		food.put(coordinates.get(34), Food.NOTHING);
 		food.put(coordinates.get(35), Food.NOTHING);
@@ -128,13 +131,19 @@ public class Game {
 		food.put(coordinates.get(62), Food.NOTHING);
 		food.put(coordinates.get(63), Food.NOTHING);
 		food.put(coordinates.get(64), Food.NOTHING);
+		
+		//no food in the tunnel
+		food.put(coordinates.get(4), Food.NOTHING);
+		food.put(coordinates.get(12), Food.NOTHING);
+		food.put(coordinates.get(82), Food.NOTHING);
+		food.put(coordinates.get(91), Food.NOTHING);
 
 		initCharacters();
 	}
 
 	public void movePacman() {
-
 		//System.out.println((Game.coordinates.indexOf(position)+1));
+		food.put(pacman.getPosition(), Food.NOTHING); //pacman eats
 		switch(pacman.getDirection()) {
 		case DOWN:
 			pacman.setPosY(pacman.getPosY()+1);
@@ -154,15 +163,16 @@ public class Game {
 			pacman.setPosX(pacman.getPosX()-1);
 			if(!pacman.getPosition().equals(rightTileOfTheTunel)) {
 				if(pacman.getPosition().hasLeftTile() && pacman.getPosX() == pacman.getPosition().getX()-1) {
-					for(Coordinate neighbor : map.getAdjacent(pacman.getPosition())) {
-						if(neighbor.getY() == pacman.getPosition().getY() && neighbor.getX() < pacman.getPosX()) {
-							pacman.setPosition(neighbor);
-							if(pacman.getPosition().equals(Game.leftTileOfTheTunel)) {
-								pacman.setPosition(rightTileOfTheTunel);
-								pacman.setPosX(pacman.getPosition().getX()+18);
-								pacman.setPosY(pacman.getPosition().getY());
+					if(pacman.getPosition().equals(leftTileOfTheTunel)) {
+						pacman.setPosition(rightTileOfTheTunel);
+						pacman.setPosX(pacman.getPosition().getX());
+						pacman.setPosY(pacman.getPosition().getY());
+					} else {
+						for(Coordinate neighbor : map.getAdjacent(pacman.getPosition())) {
+							if(neighbor.getY() == pacman.getPosition().getY() && neighbor.getX() < pacman.getPosX()) {
+								pacman.setPosition(neighbor);
+								break;
 							}
-							break;
 						}
 					}
 				}
@@ -188,38 +198,40 @@ public class Game {
 			}
 			break;
 		case RIGHT:
-			/*pacman.setPosX(pacman.getPosX()+1);
-			if(pacman.getPosition().hasRightTile() && pacman.getPosX() == pacman.getPosition().getX()+1) {
-				for(Coordinate neighbor : map.getAdjacent(pacman.getPosition())) {
-					if(neighbor.getY() == pacman.getPosition().getY() && neighbor.getX() > pacman.getPosX()) {
-						pacman.setPosition(neighbor);
-						if(pacman.getPosition().equals(Game.rightTileOfTheTunel)) {
-							pacman.setPosition(leftTileOfTheTunel);
-							pacman.setPosX(pacman.getPosition().getX());
-							pacman.setPosY(pacman.getPosition().getY());
-						}
-						break;
-					}
-				}
-			} 
-			if(!pacman.getPosition().hasRightTile() && pacman.getPosX() > pacman.getPosition().getX()){
-				pacman.setPosX(pacman.getPosX()-1);
-			}*/
 			pacman.setPosX(pacman.getPosX()+1);
-			if(pacman.getPosition().hasRightTile() && pacman.getPosX() == pacman.getPosition().getX()+1) {
-				for(Coordinate neighbor : map.getAdjacent(pacman.getPosition())) {
-					if(neighbor.getY() == pacman.getPosition().getY() && neighbor.getX() > pacman.getPosX()) {
-						pacman.setPosition(neighbor);
-						if(pacman.getPosition().equals(Game.rightTileOfTheTunel)) {
-							pacman.setPosition(leftTileOfTheTunel);
-							pacman.setPosX(pacman.getPosition().getX());
-							pacman.setPosY(pacman.getPosition().getY());
+			if(!pacman.getPosition().equals(leftTileOfTheTunel)) {
+				if(pacman.getPosition().hasRightTile() && pacman.getPosX() == pacman.getPosition().getX()+1) {
+					if(pacman.getPosition().equals(rightTileOfTheTunel)) {
+						pacman.setPosition(leftTileOfTheTunel);
+						pacman.setPosX(pacman.getPosition().getX());
+						pacman.setPosY(pacman.getPosition().getY());
+					} else {
+						for(Coordinate neighbor : map.getAdjacent(pacman.getPosition())) {
+							if(neighbor.getY() == pacman.getPosition().getY() && neighbor.getX() > pacman.getPosX()) {
+								pacman.setPosition(neighbor);
+								break;
+							}
 						}
-						break;
 					}
 				}
-			} 
-			if(!pacman.getPosition().hasRightTile() && pacman.getPosX() > pacman.getPosition().getX()){
+			} else if(pacman.getPosX() > pacman.getPosition().getX()) {
+				ArrayList<Coordinate> adj = map.getAdjacent(pacman.getPosition());
+				adj.sort(new Comparator<Coordinate>() {
+					@Override
+					public int compare(Coordinate o1, Coordinate o2) {
+						return Double.compare(o1.getX(), o2.getX());
+					}
+				});
+				Coordinate pos = adj.get(0);
+				for(Coordinate neighbor : map.getAdjacent(pacman.getPosition())) {
+					if(neighbor.getX() < pos.getX()) { 
+						pos = neighbor;
+					}
+				}
+				pacman.setPosition(pos);
+			}
+
+			if(!pacman.getPosition().hasRightTile() && pacman.getPosX() > pacman.getPosition().getX()) {
 				pacman.setPosX(pacman.getPosX()-1);
 			}
 			break;
@@ -245,6 +257,10 @@ public class Game {
 		}
 	}
 
+	public boolean isEatingDots() {
+		return !food.get(pacman.getPosition()).equals(Food.NOTHING);
+	}
+	
 	public IGraph<Coordinate> getMap() {
 		return map;
 	}

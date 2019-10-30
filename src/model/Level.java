@@ -27,6 +27,7 @@ public class Level {
 	private double pacmanWithEnergizerEatingDotsSpeed;
 	private double frightGhostsSpeed;
 	private int frightTime; 
+	private boolean frightened;
 
 	//speeds are values between 0 and 1 representing the percentage of the global reference speed
 	public Level(int stage, String bonus, double pacmanSpeed, double pacmanEatingDotsSpeed, double ghostsSpeed,
@@ -47,6 +48,7 @@ public class Level {
 		this.pacmanWithEnergizerEatingDotsSpeed = pacmanWithEnergizerEatingDotsSpeed;
 		this.frightGhostsSpeed = frightGhostsSpeed;
 		this.frightTime = frightTime;
+		setFrightened(false);
 	}
 
 	public int getBonusScore() {
@@ -190,5 +192,13 @@ public class Level {
 
 	public void setFrightTime(int frightTime) {
 		this.frightTime = frightTime;
+	}
+
+	public boolean isFrightened() {
+		return frightened;
+	}
+
+	public void setFrightened(boolean frightened) {
+		this.frightened = frightened;
 	}
 }

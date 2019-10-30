@@ -62,8 +62,17 @@ public class PacmanThread extends Thread {
 				}
 			});
 			try {
-				long rate = (long)((1 - g.getCurrentLevel().getPacmanSpeed())*Level.REFERENCE_SPEED);
-				//TODO quitar + cuando se ternime de probar
+				Level level = g.getCurrentLevel();
+				long rate = 0;
+				if(level.isFrightened() && g.isEatingDots()) {
+					rate = (long)((1 - level.getPacmanWithEnergizerEatingDotsSpeed())*Level.REFERENCE_SPEED);
+				} else if(level.isFrightened()) {
+					rate = (long)((1 - level.getPacmanWithEnergizerSpeed())*Level.REFERENCE_SPEED);
+				}  else if(g.isEatingDots()){
+					rate = (long)((1 - level.getPacmanEatingDotsSpeed())*Level.REFERENCE_SPEED);
+				} else {
+					rate = (long)((1 - level.getPacmanSpeed())*Level.REFERENCE_SPEED);
+				}
 				sleep(rate);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
