@@ -257,6 +257,10 @@ public class Game {
 		}
 	}
 
+	public void moveBlinky() {
+		
+	}
+	
 	public boolean isEatingDots() {
 		return !food.get(pacman.getPosition()).equals(Food.NOTHING);
 	}

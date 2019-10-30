@@ -587,7 +587,7 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 				Vertex<E> u = pq.poll();
 				int uIndex = keyToIndex.get(u.getElement());
 				for(int i = 0; i < keyToIndex.size(); i++) {
-					Edge<E> edge = new Edge(u, vertices[i], edges[keyToIndex.get(u)][keyToIndex.get(vertices[i])]);
+					Edge<E> edge = new Edge<>(u.getElement(), vertices[i].getElement(), edges[uIndex][i]);
 					if(u.getColor() == State.WHITE && vertices[i].getDistance() > edge.getWeight()) { //edge exists && the current shortest path can be improved
 						pq.remove(vertices[i]);
 						vertices[i].setDistance(edge.getWeight());
