@@ -482,12 +482,35 @@ public class AdjacencyListGraphTest {
 	
 	@Test
 	public void primTest() {
-		
+		linkVerticesInUndirectedGraphTest();
+		int src = 7;
+		ArrayList<Edge<Integer>> mst = graph.primMinimumSpanningTree(src);
+		for(Edge<Integer> ed : mst) {
+			System.out.println(ed.getSrc() + " ---> " + ed.getDst());
+		}
+		System.out.println(src);
+		src = 4;
+		mst = graph.primMinimumSpanningTree(src);
+		for(Edge<Integer> ed : mst) {
+			System.out.println(ed.getSrc() + " ---> " + ed.getDst());
+		}
+		System.out.println(src);
+		src = 1;
+		mst = graph.primMinimumSpanningTree(src);
+		for(Edge<Integer> ed : mst) {
+			System.out.println(ed.getSrc() + " ---> " + ed.getDst());
+		}
+		System.out.println(src);
+		src = 3;
+		mst = graph.primMinimumSpanningTree(src);
+		for(Edge<Integer> ed : mst) {
+			System.out.println(ed.getSrc() + " ---> " + ed.getDst());
+		}
 	}
 	
 	@Test
 	public void kruskalTest() {
-		
+		//TODO implementar
 	}
 
 	private void vertexInsertionLoop() {
