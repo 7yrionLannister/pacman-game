@@ -543,17 +543,15 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 					Vertex<E> s = vertices.get(ale.getSrc());
 					Vertex<E> d = vertices.get(ale.getDst());
 					if(d.getColor() == State.WHITE && d.getDistance() > ale.getWeight()) {
-						pq.remove(ale.getDst());
+						pq.remove(d);
 						Vertex<E> pred = vertices.get(ale.getDst()).getPredecessor();
 						if(pred != null) { //remove the edge that has ale.dst as dst vertex
 							Edge<E> edgeToRemove = new Edge<>(pred.getElement(), ale.getDst(), 1);
-							System.out.println("while evaluating: "+s.getElement());
-							System.out.println("dst color: "+"("+vertices.get(edgeToRemove.getDst()).getElement()+")"+vertices.get(edgeToRemove.getDst()).getColor());
-							System.out.println("remove: "+edgeToRemove.getSrc()+" ---> "+edgeToRemove.getDst());
 							prim.remove(edgeToRemove);
 						}
 						d.setDistance(ale.getWeight());
 						d.setPredecessor(s);
+						pq.offer(d);
 						prim.add(ale);
 					}
 				}

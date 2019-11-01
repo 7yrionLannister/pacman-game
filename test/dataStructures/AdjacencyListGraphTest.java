@@ -484,6 +484,7 @@ public class AdjacencyListGraphTest {
 	public void primTest() {
 		linkVerticesInUndirectedGraphTest();
 		int src = 7;
+		System.out.println(src);
 		ArrayList<Edge<Integer>> mst = graph.primMinimumSpanningTree(src);
 		for(Edge<Integer> ed : mst) {
 			System.out.println(ed.getSrc() + " ---> " + ed.getDst());
