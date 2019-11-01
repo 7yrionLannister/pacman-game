@@ -45,10 +45,10 @@ public class Game {
 
 	private void initCharacters() {
 		Coordinate pacmanC = coordinates.get(45);
-		pacman = new Pacman(pacmanC, pacmanC.getX()+20, pacmanC.getY());
+		pacman = new Pacman(pacmanC, pacmanC.getX()+15, pacmanC.getY()); //TODO 20 son en Linux, en MacOS son 15
 		inky = new Ghost(new Coordinate(153,156,false,false,false,false));
 		pinky = new Ghost(new Coordinate(153,156,false,false,false,false));
-		blinky = new Ghost(new Coordinate(153,156,false,false,false,false));
+		blinky = new Ghost(coordinates.get(52));
 		clyde = new Ghost(new Coordinate(153,156,false,false,false,false));
 	}
 
@@ -94,7 +94,7 @@ public class Game {
 		String line = br.readLine();
 		while(!line.equalsIgnoreCase("edges:")) {
 			String[] coord = line.split(",");
-			Coordinate toAdd = new Coordinate(Double.parseDouble(coord[0]), Double.parseDouble(coord[1]), Boolean.parseBoolean(coord[2]), Boolean.parseBoolean(coord[3]), Boolean.parseBoolean(coord[4]), Boolean.parseBoolean(coord[5]));
+			Coordinate toAdd = new Coordinate(5+Double.parseDouble(coord[0]), Double.parseDouble(coord[1]), Boolean.parseBoolean(coord[2]), Boolean.parseBoolean(coord[3]), Boolean.parseBoolean(coord[4]), Boolean.parseBoolean(coord[5]));
 			coordinates.add(toAdd);
 			map.insertVertex(toAdd);
 			line = br.readLine();

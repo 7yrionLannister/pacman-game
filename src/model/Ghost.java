@@ -13,6 +13,8 @@ public class Ghost {
 	
 	public Ghost(Coordinate position) {
 		this.position = position;
+		posX = position.getX()-14; //TODO -14 aniadido para compatibilidad con MacOS, hacer condicional de sistema operativo para saber si hay que sumar o no el -14
+		posY = position.getY();
 	}
 	
 	public boolean isFrightened() {

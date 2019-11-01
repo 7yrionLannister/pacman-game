@@ -93,6 +93,9 @@ public class Controller {
 		gameOverImage.setVisible(false);
 		bonusImage.setVisible(false);
 
+		pacman.relocate(game.getPacman().getPosX(), game.getPacman().getPosY());
+		blinky.relocate(game.getBlinky().getPosX(), game.getBlinky().getPosY());
+		//TODO hacer lo mismo con cada personaje y ademas tambien acomodar los cuadritos negros del tunel si se detecta que es MacOS 
 		onPause = true;
 	}
 
