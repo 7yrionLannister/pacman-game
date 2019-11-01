@@ -21,40 +21,40 @@ public class GhostThread extends Thread {
 		blinkyImage = c.getBlinky();
 		g = c.getGame();
 		blinky = g.getBlinky();
-		movementSprite = 0;
+		blinkyImage = c.getBlinky();
 		setDaemon(true);
 	}
 	
 	@Override
 	public void run() {
 		while(!c.isOnPause()) {
-			pacmanImage.setImage(new Image(new File(MOVEMENTS+movementSprite+".png").toURI().toString()));
-			movement_counter++;
-			if(movement_counter % 3== 0) {
-				movementSprite++;
-				if(movementSprite > 3) {
-					movementSprite = 0;
+			blinkyImage.setImage(new Image(new File(Controller.MOVEMENTS+Controller.MOVEMENT_SPRITE+".png").toURI().toString()));
+			Controller.MOVEMENT_COUNTER++;
+			if(Controller.MOVEMENT_COUNTER % 3== 0) {
+				Controller.MOVEMENT_SPRITE++;
+				if(Controller.MOVEMENT_SPRITE > 3) {
+					Controller.MOVEMENT_SPRITE = 0;
 				}
 			}
 			g.movePacman();
 			Platform.runLater(new Runnable() {
 				@Override
 				public void run() {
-					switch(pacman.getDirection()) {
+					switch(blinky.getDirection()) {
 					case DOWN:
-						pacmanImage.setRotate(90);
+						blinkyImage.setRotate(90);
 						break;
 					case LEFT:
-						pacmanImage.setRotate(180);
+						blinkyImage.setRotate(180);
 						break;
 					case RIGHT:
-						pacmanImage.setRotate(0);
+						blinkyImage.setRotate(0);
 						break;
 					case UP:
-						pacmanImage.setRotate(270);
+						blinkyImage.setRotate(270);
 						break;
 					}
-					pacmanImage.relocate(pacman.getPosX(), pacman.getPosY());	
+					blinkyImage.relocate(blinky.getPosX(), blinky.getPosY());	
 				}
 			});
 			try {

@@ -12,31 +12,29 @@ import ui.Controller;
 
 
 public class PacmanThread extends Thread {
-	public final static String MOVEMENTS = "resources/sprites/pacman/movements/";
 	private Controller c;
 	private ImageView pacmanImage;
 	private Game g;
 	private Pacman pacman;
-	private int movementSprite;
 
 	public PacmanThread(Controller c) {
 		this.c = c;
 		pacmanImage = c.getPacman();
 		g = c.getGame();
 		pacman = g.getPacman();
-		movementSprite = 0;
+		Controller.MOVEMENT_SPRITE = 0;
 		setDaemon(true);
 	}
 
 	@Override
 	public void run() {
 		while(!c.isOnPause()) {
-			pacmanImage.setImage(new Image(new File(MOVEMENTS+movementSprite+".png").toURI().toString()));
+			pacmanImage.setImage(new Image(new File(Controller.MOVEMENTS+Controller.MOVEMENT_SPRITE+".png").toURI().toString()));
 			Controller.MOVEMENT_COUNTER++;
 			if(Controller.MOVEMENT_COUNTER % 3== 0) {
-				movementSprite++;
-				if(movementSprite > 3) {
-					movementSprite = 0;
+				Controller.MOVEMENT_SPRITE++;
+				if(Controller.MOVEMENT_SPRITE > 3) {
+					Controller.MOVEMENT_SPRITE = 0;
 				}
 			}
 			g.movePacman();
