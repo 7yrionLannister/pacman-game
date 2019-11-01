@@ -11,7 +11,6 @@ import java.util.HashMap;
 import dataStructures.AdjacencyListGraph;
 import dataStructures.AdjacencyMatrixGraph;
 import dataStructures.IGraph;
-import model.Pacman.Direction;
 
 
 public class Game {
@@ -258,7 +257,16 @@ public class Game {
 	}
 
 	public void moveBlinky() {
-		
+		switch(blinky.getDirection()) {
+		case RIGHT:
+			break;
+		case DOWN:
+			break;
+		case LEFT:
+			break;
+		case UP:
+			break;
+		}
 	}
 	
 	public boolean isEatingDots() {

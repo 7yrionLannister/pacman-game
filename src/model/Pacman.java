@@ -2,8 +2,6 @@ package model;
 
 
 public class Pacman {
-	public static enum Direction {LEFT, RIGHT, UP, DOWN}
-
 	private Coordinate position;
 	private double posX;
 	private double posY;

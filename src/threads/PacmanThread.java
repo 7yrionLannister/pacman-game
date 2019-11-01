@@ -13,7 +13,6 @@ import ui.Controller;
 
 public class PacmanThread extends Thread {
 	public final static String MOVEMENTS = "resources/sprites/pacman/movements/";
-	public static long movement_counter; //TODO eventualmente, pon esto donde todos los hilos lo puedan usar, sera util
 	private Controller c;
 	private ImageView pacmanImage;
 	private Game g;
@@ -33,8 +32,8 @@ public class PacmanThread extends Thread {
 	public void run() {
 		while(!c.isOnPause()) {
 			pacmanImage.setImage(new Image(new File(MOVEMENTS+movementSprite+".png").toURI().toString()));
-			movement_counter++;
-			if(movement_counter % 3== 0) {
+			Controller.MOVEMENT_COUNTER++;
+			if(Controller.MOVEMENT_COUNTER % 3== 0) {
 				movementSprite++;
 				if(movementSprite > 3) {
 					movementSprite = 0;

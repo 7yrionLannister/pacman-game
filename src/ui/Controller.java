@@ -12,12 +12,14 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import model.Coordinate;
+import model.Direction;
 import model.Game;
-import model.Pacman.Direction;
 import threads.PacmanThread;
 
 
 public class Controller {
+	public static long MOVEMENT_COUNTER;
+	
 	@FXML
 	private FlowPane livesContainer;
 
