@@ -19,7 +19,6 @@ import threads.PacmanThread;
 
 public class Controller {
 	public static long MOVEMENT_COUNTER;
-	public final static String MOVEMENTS = "resources/sprites/pacman/movements/";
 	public static long MOVEMENT_SPRITE;
 	
 	@FXML

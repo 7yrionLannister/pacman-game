@@ -11,11 +11,12 @@ import model.Level;
 import ui.Controller;
 
 public class GhostThread extends Thread {
+	public final static String MOVEMENTS = "resources/sprites/ghosts/blinky";
 	private Controller c;
 	private Game g;
 	private Ghost blinky;
 	private ImageView blinkyImage;
-	
+
 	public GhostThread(Controller c) {
 		this.c = c;
 		blinkyImage = c.getBlinky();
@@ -24,37 +25,34 @@ public class GhostThread extends Thread {
 		blinkyImage = c.getBlinky();
 		setDaemon(true);
 	}
-	
+
 	@Override
 	public void run() {
 		while(!c.isOnPause()) {
-			blinkyImage.setImage(new Image(new File(Controller.MOVEMENTS+Controller.MOVEMENT_SPRITE+".png").toURI().toString()));
-			Controller.MOVEMENT_COUNTER++;
-			if(Controller.MOVEMENT_COUNTER % 3== 0) {
-				Controller.MOVEMENT_SPRITE++;
-				if(Controller.MOVEMENT_SPRITE > 3) {
-					Controller.MOVEMENT_SPRITE = 0;
-				}
-			}
+			blinkyImage.setImage(new Image(new File(MOVEMENTS+Controller.MOVEMENT_SPRITE+".png").toURI().toString()));
 			g.movePacman();
 			Platform.runLater(new Runnable() {
 				@Override
 				public void run() {
-					switch(blinky.getDirection()) {
-					case DOWN:
-						blinkyImage.setRotate(90);
-						break;
-					case LEFT:
-						blinkyImage.setRotate(180);
-						break;
-					case RIGHT:
-						blinkyImage.setRotate(0);
-						break;
-					case UP:
-						blinkyImage.setRotate(270);
-						break;
+					if(blinky.isFrightened()) {
+
+					} else {
+						switch(blinky.getDirection()) {
+						case DOWN:
+							blinkyImage.setRotate(90);
+							break;
+						case LEFT:
+							blinkyImage.setRotate(180);
+							break;
+						case RIGHT:
+							blinkyImage.setRotate(0);
+							break;
+						case UP:
+							blinkyImage.setRotate(270);
+							break;
+						}
+						blinkyImage.relocate(blinky.getPosX(), blinky.getPosY());	
 					}
-					blinkyImage.relocate(blinky.getPosX(), blinky.getPosY());	
 				}
 			});
 			try {
