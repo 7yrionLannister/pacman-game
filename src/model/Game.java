@@ -52,7 +52,7 @@ public class Game {
 
 	private void initCharacters() {
 		Coordinate tile = coordinates.get(45);
-		double xCoord = tile.getX()+15;
+		double xCoord = tile.getX()+20; //TODO modificado para que se vea bien en mac asi que si da problemas en linux revisar bien
 		if(!runningLinux) {
 			xCoord -= 5;
 		}
@@ -193,116 +193,121 @@ public class Game {
 
 		food.put(pacman.getPosition(), Food.NOTHING); //pacman ate
 
-		switch(pacman.getDirection()) {
-		case DOWN:
-			pacman.setPosY(pacman.getPosY()+1);
-			if(pacman.getPosition().hasDownTile() && pacman.getPosY() == pacman.getPosition().getY()+1) {
-				for(Coordinate neighbor : map.getAdjacent(pacman.getPosition())) {
-					if(neighbor.getX() == pacman.getPosition().getX() && neighbor.getY() > pacman.getPosY()) {
-						pacman.setPosition(neighbor);
-						break;
-					}
-				}
-			} 
-			if(!pacman.getPosition().hasDownTile() && pacman.getPosY() > pacman.getPosition().getY()){
-				pacman.setPosY(pacman.getPosY()-1);
-			}
-			break;
-		case LEFT:
-			pacman.setPosX(pacman.getPosX()-1);
-			if(!pacman.getPosition().equals(rightTileOfTheTunel)) {
-				if(pacman.getPosition().hasLeftTile() && pacman.getPosX() == pacman.getPosition().getX()-1) {
-					if(pacman.getPosition().equals(leftTileOfTheTunel)) {
-						pacman.setPosition(rightTileOfTheTunel);
-						pacman.setPosX(pacman.getPosition().getX());
-						pacman.setPosY(pacman.getPosition().getY());
-					} else {
-						for(Coordinate neighbor : map.getAdjacent(pacman.getPosition())) {
-							if(neighbor.getY() == pacman.getPosition().getY() && neighbor.getX() < pacman.getPosX()) {
-								pacman.setPosition(neighbor);
-								break;
-							}
-						}
-					}
-				}
-			} else if(pacman.getPosX() < pacman.getPosition().getX()) {
-				ArrayList<Coordinate> adj = map.getAdjacent(pacman.getPosition());
-				adj.sort(new Comparator<Coordinate>() {
-					@Override
-					public int compare(Coordinate o1, Coordinate o2) {
-						return Double.compare(o1.getX(), o2.getX());
-					}
-				});
-				Coordinate pos = adj.get(0);
-				for(Coordinate neighbor : map.getAdjacent(pacman.getPosition())) {
-					if(neighbor.getX() > pos.getX()) { 
-						pos = neighbor;
-					}
-				}
-				pacman.setPosition(pos);
-			}
-
-			if(!pacman.getPosition().hasLeftTile() && pacman.getPosX() < pacman.getPosition().getX()) {
-				pacman.setPosX(pacman.getPosX()+1);
-			}
-			break;
-		case RIGHT:
-			pacman.setPosX(pacman.getPosX()+1);
-			if(!pacman.getPosition().equals(leftTileOfTheTunel)) {
-				if(pacman.getPosition().hasRightTile() && pacman.getPosX() == pacman.getPosition().getX()+1) {
-					if(pacman.getPosition().equals(rightTileOfTheTunel)) {
-						pacman.setPosition(leftTileOfTheTunel);
-						pacman.setPosX(pacman.getPosition().getX());
-						pacman.setPosY(pacman.getPosition().getY());
-					} else {
-						for(Coordinate neighbor : map.getAdjacent(pacman.getPosition())) {
-							if(neighbor.getY() == pacman.getPosition().getY() && neighbor.getX() > pacman.getPosX()) {
-								pacman.setPosition(neighbor);
-								break;
-							}
-						}
-					}
-				}
-			} else if(pacman.getPosX() > pacman.getPosition().getX()) {
-				ArrayList<Coordinate> adj = map.getAdjacent(pacman.getPosition());
-				adj.sort(new Comparator<Coordinate>() {
-					@Override
-					public int compare(Coordinate o1, Coordinate o2) {
-						return Double.compare(o1.getX(), o2.getX());
-					}
-				});
-				Coordinate pos = adj.get(0);
-				for(Coordinate neighbor : map.getAdjacent(pacman.getPosition())) {
-					if(neighbor.getX() < pos.getX()) { 
-						pos = neighbor;
-					}
-				}
-				pacman.setPosition(pos);
-			}
-
-			if(!pacman.getPosition().hasRightTile() && pacman.getPosX() > pacman.getPosition().getX()) {
-				pacman.setPosX(pacman.getPosX()-1);
-			}
-			break;
-		case UP:
-			pacman.setPosY(pacman.getPosY()-1);
-			if(pacman.getPosition().hasUpTile() && pacman.getPosY() == pacman.getPosition().getY()-1) {
-				for(Coordinate neighbor : map.getAdjacent(pacman.getPosition())) {
-					if(neighbor.getX() == pacman.getPosition().getX() && neighbor.getY() < pacman.getPosY()) {
-						pacman.setPosition(neighbor);
-						break;
-					}
-				}
-			} 
-			if(!pacman.getPosition().hasUpTile() && pacman.getPosY() < pacman.getPosition().getY()) {
-				pacman.setPosY(pacman.getPosY()+1);
-			}
-			break;
-		}
+		moveCharacter(pacman);
+		
 		if(pacman.getPosY() == pacman.getPosition().getY() && pacman.getPosX() == pacman.getPosition().getX()) {
 			if(((pacman.getPosition().hasRightTile() && pacman.getRequestedDirection() == Direction.RIGHT) || (pacman.getPosition().hasLeftTile() && pacman.getRequestedDirection() == Direction.LEFT)) || ((pacman.getPosition().hasUpTile() && pacman.getRequestedDirection() == Direction.UP) || (pacman.getPosition().hasDownTile() && pacman.getRequestedDirection() == Direction.DOWN))) {
 				pacman.setDirection(pacman.getRequestedDirection());
 			}
+		}
+	}
+
+	private void moveCharacter(Character character) {
+		switch(character.getDirection()) {
+		case DOWN:
+			character.setPosY(character.getPosY()+1);
+			if(character.getPosition().hasDownTile() && character.getPosY() == character.getPosition().getY()+1) {
+				for(Coordinate neighbor : map.getAdjacent(character.getPosition())) {
+					if(neighbor.getX() == character.getPosition().getX() && neighbor.getY() > character.getPosY()) {
+						character.setPosition(neighbor);
+						break;
+					}
+				}
+			} 
+			if(!character.getPosition().hasDownTile() && character.getPosY() > character.getPosition().getY()){
+				character.setPosY(character.getPosY()-1);
+			}
+			break;
+		case LEFT:
+			character.setPosX(character.getPosX()-1);
+			if(!character.getPosition().equals(rightTileOfTheTunel)) {
+				if(character.getPosition().hasLeftTile() && character.getPosX() == character.getPosition().getX()-1) {
+					if(character.getPosition().equals(leftTileOfTheTunel)) {
+						character.setPosition(rightTileOfTheTunel);
+						character.setPosX(character.getPosition().getX());
+						character.setPosY(character.getPosition().getY());
+					} else {
+						for(Coordinate neighbor : map.getAdjacent(character.getPosition())) {
+							if(neighbor.getY() == character.getPosition().getY() && neighbor.getX() < character.getPosX()) {
+								character.setPosition(neighbor);
+								break;
+							}
+						}
+					}
+				}
+			} else if(character.getPosX() < character.getPosition().getX()) {
+				ArrayList<Coordinate> adj = map.getAdjacent(character.getPosition());
+				adj.sort(new Comparator<Coordinate>() {
+					@Override
+					public int compare(Coordinate o1, Coordinate o2) {
+						return Double.compare(o1.getX(), o2.getX());
+					}
+				});
+				Coordinate pos = adj.get(0);
+				for(Coordinate neighbor : map.getAdjacent(character.getPosition())) {
+					if(neighbor.getX() > pos.getX()) { 
+						pos = neighbor;
+					}
+				}
+				character.setPosition(pos);
+			}
+
+			if(!character.getPosition().hasLeftTile() && character.getPosX() < character.getPosition().getX()) {
+				character.setPosX(character.getPosX()+1);
+			}
+			break;
+		case RIGHT:
+			character.setPosX(character.getPosX()+1);
+			if(!character.getPosition().equals(leftTileOfTheTunel)) {
+				if(character.getPosition().hasRightTile() && character.getPosX() == character.getPosition().getX()+1) {
+					if(character.getPosition().equals(rightTileOfTheTunel)) {
+						character.setPosition(leftTileOfTheTunel);
+						character.setPosX(character.getPosition().getX());
+						character.setPosY(character.getPosition().getY());
+					} else {
+						for(Coordinate neighbor : map.getAdjacent(character.getPosition())) {
+							if(neighbor.getY() == character.getPosition().getY() && neighbor.getX() > character.getPosX()) {
+								character.setPosition(neighbor);
+								break;
+							}
+						}
+					}
+				}
+			} else if(character.getPosX() > character.getPosition().getX()) {
+				ArrayList<Coordinate> adj = map.getAdjacent(character.getPosition());
+				adj.sort(new Comparator<Coordinate>() {
+					@Override
+					public int compare(Coordinate o1, Coordinate o2) {
+						return Double.compare(o1.getX(), o2.getX());
+					}
+				});
+				Coordinate pos = adj.get(0);
+				for(Coordinate neighbor : map.getAdjacent(character.getPosition())) {
+					if(neighbor.getX() < pos.getX()) { 
+						pos = neighbor;
+					}
+				}
+				character.setPosition(pos);
+			}
+
+			if(!character.getPosition().hasRightTile() && character.getPosX() > character.getPosition().getX()) {
+				character.setPosX(character.getPosX()-1);
+			}
+			break;
+		case UP:
+			character.setPosY(character.getPosY()-1);
+			if(character.getPosition().hasUpTile() && character.getPosY() == character.getPosition().getY()-1) {
+				for(Coordinate neighbor : map.getAdjacent(character.getPosition())) {
+					if(neighbor.getX() == character.getPosition().getX() && neighbor.getY() < character.getPosY()) {
+						character.setPosition(neighbor);
+						break;
+					}
+				}
+			} 
+			if(!character.getPosition().hasUpTile() && character.getPosY() < character.getPosition().getY()) {
+				character.setPosY(character.getPosY()+1);
+			}
+			break;
 		}
 	}
 
@@ -369,20 +374,9 @@ public class Game {
 	}
 
 	public void moveBlinky() {
-		switch(blinky.getDirection()) {
-		case RIGHT:
-			blinky.setPosX(blinky.getPosX()+1);
-			break;
-		case DOWN:
-			blinky.setPosY(blinky.getPosY()+1);
-			break;
-		case LEFT:
-			blinky.setPosX(blinky.getPosX()-1);
-			break;
-		case UP:
-			blinky.setPosY(blinky.getPosY()-1);
-			break;
-		}
+		moveCharacter(blinky);
+		//FIXME no es que esta mal, es que no se ha implementado, debes cambiar la direccion si la siguiente casilla en el path da una vuelta
+		//
 		//TODO el siguiente if es una de las pruebas
 		if(!blinky.getPath().isEmpty()) {
 			Coordinate next = blinky.getPath().remove(0); 
