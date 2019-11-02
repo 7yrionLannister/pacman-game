@@ -493,6 +493,7 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 	 * @return An ArrayList<E> that represents the path between src and dst. 
 	 * @param src is a vertex from which we can access to dst. 
 	 * @param dst is the vertex which dst can access.
+	 * @throws NullPointerException if either src or dst are not elements of the graph
 	 */
 	@Override
 	public ArrayList<E> getPath(E src, E dst) {

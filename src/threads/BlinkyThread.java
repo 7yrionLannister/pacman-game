@@ -72,14 +72,13 @@ public class BlinkyThread extends Thread {
 					rate = (long)((1 - level.getFrightGhostsSpeed())*Level.REFERENCE_SPEED);
 				} else if(blinky.isInTheTunnel()) {
 					rate = (long)((1 - level.getGhostsTunelSpeed())*Level.REFERENCE_SPEED);
-				}  else if(level.getDotsLeft() <= level.getCruiseElroyDotsLeft1()){
-					rate = (long)((1 - level.getCruiseElroySpeed1())*Level.REFERENCE_SPEED);
-				} else if(level.getDotsLeft() <= level.getCruiseElroyDotsLeft2()){
+				}  else if(level.getDotsLeft() <= level.getCruiseElroyDotsLeft2()){
 					rate = (long)((1 - level.getCruiseElroySpeed2())*Level.REFERENCE_SPEED);
+				} else if(level.getDotsLeft() <= level.getCruiseElroyDotsLeft1()){
+					rate = (long)((1 - level.getCruiseElroySpeed1())*Level.REFERENCE_SPEED);
 				} else {
 					rate = (long)((1 - level.getGhostsSpeed())*Level.REFERENCE_SPEED);
 				}
-				System.out.println(rate);
 				sleep(rate);
 			} catch (InterruptedException e) {
 				e.printStackTrace();

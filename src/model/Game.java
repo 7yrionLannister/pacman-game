@@ -36,7 +36,7 @@ public class Game {
 	private Ghost pinky;
 	private Ghost blinky;
 	private Ghost clyde;
-	
+
 	private int score;
 
 	public Game() throws IOException {
@@ -45,6 +45,9 @@ public class Game {
 		currentLevel = 0;
 		leftTileOfTheTunel = coordinates.get(96);
 		rightTileOfTheTunel = coordinates.get(97);
+		//TODO esta linea esta siendo usada para probar que blinky siga una ruta
+		//TODO tenerlo en cuenta y eliminar todo lo asociado a esta linea al termianr la prueba
+		searchTargets();
 	}
 
 	private void initCharacters() {
@@ -57,15 +60,19 @@ public class Game {
 		tile = coordinates.get(42);
 		blinky = new Ghost(tile, "blinky", xCoord, tile.getY());
 		blinky.setDirection(Direction.LEFT);
+		blinky.setTarget(coordinates.get(68));
 		tile = new Coordinate(xCoord, tile.getY()+27,false,false,false,false);
 		pinky = new Ghost(tile, "pinky", tile.getX(), tile.getY()+5);
 		pinky.setDirection(Direction.UP);
+		pinky.setTarget(coordinates.get(17));
 		tile = new Coordinate(xCoord-20, tile.getY(),false,false,false,false);
 		inky = new Ghost(tile, "inky", tile.getX(), tile.getY());
 		inky.setDirection(Direction.DOWN);
+		inky.setTarget(coordinates.get(77));
 		tile = new Coordinate(xCoord+20, tile.getY(),false,false,false,false);
 		clyde = new Ghost(tile, "clyde", tile.getX(), tile.getY());
 		clyde.setDirection(Direction.DOWN);
+		clyde.setTarget(coordinates.get(26));
 	}
 
 	private void initLevels() {
@@ -179,12 +186,13 @@ public class Game {
 		case PACDOT:
 			getCurrentLevel().setDotsLeft(getCurrentLevel().getDotsLeft()-1);
 			break;
-		default:System.out.println("nononononon");
+		default:
+			//c:
 			break;
 		}
-		
+
 		food.put(pacman.getPosition(), Food.NOTHING); //pacman ate
-		
+
 		switch(pacman.getDirection()) {
 		case DOWN:
 			pacman.setPosY(pacman.getPosY()+1);
@@ -311,11 +319,15 @@ public class Game {
 			} else {
 				blinky.setTarget(coordinates.get(89));
 			}
+			blinky.setPath(map.getPath(blinky.getPosition(), blinky.getTarget()));
 			//PINKY
 			if(!pinky.getTarget().equals(coordinates.get(17))) {
 				pinky.setTarget(coordinates.get(17));
 			} else {
 				pinky.setTarget(coordinates.get(2));
+			}
+			if(map.containsVertex(pinky.getPosition())) {
+				pinky.setPath(map.getPath(pinky.getPosition(), pinky.getTarget()));
 			}
 			//INKY
 			if(inky.getTarget().equals(coordinates.get(56))) {
@@ -325,6 +337,9 @@ public class Game {
 			} else {
 				inky.setTarget(coordinates.get(56));
 			}
+			if(map.containsVertex(inky.getPosition())) {
+				inky.setPath(map.getPath(inky.getPosition(), inky.getTarget()));
+			}
 			//CLYDE
 			if(clyde.getTarget().equals(coordinates.get(46))) {
 				clyde.setTarget(coordinates.get(26));
@@ -332,6 +347,9 @@ public class Game {
 				clyde.setTarget(coordinates.get(16));
 			} else {
 				clyde.setTarget(coordinates.get(46));
+			}
+			if(map.containsVertex(clyde.getPosition())) {
+				clyde.setPath(map.getPath(clyde.getPosition(), clyde.getTarget()));
 			}
 			break;
 		}
@@ -353,13 +371,23 @@ public class Game {
 	public void moveBlinky() {
 		switch(blinky.getDirection()) {
 		case RIGHT:
+			blinky.setPosX(blinky.getPosX()+1);
 			break;
 		case DOWN:
+			blinky.setPosY(blinky.getPosY()+1);
 			break;
 		case LEFT:
+			blinky.setPosX(blinky.getPosX()-1);
 			break;
 		case UP:
+			blinky.setPosY(blinky.getPosY()-1);
 			break;
+		}
+		//TODO el siguiente if es una de las pruebas
+		if(!blinky.getPath().isEmpty()) {
+			Coordinate next = blinky.getPath().remove(0); 
+			blinky.setPosX(next.getX());
+			blinky.setPosY(next.getY());
 		}
 	}
 
