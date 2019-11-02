@@ -28,6 +28,7 @@ public class Level {
 	private double frightGhostsSpeed;
 	private int frightTime; 
 	private boolean frightened;
+	private int dotsLeft;
 
 	//speeds are values between 0 and 1 representing the percentage of the global reference speed
 	public Level(int stage, String bonus, double pacmanSpeed, double pacmanEatingDotsSpeed, double ghostsSpeed,
@@ -200,5 +201,13 @@ public class Level {
 
 	public void setFrightened(boolean frightened) {
 		this.frightened = frightened;
+	}
+
+	public int getDotsLeft() {
+		return dotsLeft;
+	}
+
+	public void setDotsLeft(int dotsLeft) {
+		this.dotsLeft = dotsLeft;
 	}
 }

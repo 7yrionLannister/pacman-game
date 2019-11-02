@@ -3,7 +3,7 @@ package dataStructures;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.PriorityQueue;
-import dataStructures.Vertex.State;
+import dataStructures.Vertex.Color;
 
 
 public class AdjacencyMatrixGraph<E> implements IGraph<E> {
@@ -189,11 +189,11 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 			Vertex<E> s = vertices[keyToIndex.get(src)];
 			lastSrc = s;
 			for(int i = 0; i < keyToIndex.size(); i++) { //Fix the vertices configuration to make BFS
-				vertices[i].setColor(State.WHITE);
+				vertices[i].setColor(Color.WHITE);
 				vertices[i].setDistance(Integer.MAX_VALUE);
 				vertices[i].setPredecessor(null);
 			}
-			s.setColor(State.GRAY);
+			s.setColor(Color.GRAY);
 			s.setDistance(0);
 			//s.predecessor is already null so skip that step
 			Queue<Vertex<E>> queue = new Queue<>();
@@ -204,14 +204,14 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 					int[] adj = edges[keyToIndex.get(u.getElement())];
 					for(int i = 0; i < vertices.length; i++) {
 						Vertex<E> v = vertices[i];
-						if(u != v && adj[i] != Integer.MAX_VALUE && v.getColor() == State.WHITE) { // no self loop && edge exists && no visited yet
-							v.setColor(State.GRAY);
+						if(u != v && adj[i] != Integer.MAX_VALUE && v.getColor() == Color.WHITE) { // no self loop && edge exists && no visited yet
+							v.setColor(Color.GRAY);
 							v.setDistance(u.getDistance()+1);
 							v.setPredecessor(u);
 							queue.enqueue(v);
 						}
 					}
-					u.setColor(State.BLACK);
+					u.setColor(Color.BLACK);
 				}
 			} catch(Exception emptyQueueException) {
 				//-_-
@@ -261,12 +261,12 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 	@Override
 	public void DFS() {
 		for(int i = 0; i < keyToIndex.size(); i++) { //Fix the vertices configuration to make DFS
-			vertices[i].setColor(State.WHITE);
+			vertices[i].setColor(Color.WHITE);
 			vertices[i].setPredecessor(null);
 		}
 		DFStime = 0;
 		for(int i = 0; i < keyToIndex.size(); i++) {
-			if(vertices[i].getColor() == State.WHITE) {
+			if(vertices[i].getColor() == Color.WHITE) {
 				DFSVisit(vertices[i]);
 			}
 		}
@@ -278,17 +278,17 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 	private void DFSVisit(Vertex<E> u) {
 		DFStime++;
 		u.setDiscovered(DFStime);
-		u.setColor(State.GRAY);
+		u.setColor(Color.GRAY);
 		int uIndex = keyToIndex.get(u.getElement());
 		for(int i = 0; i < keyToIndex.size(); i++) {
 			Vertex<E> v = vertices[i];
 			int vIndex = keyToIndex.get(v.getElement());
-			if(edges[uIndex][vIndex] != Integer.MAX_VALUE && v.getColor() == State.WHITE) { //edge exists && vertex has not been visited
+			if(edges[uIndex][vIndex] != Integer.MAX_VALUE && v.getColor() == Color.WHITE) { //edge exists && vertex has not been visited
 				v.setPredecessor(u);
 				DFSVisit(v);
 			}
 		}
-		u.setColor(State.BLACK);
+		u.setColor(Color.BLACK);
 		DFStime++;
 		u.setFinished(DFStime);
 	}
@@ -300,13 +300,13 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 	public void DFS(E src) {
 		if(keyToIndex.containsKey(src)) {
 			for(int i = 0; i < keyToIndex.size(); i++) { //Fix the vertices configuration to make DFS
-				vertices[i].setColor(State.WHITE);
+				vertices[i].setColor(Color.WHITE);
 				vertices[i].setPredecessor(null);
 			}
 			int uIndex = keyToIndex.get(src);
 			DFStime = 1;
 			Vertex<E> s = vertices[uIndex];
-			s.setColor(State.GRAY);
+			s.setColor(Color.GRAY);
 			s.setDiscovered(DFStime);
 			//s.predecessor is already null so skip that step
 			Stack<Vertex<E>> stack = new Stack<>();
@@ -316,15 +316,15 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 				for(int i = 0; i < keyToIndex.size(); i++) {
 					Vertex<E> v = vertices[i];
 					int vIndex = keyToIndex.get(v.getElement());
-					if(edges[uIndex][vIndex] != Integer.MAX_VALUE && v.getColor() == State.WHITE) { //edge exists && vertex has not been visited
+					if(edges[uIndex][vIndex] != Integer.MAX_VALUE && v.getColor() == Color.WHITE) { //edge exists && vertex has not been visited
 						DFStime++;
-						v.setColor(State.GRAY);
+						v.setColor(Color.GRAY);
 						v.setDiscovered(DFStime);
 						v.setPredecessor(u);
 						stack.push(v);
 					}
 				}
-				u.setColor(State.BLACK);
+				u.setColor(Color.BLACK);
 				DFStime++;
 				u.setFinished(DFStime);
 			}
@@ -472,7 +472,7 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 	 * @param key is a vertex which its color is going to be extracted. 
 	 */
 	@Override
-	public State getVertexColor(E key) {
+	public Color getVertexColor(E key) {
 		if(keyToIndex.containsKey(key)) {
 			return vertices[keyToIndex.get(key)].getColor();
 		}
@@ -576,7 +576,7 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 			lastSrc = s;
 			for(int i = 0; i < keyToIndex.size(); i++) { //Fix the vertices configuration to make Dijkstra
 				vertices[i].setDistance(Integer.MAX_VALUE);
-				vertices[i].setColor(State.WHITE);
+				vertices[i].setColor(Color.WHITE);
 				vertices[i].setPredecessor(null);
 				pq.offer(vertices[i]);
 			}
@@ -588,7 +588,7 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 				int uIndex = keyToIndex.get(u.getElement());
 				for(int i = 0; i < keyToIndex.size(); i++) {
 					Edge<E> edge = new Edge<>(u.getElement(), vertices[i].getElement(), edges[uIndex][i]);
-					if(u.getColor() == State.WHITE && vertices[i].getDistance() > edge.getWeight()) { //edge exists && the current shortest path can be improved
+					if(u.getColor() == Color.WHITE && vertices[i].getDistance() > edge.getWeight()) { //edge exists && the current shortest path can be improved
 						pq.remove(vertices[i]);
 						vertices[i].setDistance(edge.getWeight());
 						vertices[i].setPredecessor(u);
@@ -596,7 +596,7 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 						prim.add(edge);
 					}
 				}
-				u.setColor(State.BLACK);
+				u.setColor(Color.BLACK);
 			}
 		}
 		return prim;

@@ -2,7 +2,7 @@ package dataStructures;
 
 import java.util.ArrayList;
 
-import dataStructures.Vertex.State;
+import dataStructures.Vertex.Color;
 
 //IMPOTANT: E must override equals
 public interface IGraph<E> {
@@ -118,7 +118,7 @@ public interface IGraph<E> {
 	 * @return A State that indicates the vertex color. 
 	 * @param key is a vertex which its color is going to be extracted.
 	 */
-	State getVertexColor(E key);
+	Color getVertexColor(E key);
 	/**It allows to obtain a single predecessor of a determinate vertex that arrives as parameter.
 	 * @return A E object that represents the single predecessor. 
 	 * @param key is a ordinary vertex of the graph.

@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.PriorityQueue;
 import java.util.function.BiConsumer;
 
-import dataStructures.Vertex.State;
+import dataStructures.Vertex.Color;
 
 
 public class AdjacencyListGraph<E> implements IGraph<E>{
@@ -156,12 +156,12 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 			vertices.forEach(new BiConsumer<E, Vertex<E>>() { //Fix the vertices configuration to make BFS
 				@Override
 				public void accept(E e, Vertex<E> u) {
-					u.setColor(State.WHITE);
+					u.setColor(Color.WHITE);
 					u.setDistance(Integer.MAX_VALUE);
 					u.setPredecessor(null);
 				}
 			});
-			s.setColor(State.GRAY);
+			s.setColor(Color.GRAY);
 			s.setDistance(0);
 			//s.predecessor is already null so skip that step
 			Queue<Vertex<E>> queue = new Queue<>();
@@ -172,14 +172,14 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 					ArrayList<Edge<E>> adj = adjacencyLists.get(u.getElement());
 					for(Edge<E> ale: adj) {
 						Vertex<E> v = vertices.get(ale.getDst());
-						if(v.getColor() == State.WHITE) {
-							v.setColor(State.GRAY);
+						if(v.getColor() == Color.WHITE) {
+							v.setColor(Color.GRAY);
 							v.setDistance(u.getDistance()+1);
 							v.setPredecessor(u);
 							queue.enqueue(v);
 						}
 					}
-					u.setColor(State.BLACK);
+					u.setColor(Color.BLACK);
 				}
 			} catch (Exception emptyQueueException) {
 				//-_-
@@ -234,7 +234,7 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 		vertices.forEach(new BiConsumer<E, Vertex<E>>() { //Fix the vertices configuration to make DFS
 			@Override
 			public void accept(E e, Vertex<E> u) {
-				u.setColor(State.WHITE);
+				u.setColor(Color.WHITE);
 				u.setPredecessor(null);
 			}
 		});
@@ -242,7 +242,7 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 		vertices.forEach(new BiConsumer<E, Vertex<E>>() {
 			@Override
 			public void accept(E e, Vertex<E> u) {
-				if(u.getColor() == State.WHITE) {
+				if(u.getColor() == Color.WHITE) {
 					DFSVisit(u);
 				}
 			}
@@ -256,16 +256,16 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 	private void DFSVisit(Vertex<E> u) {
 		DFStime++;
 		u.setDiscovered(DFStime);
-		u.setColor(State.GRAY);
+		u.setColor(Color.GRAY);
 		ArrayList<Edge<E>> adj = adjacencyLists.get(u.getElement());
 		for(Edge<E> ale : adj) {
 			Vertex<E> v = vertices.get(ale.getDst());
-			if(v.getColor() == State.WHITE) {
+			if(v.getColor() == Color.WHITE) {
 				v.setPredecessor(u);
 				DFSVisit(v);
 			}
 		}
-		u.setColor(State.BLACK);
+		u.setColor(Color.BLACK);
 		DFStime++;
 		u.setFinished(DFStime);
 	}
@@ -284,13 +284,13 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 				public void accept(E e, Vertex<E> u) {
 					u.setDiscovered(0);
 					u.setFinished(0);
-					u.setColor(State.WHITE);
+					u.setColor(Color.WHITE);
 					u.setPredecessor(null);
 				}
 			});
 			DFStime = 1;
 			Vertex<E> s = vertices.get(src);
-			s.setColor(State.GRAY);
+			s.setColor(Color.GRAY);
 			s.setDiscovered(DFStime);
 			//s.predecessor is already null so skip that step
 			Stack<Vertex<E>> stack = new Stack<>();
@@ -300,15 +300,15 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 				ArrayList<Edge<E>> adj = adjacencyLists.get(u.getElement());
 				for(Edge<E> ale: adj) {
 					Vertex<E> v = vertices.get(ale.getDst());
-					if(v.getColor() == State.WHITE) {
+					if(v.getColor() == Color.WHITE) {
 						DFStime++;
-						v.setColor(State.GRAY);
+						v.setColor(Color.GRAY);
 						v.setDiscovered(DFStime);
 						v.setPredecessor(u);
 						stack.push(v);
 					}
 				}
-				u.setColor(State.BLACK);
+				u.setColor(Color.BLACK);
 				DFStime++;
 				u.setFinished(DFStime);
 			}
@@ -433,7 +433,7 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 	 * @param key is a vertex which its color is going to be extracted. 
 	 */
 	@Override
-	public State getVertexColor(E key) {
+	public Color getVertexColor(E key) {
 		if(vertices.containsKey(key)) {
 			return vertices.get(key).getColor();
 		}
@@ -528,7 +528,7 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 				@Override
 				public void accept(E t, Vertex<E> u) {
 					u.setDistance(Integer.MAX_VALUE);
-					u.setColor(State.WHITE);
+					u.setColor(Color.WHITE);
 					u.setPredecessor(null);
 					pq.offer(u);
 				}
@@ -542,7 +542,7 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 				for(Edge<E> ale : adjacencyLists.get(u.getElement())) {
 					Vertex<E> s = vertices.get(ale.getSrc());
 					Vertex<E> d = vertices.get(ale.getDst());
-					if(d.getColor() == State.WHITE && d.getDistance() > ale.getWeight()) {
+					if(d.getColor() == Color.WHITE && d.getDistance() > ale.getWeight()) {
 						pq.remove(d);
 						Vertex<E> pred = vertices.get(ale.getDst()).getPredecessor();
 						if(pred != null) { //remove the edge that has ale.dst as dst vertex
@@ -555,7 +555,7 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 						prim.add(ale);
 					}
 				}
-				u.setColor(State.BLACK);
+				u.setColor(Color.BLACK);
 			}
 		}
 		return prim;

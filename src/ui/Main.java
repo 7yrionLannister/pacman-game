@@ -1,14 +1,10 @@
 package ui;
 
-import java.util.HashMap;
-import java.util.function.BiConsumer;
-
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import model.Coordinate;
 
 public class Main extends Application {
 
@@ -19,8 +15,7 @@ public class Main extends Application {
 		primaryStage.setTitle("Pac-Man");
 		primaryStage.setScene(scene);
 		primaryStage.show();
-		//primaryStage.setResizable(false); //TODO esta linea causa que las imagenes salgan unos pixeles mas lejos del lugar que les corresponde en Windows
-		                                  //TODO pero comentarla no es opcion porque si el usuario hace zoom la interfaz se desacomoda
+		primaryStage.setResizable(false);
 	}
 
 	public static void main(String[] args) {

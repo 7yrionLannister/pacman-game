@@ -14,12 +14,14 @@ import javafx.scene.layout.FlowPane;
 import model.Coordinate;
 import model.Direction;
 import model.Game;
+import threads.BlinkyThread;
 import threads.PacmanThread;
 
 
 public class Controller {
 	public static long MOVEMENT_COUNTER;
 	public static long MOVEMENT_SPRITE;
+	public final static String GHOSTS_SPRITES = "resources/sprites/ghosts/";
 	
 	@FXML
 	private FlowPane livesContainer;
@@ -78,6 +80,7 @@ public class Controller {
 	private Game game;
 
 	private PacmanThread pt;
+	private BlinkyThread bt;
 
 	private boolean onPause;
 
@@ -95,6 +98,9 @@ public class Controller {
 
 		pacman.relocate(game.getPacman().getPosX(), game.getPacman().getPosY());
 		blinky.relocate(game.getBlinky().getPosX(), game.getBlinky().getPosY());
+		clyde.relocate(game.getClyde().getPosX(), game.getClyde().getPosY());
+		pinky.relocate(game.getPinky().getPosX(), game.getPinky().getPosY());
+		inky.relocate(game.getInky().getPosX(), game.getInky().getPosY());
 		//TODO hacer lo mismo con cada personaje y ademas tambien acomodar los cuadritos negros del tunel si se detecta que es MacOS 
 		onPause = true;
 	}
@@ -136,7 +142,9 @@ public class Controller {
 		onPause = !onPause;
 		if(!onPause) {
 			pt = new PacmanThread(this);
+			bt = new BlinkyThread(this);
 			pt.start();
+			bt.start();
 		}
 	}
 

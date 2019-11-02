@@ -32,7 +32,7 @@ public class PacmanThread extends Thread {
 		while(!c.isOnPause()) {
 			pacmanImage.setImage(new Image(new File(MOVEMENTS+Controller.MOVEMENT_SPRITE+".png").toURI().toString()));
 			Controller.MOVEMENT_COUNTER++;
-			if(Controller.MOVEMENT_COUNTER % 3== 0) {
+			if(Controller.MOVEMENT_COUNTER % 3 == 0) {
 				Controller.MOVEMENT_SPRITE++;
 				if(Controller.MOVEMENT_SPRITE > 3) {
 					Controller.MOVEMENT_SPRITE = 0;

@@ -3,6 +3,8 @@ package model;
 import java.util.ArrayList;
 
 public class Ghost {
+	public static enum State {SCATTERED, CHASE}
+	public static State state;
 	private boolean frightened;
 	private Coordinate position;
 	private Coordinate target;
@@ -10,11 +12,14 @@ public class Ghost {
 	private double posY;
 	private Direction direction;
 	private ArrayList<Coordinate> path;
+	private String name;
+	private boolean inTheTunnel;
 	
-	public Ghost(Coordinate position) {
+	public Ghost(Coordinate position, String name, double posX, double posY) {
 		this.position = position;
-		posX = position.getX()-14; //TODO -14 aniadido para compatibilidad con MacOS, hacer condicional de sistema operativo para saber si hay que sumar o no el -14
-		posY = position.getY();
+		this.name = name;
+		this.posX = posX;
+		this.posY = posY;
 	}
 	
 	public boolean isFrightened() {
@@ -71,5 +76,17 @@ public class Ghost {
 
 	public void setDirection(Direction direction) {
 		this.direction = direction;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public boolean isInTheTunnel() {
+		return inTheTunnel;
+	}
+
+	public void setInTheTunnel(boolean inTheTunnel) {
+		this.inTheTunnel = inTheTunnel;
 	}
 }

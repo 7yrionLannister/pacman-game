@@ -1,13 +1,13 @@
 package dataStructures;
 
 public class Vertex<E> implements Comparable<Vertex<E>> {
-	public static enum State {WHITE, GRAY, BLACK}
+	public static enum Color {WHITE, GRAY, BLACK}
 	/**It represents the object that is contained in the vertex nowadays.
 	 */
 	private E element;
 	/**It represents the vertex color in the search algorithms. 
 	 */
-	private State color;
+	private Color color;
 	/**It represents the associated predecessor vertex of the actual vertex. 
 	 */
 	private Vertex<E> predecessor;
@@ -28,7 +28,7 @@ public class Vertex<E> implements Comparable<Vertex<E>> {
 	 */
 	public Vertex(E element) {
 		this.element = element;
-		color = State.WHITE;
+		color = Color.WHITE;
 		setPredecessor(null);
 	}
 	/**It allows to get the actual vertex distance.
@@ -58,13 +58,13 @@ public class Vertex<E> implements Comparable<Vertex<E>> {
 	/**It allows to get the state of the actual vertex defined by a color.
 	 * @return A State object that represents the state of the actual vertex.
 	 */
-	public State getColor() {
+	public Color getColor() {
 		return color;
 	}
 	/**It allows to set the state of the actual vertex defining a color.
 	 * @param color is a State object that represents the state of the actual vertex.
 	 */
-	public void setColor(State color) {
+	public void setColor(Color color) {
 		this.color = color;
 	}
 	/**It allows to get an integer that represents if the actual vertex stage is finished when BFS is applied.
