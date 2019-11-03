@@ -62,13 +62,13 @@ public class PacmanThread extends Thread {
 			try {
 				Level level = g.getCurrentLevel();
 				long rate = 0;
-				if(level.isFrightened() && g.isEatingDots()) {
+				if(level.isFrightened() && g.isEatingDots()) { System.out.println("energizer and dots");
 					rate = (long)((1 - level.getPacmanWithEnergizerEatingDotsSpeed())*Level.REFERENCE_SPEED);
-				} else if(level.isFrightened()) {
+				} else if(level.isFrightened()) { System.out.println("energizer");
 					rate = (long)((1 - level.getPacmanWithEnergizerSpeed())*Level.REFERENCE_SPEED);
-				}  else if(g.isEatingDots()){
+				}  else if(g.isEatingDots()){ System.out.println("dots");
 					rate = (long)((1 - level.getPacmanEatingDotsSpeed())*Level.REFERENCE_SPEED);
-				} else {
+				} else { System.out.println("empty");
 					rate = (long)((1 - level.getPacmanSpeed())*Level.REFERENCE_SPEED);
 				}
 				sleep(rate);

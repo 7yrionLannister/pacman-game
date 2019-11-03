@@ -29,6 +29,7 @@ public class GhostThread extends Thread {
 		} else {
 			ghostImage = c.getClyde();
 		}
+		setDaemon(true);
 	}
 
 	@Override

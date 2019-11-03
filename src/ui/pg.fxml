@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -11,7 +12,6 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
-<?import javafx.scene.text.Font?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#changeDirection" style="-fx-background-color: black;" stylesheets="@pg.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.Controller">
    <center>
@@ -22,7 +22,7 @@
                   <Image url="@../../resources/sprites/map.jpeg" />
                </image>
             </ImageView>
-            <AnchorPane onMouseClicked="#printMapCoordinates">
+            <AnchorPane fx:id="map" onMouseClicked="#printMapCoordinates">
                <children>
                   <ImageView fx:id="inky" fitHeight="25.0" fitWidth="25.0" layoutX="148.0" layoutY="159.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -73,22 +73,13 @@
    <right>
       <VBox spacing="10.0" style="-fx-background-color: black;" BorderPane.alignment="CENTER">
          <children>
-            <Button mnemonicParsing="false" onAction="#startPlayPauseButtonPressed" text="Start" textFill="WHITE">
-               <font>
-                  <Font name="System Bold" size="13.0" />
-               </font>
-            </Button>
-            <Button mnemonicParsing="false" onAction="#newGameButtonPressed" text="New game" textFill="WHITE">
-               <font>
-                  <Font name="System Bold" size="13.0" />
-               </font>
-            </Button>
-            <Button mnemonicParsing="false" onAction="#highScoresButtonPressed" text="High scores" textFill="WHITE">
-               <font>
-                  <Font name="System Bold" size="13.0" />
-               </font>
-            </Button>
+            <Button mnemonicParsing="false" onAction="#startPlayPauseButtonPressed" text="Start" textFill="WHITE" />
+            <Button mnemonicParsing="false" onAction="#newGameButtonPressed" text="New game" textFill="WHITE" />
+            <Button mnemonicParsing="false" onAction="#highScoresButtonPressed" text="High scores" textFill="WHITE" />
          </children>
+         <BorderPane.margin>
+            <Insets top="10.0" />
+         </BorderPane.margin>
       </VBox>
    </right>
    <padding>
@@ -171,4 +162,13 @@
          </children>
       </HBox>
    </bottom>
+   <top>
+      <HBox BorderPane.alignment="CENTER">
+         <children>
+            <Label text="HIGH SCORE       " />
+            <Label fx:id="highScoreLabel" text="0" />
+            <Label fx:id="scoreLabel" text="                          0" />
+         </children>
+      </HBox>
+   </top>
 </BorderPane>

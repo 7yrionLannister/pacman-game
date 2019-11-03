@@ -11,7 +11,7 @@ public class Level {
 	public final static String BELL = "resources/sprites/food/bonus/bell.png";
 	public final static String KEYS = "resources/sprites/food/bonus/keys.png";
 
-	public final static double REFERENCE_SPEED = 100;
+	public final static double REFERENCE_SPEED = 80;
 	
 	private int stage;
 	private String bonus;

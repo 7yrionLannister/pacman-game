@@ -2,4 +2,9 @@
     -fx-border-color: blue;
     -fx-background-color: indigo;
     -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+.label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
 }

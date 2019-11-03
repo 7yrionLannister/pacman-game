@@ -3,17 +3,28 @@ package ui;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.function.BiConsumer;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.media.AudioClip;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import model.Coordinate;
 import model.Direction;
 import model.Game;
+import model.Food;
 import threads.BlinkyThread;
 import threads.GhostThread;
 import threads.PacmanThread;
@@ -23,7 +34,19 @@ public class Controller {
 	public static long MOVEMENT_COUNTER;
 	public static long MOVEMENT_SPRITE;
 	public final static String GHOSTS_SPRITES = "resources/sprites/ghosts/";
+	public final static Image PACDOT_IMAGE = new Image(new File("resources/sprites/food/pacdot.png").toURI().toString());
+	public final static Image ENERGIZER_IMAGE = new Image(new File("resources/sprites/food/energizer.png").toURI().toString());
+	public final static Image BONUS_IMAGE = new Image(new File("resources/sprites/food/bonus/cherry.png").toURI().toString());
 	
+	@FXML
+    private Label highScoreLabel;
+
+    @FXML
+    private Label scoreLabel;
+    
+	@FXML
+	private AnchorPane map;
+
 	@FXML
 	private FlowPane livesContainer;
 
@@ -79,6 +102,7 @@ public class Controller {
 	private ImageView cherry;
 
 	private Game game;
+	private HashMap<Coordinate, ImageView> foodImages;
 
 	private PacmanThread pacmanThread;
 	private BlinkyThread blinkyThread;
@@ -105,7 +129,36 @@ public class Controller {
 		clyde.relocate(game.getClyde().getPosX(), game.getClyde().getPosY());
 		pinky.relocate(game.getPinky().getPosX(), game.getPinky().getPosY());
 		inky.relocate(game.getInky().getPosX(), game.getInky().getPosY());
+		
+		
+		foodImages = new HashMap<>();
+		game.getFood().forEach(new BiConsumer<Coordinate, Food>() {
+			@Override
+			public void accept(Coordinate t, Food u) {
+				ImageView food = new ImageView();
+				map.getChildren().add(food);
+				food.relocate(t.getX(), t.getY());
+				food.visibleProperty().bind(game.getFood().get(t).getNotEaten());
+				switch(u.getType()) {
+				case Food.BONUS:
+					food.setImage(BONUS_IMAGE);
+					break;
+				case Food.ENERGIZER:
+					food.setImage(ENERGIZER_IMAGE);
+					break;
+				case Food.PACDOT:
+					food.setImage(PACDOT_IMAGE);
+					break;
+				default:
+					break;
+				}
+			}
+		});
+		
 		//TODO acomodar los cuadritos negros del tunel si se detecta que es MacOS 
+		ImageView iii = new ImageView();
+		map.getChildren().add(iii);
+
 		onPause = true;
 	}
 
@@ -126,7 +179,7 @@ public class Controller {
 	@FXML
 	public void printMapCoordinates(MouseEvent event) {
 		System.out.println(event.getX()+","+event.getY());
-//		System.out.println(pacman.getLayoutX()+","+pacman.getLayoutY());
+		//		System.out.println(pacman.getLayoutX()+","+pacman.getLayoutY());
 		System.out.println("bonus: "+bonusImage.getLayoutX()+","+bonusImage.getLayoutY());
 	}
 
@@ -144,18 +197,39 @@ public class Controller {
 	public void startPlayPauseButtonPressed(ActionEvent event) {
 		onPause = !onPause;
 		if(!onPause) {
-			pacmanThread = new PacmanThread(this);
-			blinkyThread = new BlinkyThread(this);
-			inkyThread = new GhostThread(this, game.getInky().getName());
-			pinkyThread = new GhostThread(this, game.getPinky().getName());
-			clydeThread = new GhostThread(this, game.getClyde().getName());
-			
-			pacmanThread.start();
-			blinkyThread.start();
-			inkyThread.start();
-			pinkyThread.start();
-			clydeThread.start();
+			if(game.getCurrentLevel().getDotsLeft() == 82) { //first in the game
+				readyImage.setVisible(true);
+				MediaPlayer intro = new MediaPlayer(new Media(new File("resources/audio/intro.mp3").toURI().toString()));
+				intro.play();
+				TimerTask task = new TimerTask() {
+					@Override
+			        public void run() {
+						readyImage.setVisible(false);
+						MOVEMENT_COUNTER++;
+						startThreads();
+			        }
+			    };
+			    Timer timer = new Timer("Timer");
+			    long delay = 5000;
+			    timer.schedule(task, delay);
+			} else {
+				startThreads();
+			}
 		}
+	}
+
+	public void startThreads() {
+		pacmanThread = new PacmanThread(this);
+		blinkyThread = new BlinkyThread(this);
+		inkyThread = new GhostThread(this, game.getInky().getName());
+		pinkyThread = new GhostThread(this, game.getPinky().getName());
+		clydeThread = new GhostThread(this, game.getClyde().getName());
+
+		pacmanThread.start();
+		blinkyThread.start();
+		inkyThread.start();
+		pinkyThread.start();
+		clydeThread.start();
 	}
 
 	public FlowPane getLivesContainer() {
