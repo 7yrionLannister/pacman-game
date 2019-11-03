@@ -330,8 +330,7 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 			}
 		}
 	}
-	/**This performs Dijkstra as from a source vertex that arrives as parameter where some vertices configuration have to fixed in 
-	 * order to complete Dijkstra rightly.
+	/**This performs Dijkstra which finds the shortest path and distances from a vertex to all that can be reached from src. 
 	 * @param src is a reference vertex to start Dijkstra process.
 	 */
 	@Override
@@ -388,7 +387,8 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 			}
 		}
 	}
-	/**It allows to get the weight between two pairs of vertices that arrive as parameters.
+	/**It allows to get the weight between two pairs of vertices that arrive as parameters. Returns infinite if there is no edge between these 
+	 * two vertices.
 	 * @return An Integer that represents the cost of the entire edge formed by src and dst. 
 	 * @param src is a vertex from which we can access to dst.
 	 * @param dst is the vertex which dst can access.
@@ -434,9 +434,9 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 	public int getFreeRow() {
 		return freeRow;
 	}
-	/**It allows to obtain the distance of a single vertex specified as parameter.
+	/**It allows to obtain the distance of a single vertex specified as parameter. Returns infinite if dst does not exist in the matrix. 
 	 * @return An Integer the distance of the entire single path of dst. 
-	 * @param dst is a vertex from where distance is going to be calculated.
+	 * @param dst is a vertex from where distance is going to be calculated. 
 	 */
 	@Override
 	public int getSingleSourceDistance(E dst) {
@@ -564,9 +564,9 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 		}
 		return adj;
 	}
-	/**
-	 * @param src
-	 * @return An ArrayList<Edge<E>>
+	/**This performs Prim which finds the minimum spanning tree edges of a graph when this is connected and there is a source vertex. 
+	 * @return An ArrayList<Edge<E>> which has all the edges of the minimum spanning tree.
+	 * @param src is a reference vertex to start Prim process.
 	 */
 	@Override
 	public ArrayList<Edge<E>> primMinimumSpanningTree(E src) {
@@ -607,7 +607,9 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 		}
 		return prim;
 	}
-	
+	/**This performs Kruskal which finds the minimum spanning tree edges of a graph regardless of this is connected or not.
+	 * @return An ArrayList<Edge<E>> which has all the edges of the minimum spanning tree.
+	 */
 	@Override
 	public ArrayList<Edge<E>> kruskalMinimumSpannigTree() {
 		// TODO Auto-generated method stub

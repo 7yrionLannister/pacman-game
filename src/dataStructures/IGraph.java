@@ -60,18 +60,17 @@ public interface IGraph<E> {
 	 * @param src is a reference vertex to start DFS process.
 	 */
 	void DFS(E src);
-	/**This performs Dijkstra as from a source vertex that arrives as parameter where some vertices configuration have to fixed in 
-	 * order to complete Dijkstra rightly.
+	/**This performs Dijkstra which finds the shortest path and distances from a vertex to all that can be reached from src. 
 	 * @param src is a reference vertex to start Dijkstra process.
 	 */
 	void Dijkstra(E src) ;
-	/**
-	 * @param src is a source vertex 
-	 * @return An ArrayList<Edge<E>>
+	/**This performs Prim which finds the minimum spanning tree edges of a graph when this is connected and there is a source vertex. 
+	 * @return An ArrayList<Edge<E>> which has all the edges of the minimum spanning tree.
+	 * @param src is a reference vertex to start Prim process.
 	 */
 	ArrayList<Edge<E>> primMinimumSpanningTree(E src);
-	/**
-	 * @return An ArrayList<Edge<E>>
+	/**This performs Kruskal which finds the minimum spanning tree edges of a graph regardless of this is connected or not.
+	 * @return An ArrayList<Edge<E>> which has all the edges of the minimum spanning tree.
 	 */
 	ArrayList<Edge<E>> kruskalMinimumSpannigTree();
 

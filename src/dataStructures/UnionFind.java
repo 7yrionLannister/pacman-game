@@ -7,10 +7,13 @@ import java.util.HashMap;
 
 public class UnionFind<E> {
 	
-    /**A utility struct holding an an object's parent and rank.
-     */
     private class Link {
-        public E parent;
+    	
+        /**
+         */
+    	public E parent;
+    	/**
+    	 */
         public int rank = 0;
 
         /**Creates a new Link object with the specified parent.
@@ -22,10 +25,11 @@ public class UnionFind<E> {
     }
     /**A map from objects in the UnionFind structure to their associated rank and parent.
      */
-    private final Map<E, Link> elems = new HashMap<E, Link>();
+    private Map<E, Link> elems; 
     /**Creates a new UnionFind structure that is initially empty.
      */
     public UnionFind() {
+    	elems = new HashMap<E, Link>();
     }
     /**Creates a new UnionFind structure that initially contains all of the elements from the specified container.  Duplicate elements
      * will appear with multiplicity one.
