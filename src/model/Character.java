@@ -6,10 +6,7 @@ public class Character {
 	private double posY;
 	private Direction direction;
 	
-	
-	
 	public Character(Coordinate position, double posX, double posY) {
-		super();
 		this.position = position;
 		this.posX = posX;
 		this.posY = posY;
