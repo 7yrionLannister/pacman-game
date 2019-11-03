@@ -102,7 +102,6 @@ public class Controller {
 	private ImageView cherry;
 
 	private Game game;
-	private HashMap<Coordinate, ImageView> foodImages;
 
 	private PacmanThread pacmanThread;
 	private BlinkyThread blinkyThread;
@@ -110,6 +109,14 @@ public class Controller {
 	private GhostThread clydeThread;
 	private GhostThread pinkyThread;
 
+	private AudioClip intro;
+	private AudioClip eatDot;
+	private AudioClip eatFruit;
+	private AudioClip eatGhost;
+	private AudioClip extraLive;
+	private AudioClip death;
+	private AudioClip backgroundSound;
+	
 	private boolean onPause;
 
 	@FXML
@@ -130,8 +137,6 @@ public class Controller {
 		pinky.relocate(game.getPinky().getPosX(), game.getPinky().getPosY());
 		inky.relocate(game.getInky().getPosX(), game.getInky().getPosY());
 		
-		
-		foodImages = new HashMap<>();
 		game.getFood().forEach(new BiConsumer<Coordinate, Food>() {
 			@Override
 			public void accept(Coordinate t, Food u) {
@@ -155,10 +160,9 @@ public class Controller {
 			}
 		});
 		
+		backgroundSound = new AudioClip(new File("resources/audio/siren.mp3").toURI().toString());
+		
 		//TODO acomodar los cuadritos negros del tunel si se detecta que es MacOS 
-		ImageView iii = new ImageView();
-		map.getChildren().add(iii);
-
 		onPause = true;
 	}
 
@@ -185,7 +189,7 @@ public class Controller {
 
 	@FXML
 	public void highScoresButtonPressed(ActionEvent event) {
-
+		//TODO implementar
 	}
 
 	@FXML
@@ -215,6 +219,19 @@ public class Controller {
 			} else {
 				startThreads();
 			}
+			TimerTask task = new TimerTask() {
+				@Override
+		        public void run() {
+					backgroundSound.play();
+		        }
+		    };
+		    Timer timer = new Timer("Timer");
+		    long delay = 100;
+		    long period = 1620;
+		    timer.schedule(task, delay, period);
+		    //TODO consider using the cycle property instead of a timertask
+		} else {
+			//TODO callar sonidos
 		}
 	}
 
