@@ -15,6 +15,7 @@ import model.Coordinate;
 import model.Direction;
 import model.Game;
 import threads.BlinkyThread;
+import threads.GhostThread;
 import threads.PacmanThread;
 
 
@@ -79,8 +80,11 @@ public class Controller {
 
 	private Game game;
 
-	private PacmanThread pt;
-	private BlinkyThread bt;
+	private PacmanThread pacmanThread;
+	private BlinkyThread blinkyThread;
+	private GhostThread inkyThread;
+	private GhostThread clydeThread;
+	private GhostThread pinkyThread;
 
 	private boolean onPause;
 
@@ -101,7 +105,7 @@ public class Controller {
 		clyde.relocate(game.getClyde().getPosX(), game.getClyde().getPosY());
 		pinky.relocate(game.getPinky().getPosX(), game.getPinky().getPosY());
 		inky.relocate(game.getInky().getPosX(), game.getInky().getPosY());
-		//TODO hacer lo mismo con cada personaje y ademas tambien acomodar los cuadritos negros del tunel si se detecta que es MacOS 
+		//TODO acomodar los cuadritos negros del tunel si se detecta que es MacOS 
 		onPause = true;
 	}
 
@@ -138,13 +142,19 @@ public class Controller {
 
 	@FXML
 	public void startPlayPauseButtonPressed(ActionEvent event) {
-		//newGameButtonPressed(event);
 		onPause = !onPause;
 		if(!onPause) {
-			pt = new PacmanThread(this);
-			bt = new BlinkyThread(this);
-			pt.start();
-			bt.start();
+			pacmanThread = new PacmanThread(this);
+			blinkyThread = new BlinkyThread(this);
+			inkyThread = new GhostThread(this, game.getInky().getName());
+			pinkyThread = new GhostThread(this, game.getPinky().getName());
+			clydeThread = new GhostThread(this, game.getClyde().getName());
+			
+			pacmanThread.start();
+			blinkyThread.start();
+			inkyThread.start();
+			pinkyThread.start();
+			clydeThread.start();
 		}
 	}
 

@@ -11,22 +11,32 @@ import model.Level;
 import ui.Controller;
 
 public class GhostThread extends Thread {
-	private Controller c;
+	private Controller controller;
 	private Game game;
 	private Ghost ghost;
 	private ImageView ghostImage;
-	
-	public GhostThread(Controller c) {
-		this.c = c;
-		ghostImage = c.getBlinky();
+
+	public GhostThread(Controller c, String name) {
+		this.controller = c;
 		game = c.getGame();
-		ghost = game.getBlinky();
+		ghost = game.getGhost(name);
+		if(name.equalsIgnoreCase("blinky")) {
+			ghostImage = c.getBlinky();
+		} else if(name.equalsIgnoreCase("inky")) {
+			ghostImage = c.getInky();
+		} else if(name.equalsIgnoreCase("pinky")) {
+			ghostImage = c.getPinky();
+		} else {
+			ghostImage = c.getClyde();
+		}
 	}
-	
+
 	@Override
 	public void run() {
-		while(!c.isOnPause()) {
-			move();
+		while(!controller.isOnPause()) {
+			if(game.getMap().containsVertex(ghost.getPosition())) { //if ghost is out of the house
+				move();
+			}
 			try {
 				Level level = game.getCurrentLevel();
 				long rate = 0;
@@ -79,8 +89,8 @@ public class GhostThread extends Thread {
 		});
 	}
 
-	public Controller getC() {
-		return c;
+	public Controller getController() {
+		return controller;
 	}
 
 	public Game getGame() {

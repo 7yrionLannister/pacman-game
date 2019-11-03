@@ -7,13 +7,15 @@ import ui.Controller;
 public class BlinkyThread extends GhostThread {
 
 	public BlinkyThread(Controller c) {
-		super(c);
+		super(c, "blinky");
 	}
 
 	@Override
 	public void run() {
-		while(!super.getC().isOnPause()) {
-			super.move();
+		while(!super.getController().isOnPause()) {
+			if(getGame().getMap().containsVertex(getGhost().getPosition())) { //if ghost is out of the house
+				move();
+			}
 			try {
 				Level level = getGame().getCurrentLevel();
 				long rate = 0;
