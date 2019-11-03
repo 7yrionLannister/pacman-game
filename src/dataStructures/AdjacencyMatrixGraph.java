@@ -591,6 +591,11 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 					Edge<E> edge = new Edge<>(u.getElement(), vertices[i].getElement(), edges[uIndex][i]);
 					if(u.getColor() == Color.WHITE && vertices[i].getDistance() > edge.getWeight()) { //edge exists && the current shortest path can be improved
 						pq.remove(vertices[i]);
+						Vertex<E> pred = vertices[keyToIndex.get(edge.getDst())].getPredecessor();
+						if (pred != null) {
+							Edge<E> edgeToRemove = new Edge<>(pred.getElement(), edge.getDst(),1);
+							prim.remove(edgeToRemove);
+						}
 						vertices[i].setDistance(edge.getWeight());
 						vertices[i].setPredecessor(u);
 						pq.offer(vertices[i]);
