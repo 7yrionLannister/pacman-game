@@ -56,19 +56,19 @@ public class Game {
 			xCoord -= 5; //TODO modificar hasta obtener buena pinta en MacOSX
 		}
 		pacman = new Pacman(tile, xCoord, tile.getY());
-		tile = coordinates.get(42);
+		tile = coordinates.get(98);
 		blinky = new Ghost(tile, "blinky", xCoord, tile.getY());
 		blinky.setDirection(Direction.LEFT);
 		blinky.setTarget(coordinates.get(68));
-		tile = new Coordinate(xCoord, tile.getY()+27,false,false,false,false);
-		pinky = new Ghost(tile, "pinky", tile.getX(), tile.getY()+5);
+		tile = coordinates.get(99);
+		pinky = new Ghost(tile, "pinky", tile.getX(), tile.getY()+7);
 		pinky.setDirection(Direction.UP);
 		pinky.setTarget(coordinates.get(17));
-		tile = new Coordinate(xCoord-20, tile.getY(),false,false,false,false);
+		tile = coordinates.get(100);
 		inky = new Ghost(tile, "inky", tile.getX(), tile.getY());
 		inky.setDirection(Direction.DOWN);
 		inky.setTarget(coordinates.get(77));
-		tile = new Coordinate(xCoord+20, tile.getY(),false,false,false,false);
+		tile = coordinates.get(101);
 		clyde = new Ghost(tile, "clyde", tile.getX(), tile.getY());
 		clyde.setDirection(Direction.DOWN);
 		clyde.setTarget(coordinates.get(26));
@@ -159,6 +159,10 @@ public class Game {
 		food.get(coordinates.get(61)).setType(Food.NOTHING);	getCurrentLevel().setDotsLeft(getCurrentLevel().getDotsLeft()-1);
 		food.get(coordinates.get(62)).setType(Food.NOTHING);	getCurrentLevel().setDotsLeft(getCurrentLevel().getDotsLeft()-1);
 		food.get(coordinates.get(63)).setType(Food.NOTHING);	getCurrentLevel().setDotsLeft(getCurrentLevel().getDotsLeft()-1);
+		food.get(coordinates.get(98)).setType(Food.NOTHING);	getCurrentLevel().setDotsLeft(getCurrentLevel().getDotsLeft()-1);
+		food.get(coordinates.get(99)).setType(Food.NOTHING);	getCurrentLevel().setDotsLeft(getCurrentLevel().getDotsLeft()-1);
+		food.get(coordinates.get(100)).setType(Food.NOTHING);	getCurrentLevel().setDotsLeft(getCurrentLevel().getDotsLeft()-1);
+		food.get(coordinates.get(101)).setType(Food.NOTHING);	getCurrentLevel().setDotsLeft(getCurrentLevel().getDotsLeft()-1);
 
 		//no food in the tunnel
 		food.get(coordinates.get(4)).setType(Food.NOTHING);		getCurrentLevel().setDotsLeft(getCurrentLevel().getDotsLeft()-1);
@@ -173,7 +177,10 @@ public class Game {
 		bonusTile = new Coordinate(pacman.getPosX(), coordinates.get(43).getY(), false, false, false, false);
 		food.put(bonusTile, new Food(Food.BONUS, false)); //TODO ajustar
 
-		searchTargets();
+		searchGhostTarget(blinky);
+		searchGhostTarget(inky);
+		searchGhostTarget(pinky);
+		searchGhostTarget(clyde);
 	}
 
 	public void movePacman() {
@@ -314,25 +321,25 @@ public class Game {
 		}
 	}
 
-	public void searchTargets() {
+	public void searchBlinkyTarget() {
 		switch(Ghost.state) {
 		case CHASE:
 			blinky.setTarget(pacman.getPosition());
 			break;
 		case SCATTERED:
-			//BLINKY
 			if(!blinky.getTarget().equals(coordinates.get(68))) {
 				blinky.setTarget(coordinates.get(68));
 			} else {
 				blinky.setTarget(coordinates.get(89));
 			}
-			//PINKY
-			if(!pinky.getTarget().equals(coordinates.get(17))) {
-				pinky.setTarget(coordinates.get(17));
-			} else {
-				pinky.setTarget(coordinates.get(2));
-			}
-			//INKY
+		}
+	}
+
+	public void searchInkyTarget() {
+		switch(Ghost.state) {
+		case CHASE:
+			break;
+		case SCATTERED:
 			if(inky.getTarget().equals(coordinates.get(56))) {
 				inky.setTarget(coordinates.get(77));
 			} else if(inky.getTarget().equals(coordinates.get(77))) {
@@ -340,46 +347,37 @@ public class Game {
 			} else {
 				inky.setTarget(coordinates.get(56));
 			}
-			//CLYDE
+			break;
+		}
+	}
+
+	public void searchPinkyTarget() {
+		switch(Ghost.state) {
+		case CHASE:
+			break;
+		case SCATTERED:
+			if(!pinky.getTarget().equals(coordinates.get(17))) {
+				pinky.setTarget(coordinates.get(17));
+			} else {
+				pinky.setTarget(coordinates.get(2));
+			}
+			break;
+		}
+	}
+
+	public void searchClydeTarget() {
+		switch(Ghost.state) {
+		case CHASE:
+			break;
+		case SCATTERED:
 			if(clyde.getTarget().equals(coordinates.get(46))) {
 				clyde.setTarget(coordinates.get(26));
-			} else if(inky.getTarget().equals(coordinates.get(26))) {
+			} else if(clyde.getTarget().equals(coordinates.get(26))) {
 				clyde.setTarget(coordinates.get(16));
 			} else {
 				clyde.setTarget(coordinates.get(46));
 			}
 			break;
-		}
-		//Choose a random target for any frightened ghost
-		if(blinky.isFrightened()) {
-			blinky.setTarget(coordinates.get((int)(Math.random()*coordinates.size())));
-		}
-		blinky.setPath(map.getPath(blinky.getPosition(), blinky.getTarget()));
-		blinky.getPath().remove(0);
-		determineDirection(blinky);
-		if(inky.isFrightened()) {
-			inky.setTarget(coordinates.get((int)(Math.random()*coordinates.size())));
-		}
-		if(map.containsVertex(inky.getPosition())) {
-			inky.setPath(map.getPath(inky.getPosition(), inky.getTarget()));
-			inky.getPath().remove(0);
-			determineDirection(inky);
-		}
-		if(clyde.isFrightened()) {
-			clyde.setTarget(coordinates.get((int)(Math.random()*coordinates.size())));
-		}
-		if(map.containsVertex(clyde.getPosition())) {
-			clyde.setPath(map.getPath(clyde.getPosition(), clyde.getTarget()));
-			clyde.getPath().remove(0);
-			determineDirection(clyde);
-		}
-		if(pinky.isFrightened()) {
-			pinky.setTarget(coordinates.get((int)(Math.random()*coordinates.size())));
-		}
-		if(map.containsVertex(pinky.getPosition())) {
-			pinky.setPath(map.getPath(pinky.getPosition(), pinky.getTarget()));
-			pinky.getPath().remove(0);
-			determineDirection(pinky);
 		}
 	}
 
@@ -393,7 +391,7 @@ public class Game {
 		} else {
 			ghost.setPosX(ghost.getPosition().getX());
 			ghost.setPosY(ghost.getPosition().getY());
-			searchTargets();
+			searchGhostTarget(ghost);
 		}
 		switch(ghost.getDirection()) {
 		case DOWN:
@@ -411,25 +409,45 @@ public class Game {
 		}
 	}
 
+	public void searchGhostTarget(Ghost ghost) {
+		String name = ghost.getName();
+		if(name.equalsIgnoreCase("blinky")) {
+			searchBlinkyTarget();
+		} else if(name.equalsIgnoreCase("inky")) {
+			searchInkyTarget();
+		} else if(name.equalsIgnoreCase("pinky")) {
+			searchPinkyTarget();
+		} else {
+			searchClydeTarget();
+		}
+		
+		if(ghost.isFrightened()) {
+			ghost.setTarget(coordinates.get((int)(Math.random()*coordinates.size())));
+		}
+		ghost.setPath(map.getPath(ghost.getPosition(), ghost.getTarget()));
+		ghost.getPath().remove(0);
+		determineDirection(ghost);
+	}
+
 	private void determineDirection(Ghost ghost) {
-		if(!blinky.getPath().isEmpty()) {
-			Coordinate current = blinky.getPosition();
-			Coordinate next = blinky.getPath().get(0);
+		if(!ghost.getPath().isEmpty()) {
+			Coordinate current = ghost.getPosition();
+			Coordinate next = ghost.getPath().get(0);
 			if(next.getX() > current.getX()) {
-				blinky.setDirection(Direction.RIGHT);
+				ghost.setDirection(Direction.RIGHT);
 			} else if(next.getX() < current.getX()) {
-				blinky.setDirection(Direction.LEFT);
+				ghost.setDirection(Direction.LEFT);
 			} else if(next.getY() > current.getY()) {
-				blinky.setDirection(Direction.DOWN);
+				ghost.setDirection(Direction.DOWN);
 			} else {
-				blinky.setDirection(Direction.UP);
+				ghost.setDirection(Direction.UP);
 			} 
 		}
 	}
 
 	public boolean isEatingDots() {
 		byte type = food.get(pacman.getPosition()).getType();
-		return type == Food.PACDOT;
+		return type == Food.PACDOT || type == Food.ENERGIZER;
 	}
 
 	public IGraph<Coordinate> getMap() {
@@ -488,8 +506,16 @@ public class Game {
 		return rightTileOfTheTunel;
 	}
 
+	public Coordinate getBonusTile() {
+		return bonusTile;
+	}
+
 	public int getScore() {
 		return score;
+	}
+
+	public boolean atLeastAFrightenedGhost() {
+		return blinky.isFrightened() || inky.isFrightened() || pinky.isFrightened() || clyde.isFrightened();
 	}
 
 	//if name does not match anything then return clyde

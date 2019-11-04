@@ -85,6 +85,13 @@ public class GhostThread extends Thread {
 						ghostImage.setImage(new Image(new File(Controller.GHOSTS_SPRITES+ghost.getName()+File.separator+dir+number+".png").toURI().toString()));	
 					}
 				}
+				if(ghost.getPosX() == game.getPacman().getPosX() && ghost.getPosY() == game.getPacman().getPosY()) {
+					if(ghost.isFrightened()) {
+						ghost.setFrightened(false);
+					} else {
+						
+					}
+				}
 				ghostImage.relocate(ghost.getPosX(), ghost.getPosY());
 			}
 		});

@@ -13,23 +13,23 @@ import ui.Controller;
 
 public class PacmanThread extends Thread {
 	public final static String MOVEMENTS = "resources/sprites/pacman/movements/";
-	private Controller c;
+	private Controller controller;
 	private ImageView pacmanImage;
-	private Game g;
+	private Game game;
 	private Pacman pacman;
-
+	private long rate = 0;
 	public PacmanThread(Controller c) {
-		this.c = c;
+		this.controller = c;
 		pacmanImage = c.getPacman();
-		g = c.getGame();
-		pacman = g.getPacman();
+		game = c.getGame();
+		pacman = game.getPacman();
 		Controller.MOVEMENT_SPRITE = 0;
 		setDaemon(true);
 	}
 
 	@Override
 	public void run() {
-		while(!c.isOnPause()) {
+		while(!controller.isOnPause()) {
 			pacmanImage.setImage(new Image(new File(MOVEMENTS+Controller.MOVEMENT_SPRITE+".png").toURI().toString()));
 			Controller.MOVEMENT_COUNTER++;
 			if(Controller.MOVEMENT_COUNTER % 3 == 0) {
@@ -38,7 +38,7 @@ public class PacmanThread extends Thread {
 					Controller.MOVEMENT_SPRITE = 0;
 				}
 			}
-			g.movePacman();
+			game.movePacman();
 			Platform.runLater(new Runnable() {
 				@Override
 				public void run() {
@@ -56,21 +56,36 @@ public class PacmanThread extends Thread {
 						pacmanImage.setRotate(270);
 						break;
 					}
+					Level level = game.getCurrentLevel();
+					if(level.isFrightened()) {
+						if(!game.atLeastAFrightenedGhost()) {
+							//TODO sonido de alarma fantasmas asustados
+							if(true) {
+								//TODO sonido cuando se come un fantasma
+							}
+						}
+						if(game.isEatingDots()) {
+							rate = (long)((1 - level.getPacmanWithEnergizerEatingDotsSpeed())*Level.REFERENCE_SPEED);
+						} else {
+							rate = (long)((1 - level.getPacmanWithEnergizerSpeed())*Level.REFERENCE_SPEED);
+						}
+					}  else if(game.isEatingDots()){
+						if(!controller.getEatDot().isPlaying()) {
+							controller.getEatDot().play();
+						}
+						rate = (long)((1 - level.getPacmanEatingDotsSpeed())*Level.REFERENCE_SPEED);
+					} else {
+					rate = (long)((1 - level.getPacmanSpeed())*Level.REFERENCE_SPEED);
+					}
+					if(!game.getFood().get(game.getBonusTile()).getNotEaten().get() && pacman.getPosX() == game.getBonusTile().getX() && pacman.getPosY() == game.getBonusTile().getY()) {
+						controller.getEatFruit().play();
+						game.getFood().get(game.getBonusTile()).setNotEaten(false);
+					}
+					controller.getScoreLabel().setText(game.getScore()+"");
 					pacmanImage.relocate(pacman.getPosX(), pacman.getPosY());	
 				}
 			});
 			try {
-				Level level = g.getCurrentLevel();
-				long rate = 0;
-				if(level.isFrightened() && g.isEatingDots()) { System.out.println("energizer and dots");
-					rate = (long)((1 - level.getPacmanWithEnergizerEatingDotsSpeed())*Level.REFERENCE_SPEED);
-				} else if(level.isFrightened()) { System.out.println("energizer");
-					rate = (long)((1 - level.getPacmanWithEnergizerSpeed())*Level.REFERENCE_SPEED);
-				}  else if(g.isEatingDots()){ System.out.println("dots");
-					rate = (long)((1 - level.getPacmanEatingDotsSpeed())*Level.REFERENCE_SPEED);
-				} else { System.out.println("empty");
-					rate = (long)((1 - level.getPacmanSpeed())*Level.REFERENCE_SPEED);
-				}
 				sleep(rate);
 			} catch (InterruptedException e) {
 				e.printStackTrace();

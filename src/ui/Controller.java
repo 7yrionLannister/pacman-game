@@ -2,13 +2,10 @@ package ui;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.function.BiConsumer;
 
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -19,8 +16,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.media.AudioClip;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import model.Coordinate;
 import model.Direction;
 import model.Game;
@@ -161,6 +156,9 @@ public class Controller {
 		});
 		
 		backgroundSound = new AudioClip(new File("resources/audio/siren.mp3").toURI().toString());
+		intro = new AudioClip(new File("resources/audio/intro.mp3").toURI().toString());
+		eatDot = new AudioClip(new File("resources/audio/eat_dot.mp3").toURI().toString());
+		eatFruit = new AudioClip(new File("resources/audio/eat_fruit.mp3").toURI().toString());
 		
 		//TODO acomodar los cuadritos negros del tunel si se detecta que es MacOS 
 		onPause = true;
@@ -203,7 +201,6 @@ public class Controller {
 		if(!onPause) {
 			if(game.getCurrentLevel().getDotsLeft() == 82) { //first in the game
 				readyImage.setVisible(true);
-				MediaPlayer intro = new MediaPlayer(new Media(new File("resources/audio/intro.mp3").toURI().toString()));
 				intro.play();
 				TimerTask task = new TimerTask() {
 					@Override
@@ -214,21 +211,13 @@ public class Controller {
 			        }
 			    };
 			    Timer timer = new Timer("Timer");
-			    long delay = 5000;
+			    long delay = 4000;
 			    timer.schedule(task, delay);
 			} else {
 				startThreads();
 			}
-			TimerTask task = new TimerTask() {
-				@Override
-		        public void run() {
-					backgroundSound.play();
-		        }
-		    };
-		    Timer timer = new Timer("Timer");
-		    long delay = 100;
-		    long period = 1620;
-		    timer.schedule(task, delay, period);
+			//backgroundSound.setCycleCount(10000);
+			//backgroundSound.play();
 		    //TODO consider using the cycle property instead of a timertask
 		} else {
 			//TODO callar sonidos
@@ -331,5 +320,29 @@ public class Controller {
 
 	public void setOnPause(boolean onPause) {
 		this.onPause = onPause;
+	}
+
+	public Label getScoreLabel() {
+		return scoreLabel;
+	}
+
+	public AudioClip getEatDot() {
+		return eatDot;
+	}
+
+	public AudioClip getEatFruit() {
+		return eatFruit;
+	}
+
+	public AudioClip getEatGhost() {
+		return eatGhost;
+	}
+
+	public AudioClip getExtraLive() {
+		return extraLive;
+	}
+
+	public AudioClip getDeath() {
+		return death;
 	}
 }
