@@ -512,6 +512,8 @@ public class AdjacencyListGraphTest {
 	@Test
 	public void kruskalTest() {
 		//TODO implementar
+		linkVerticesInUndirectedGraphTest();
+		graph.kruskalMinimumSpannigTree();
 	}
 
 	private void vertexInsertionLoop() {

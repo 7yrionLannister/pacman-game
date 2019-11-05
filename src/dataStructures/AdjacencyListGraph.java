@@ -565,7 +565,7 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 	 */
 	@Override
 	public ArrayList<Edge<E>> kruskalMinimumSpannigTree() {
-		// TODO Auto-generated method stub
+		UnionFind<E> uf = new UnionFind<>(getVertices());
 		return null;
 	}
 }

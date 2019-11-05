@@ -1,6 +1,5 @@
 package dataStructures;
 
-import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Collection;
 import java.util.HashMap;
@@ -25,7 +24,7 @@ public class UnionFind<E> {
     }
     /**A map from objects in the UnionFind structure to their associated rank and parent.
      */
-    private Map<E, Link> elems; 
+    private HashMap<E, Link> elems; 
     /**Creates a new UnionFind structure that is initially empty.
      */
     public UnionFind() {
@@ -37,8 +36,9 @@ public class UnionFind<E> {
      */
     public UnionFind(Collection<? extends E> elems) {
         /* Iterate across the collection, adding each to this structure. */
-        for (E elem: elems)
+        for (E elem: elems) {
             add(elem);
+        }
     }
     /**Inserts a new element into the UnionFind structure that initially
      * is in its own partition.  If the element already exists, this function returns false.  Otherwise, it returns true.
