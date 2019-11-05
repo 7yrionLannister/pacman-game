@@ -1,6 +1,7 @@
 package dataStructures;
 
 import java.util.NoSuchElementException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
@@ -24,17 +25,16 @@ public class UnionFind<E> {
     }
     /**A map from objects in the UnionFind structure to their associated rank and parent.
      */
-    private HashMap<E, Link> elems; 
+    private HashMap<E, Link> elems = new HashMap<E, Link>();
     /**Creates a new UnionFind structure that is initially empty.
      */
     public UnionFind() {
-    	elems = new HashMap<E, Link>();
     }
     /**Creates a new UnionFind structure that initially contains all of the elements from the specified container.  Duplicate elements
      * will appear with multiplicity one.
      * @param elems The elements to store in the UnionFind structure.
      */
-    public UnionFind(Collection<? extends E> elems) {
+    public UnionFind(ArrayList<E> elems) {
         /* Iterate across the collection, adding each to this structure. */
         for (E elem: elems) {
             add(elem);
