@@ -571,11 +571,11 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 	@Override
 	public ArrayList<Edge<E>> primMinimumSpanningTree(E src) {
 		ArrayList<Edge<E>> prim = new ArrayList<Edge<E>>();
-		PriorityQueue<Vertex<E>> pq = new PriorityQueue<Vertex<E>>();
 		if(keyToIndex.containsKey(src)) {
+			PriorityQueue<Vertex<E>> pq = new PriorityQueue<Vertex<E>>();
 			Vertex<E> s = vertices[keyToIndex.get(src)];
 			lastSrc = s;
-			for(int i = 0; i < keyToIndex.size(); i++) { //Fix the vertices configuration to make Dijkstra
+			for(int i = 0; i < keyToIndex.size(); i++) { //Fix the vertices configuration to make Prim
 				vertices[i].setDistance(Integer.MAX_VALUE);
 				vertices[i].setColor(Color.WHITE);
 				vertices[i].setPredecessor(null);
@@ -588,8 +588,8 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 				Vertex<E> u = pq.poll();
 				int uIndex = keyToIndex.get(u.getElement());
 				for(int i = 0; i < keyToIndex.size(); i++) {
-					Edge<E> edge = new Edge<>(u.getElement(), vertices[i].getElement(), edges[uIndex][i]);
-					if(u.getColor() == Color.WHITE && vertices[i].getDistance() > edge.getWeight()) { //edge exists && the current shortest path can be improved
+					if(uIndex != i && edges[uIndex][i] != 0 && edges[uIndex][i] != Integer.MAX_VALUE && u.getColor() == Color.WHITE && vertices[i].getDistance() > edges[uIndex][i]) { //edge exists && the current shortest path can be improved
+						Edge<E> edge = new Edge<>(u.getElement(), vertices[i].getElement(), edges[uIndex][i]);
 						pq.remove(vertices[i]);
 						Vertex<E> pred = vertices[keyToIndex.get(edge.getDst())].getPredecessor();
 						if (pred != null) {

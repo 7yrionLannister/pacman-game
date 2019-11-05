@@ -1,6 +1,6 @@
 package dataStructures;
 
-public class Edge<E> {
+public class Edge<E> implements Comparable<Edge<E>>{
 	
 	/**It represents the source vertex from the dst vertex is going to be linked. 
 	 */
@@ -67,5 +67,9 @@ public class Edge<E> {
 	public boolean equals(Object another) {
 		Edge<E> a = (Edge<E>)another; 
 		return a.src.equals(src) && a.dst.equals(dst);
+	}
+	@Override
+	public int compareTo(Edge<E> edge) {
+		return weight - edge.weight;
 	}
 }

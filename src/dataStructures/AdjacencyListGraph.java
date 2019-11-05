@@ -1,7 +1,10 @@
 package dataStructures;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.PriorityQueue;
 import java.util.function.BiConsumer;
 
@@ -566,6 +569,23 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 	@Override
 	public ArrayList<Edge<E>> kruskalMinimumSpannigTree() {
 		UnionFind<E> uf = new UnionFind<>(getVertices());
-		return null;
+		ArrayList<Edge<E>> kruskal = new ArrayList<>();
+		ArrayList<Edge<E>> edges = new ArrayList<>();
+		for(ArrayList<Edge<E>> adjList : adjacencyLists.values()) {
+			for(Edge<E> edge : adjList) {
+				if(!edges.contains(new Edge<>(edge.getDst(), edge.getSrc(), 1))) {
+					edges.add(edge);
+				}
+			}
+		}
+		Collections.sort((List) edges);
+		for(int i = 0; i < edges.size(); i++) {
+			Edge<E> edge = edges.get(i);
+			if(uf.find(edge.getSrc()) != uf.find(edge.getDst())) {
+				uf.union(edge.getSrc(), edge.getDst());
+				kruskal.add(edge);
+			}
+		}
+		return kruskal;
 	}
 }

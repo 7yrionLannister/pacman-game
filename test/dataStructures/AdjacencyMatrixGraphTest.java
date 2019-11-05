@@ -491,12 +491,42 @@ public class AdjacencyMatrixGraphTest {
 
 	@Test
 	public void primTest() {
-		
+		linkVerticesInUndirectedGraphTest();
+		int src = 7;
+		System.out.println("--------------------PRIM MATRIX--------------------");
+		System.out.println(src);
+		ArrayList<Edge<Integer>> mst = graph.primMinimumSpanningTree(src);
+		for(Edge<Integer> ed : mst) {
+			System.out.println(ed.getSrc() + " ---> " + ed.getDst());
+		}
+		System.out.println(src);
+		src = 4;
+		mst = graph.primMinimumSpanningTree(src);
+		for(Edge<Integer> ed : mst) {
+			System.out.println(ed.getSrc() + " ---> " + ed.getDst());
+		}
+		System.out.println(src);
+		src = 1;
+		mst = graph.primMinimumSpanningTree(src);
+		for(Edge<Integer> ed : mst) {
+			System.out.println(ed.getSrc() + " ---> " + ed.getDst());
+		}
+		System.out.println(src);
+		src = 3;
+		mst = graph.primMinimumSpanningTree(src);
+		for(Edge<Integer> ed : mst) {
+			System.out.println(ed.getSrc() + " ---> " + ed.getDst());
+		}
 	}
 	
 	@Test
 	public void kruskalTest() {
-		
+		linkVerticesInUndirectedGraphTest();
+		ArrayList<Edge<Integer>> mst = graph.kruskalMinimumSpannigTree();
+		System.out.println("--------------------KRUSKAL--------------------");
+		/*for(Edge<Integer> ed : mst) {
+			System.out.println(ed.getSrc() + " ---> " + ed.getDst());
+		}*/
 	}
 	
 	private void vertexInsertionLoop() {
