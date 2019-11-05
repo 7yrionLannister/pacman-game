@@ -6,6 +6,7 @@ import javafx.application.Platform;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import model.Game;
+import model.Ghost;
 import model.Level;
 import model.Pacman;
 import ui.Controller;
@@ -70,19 +71,24 @@ public class PacmanThread extends Thread {
 							rate = (long)((1 - level.getPacmanWithEnergizerSpeed())*Level.REFERENCE_SPEED);
 						}
 					}  else if(game.isEatingDots()){
-						if(!controller.getEatDot().isPlaying()) {
-							controller.getEatDot().play();
-						}
 						rate = (long)((1 - level.getPacmanEatingDotsSpeed())*Level.REFERENCE_SPEED);
 					} else {
 					rate = (long)((1 - level.getPacmanSpeed())*Level.REFERENCE_SPEED);
 					}
-					if(!game.getFood().get(game.getBonusTile()).getNotEaten().get() && pacman.getPosX() == game.getBonusTile().getX() && pacman.getPosY() == game.getBonusTile().getY()) {
-						controller.getEatFruit().play();
-						game.getFood().get(game.getBonusTile()).setNotEaten(false);
-					}
 					controller.getScoreLabel().setText(game.getScore()+"");
-					pacmanImage.relocate(pacman.getPosX(), pacman.getPosY());	
+					pacmanImage.relocate(pacman.getPosX(), pacman.getPosY());
+					Ghost ghost = game.getBlinky();
+					controller.getBlinky().relocate(ghost.getPosX(), ghost.getPosY());
+					controller.refreshGhostImage(ghost);
+					ghost = game.getInky();
+					controller.getInky().relocate(ghost.getPosX(), ghost.getPosY());
+					controller.refreshGhostImage(ghost);
+					ghost = game.getPinky();
+					controller.getPinky().relocate(ghost.getPosX(), ghost.getPosY());
+					controller.refreshGhostImage(ghost);
+					ghost = game.getClyde();
+					controller.getClyde().relocate(ghost.getPosX(), ghost.getPosY());
+					controller.refreshGhostImage(ghost);
 				}
 			});
 			try {

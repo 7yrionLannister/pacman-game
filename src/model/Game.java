@@ -56,20 +56,20 @@ public class Game {
 			xCoord -= 5; //TODO modificar hasta obtener buena pinta en MacOSX
 		}
 		pacman = new Pacman(tile, xCoord, tile.getY());
-		tile = coordinates.get(98);
-		blinky = new Ghost(tile, "blinky", xCoord, tile.getY());
-		blinky.setDirection(Direction.LEFT);
-		blinky.setTarget(coordinates.get(68));
 		tile = coordinates.get(99);
-		pinky = new Ghost(tile, "pinky", tile.getX(), tile.getY()+7);
+		pinky = new Ghost(tile, tile, "pinky", tile.getX(), tile.getY()+7);
 		pinky.setDirection(Direction.UP);
 		pinky.setTarget(coordinates.get(17));
+		tile = coordinates.get(98);
+		blinky = new Ghost(tile, pinky.getHouse(), "blinky", xCoord, tile.getY());
+		blinky.setDirection(Direction.LEFT);
+		blinky.setTarget(coordinates.get(68));
 		tile = coordinates.get(100);
-		inky = new Ghost(tile, "inky", tile.getX(), tile.getY());
+		inky = new Ghost(tile, tile, "inky", tile.getX(), tile.getY());
 		inky.setDirection(Direction.DOWN);
 		inky.setTarget(coordinates.get(77));
 		tile = coordinates.get(101);
-		clyde = new Ghost(tile, "clyde", tile.getX(), tile.getY());
+		clyde = new Ghost(tile, tile, "clyde", tile.getX(), tile.getY());
 		clyde.setDirection(Direction.DOWN);
 		clyde.setTarget(coordinates.get(26));
 	}
@@ -110,7 +110,7 @@ public class Game {
 		BufferedReader br = new BufferedReader(fr);
 
 		map = new AdjacencyListGraph<Coordinate>(true);
-		//map = new AdjacencyMatrixGraph<>(96, true);
+		//map = new AdjacencyMatrixGraph<>(102, true);
 		coordinates = new ArrayList<>();
 		food = new HashMap<>();
 		String line = br.readLine();
@@ -175,7 +175,7 @@ public class Game {
 		Ghost.state = State.SCATTERED;
 		initCharacters();
 		bonusTile = new Coordinate(pacman.getPosX(), coordinates.get(43).getY(), false, false, false, false);
-		food.put(bonusTile, new Food(Food.BONUS, false)); //TODO ajustar
+		food.put(bonusTile, new Food(Food.BONUS, true)); //TODO debe iniciar false y cambiar en algun momento del juego para que pacman lo coma
 
 		searchGhostTarget(blinky);
 		searchGhostTarget(inky);
@@ -318,6 +318,7 @@ public class Game {
 		} else if(pacman.getPosX() == bonusTile.getX() && pacman.getPosY() == bonusTile.getY() && food.get(bonusTile).getNotEaten().get()) {
 			score += getCurrentLevel().getBonusScore();
 			food.get(bonusTile).setType(Food.NOTHING);
+			food.get(bonusTile).setNotEaten(false);
 		}
 	}
 
@@ -382,6 +383,29 @@ public class Game {
 	}
 
 	public void moveGhost(Ghost ghost) {
+		int difX = (int)Math.abs(ghost.getPosX() - pacman.getPosX());
+		int difY = (int)Math.abs(ghost.getPosY() - pacman.getPosY());
+
+		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~");
+		System.out.println(inky.isFrightened());
+		System.out.println(pinky.isFrightened());
+		System.out.println(blinky.isFrightened());
+		System.out.println(clyde.isFrightened());
+		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~");
+		if(difX <= 2 && difY <= 2) {
+			if(ghost.isFrightened()) {
+				//TODO ghost dies, aumentar puntaje cuando sepa cuanto vale cada fantasma comido
+				//FIXME arreglar
+				//TODO si se quita el setposx y y se dania pero se esta viendo como un cambio brusco en la interfaz
+				ghost.setFrightened(false);
+				ghost.setGoingHome(true);
+				searchGhostTarget(ghost);
+				System.out.println("muere fantasma muere >:v!!!");
+			} else {
+				//TODO pacman dies
+				System.out.println("muere pacman muere >:v!!!");
+			}
+		}
 		if(!ghost.getPath().isEmpty()) {
 			Coordinate next = ghost.getPath().get(0);
 			if(ghost.getPosX() == next.getX() && ghost.getPosY() == next.getY()) {
@@ -420,9 +444,13 @@ public class Game {
 		} else {
 			searchClydeTarget();
 		}
-		
+
 		if(ghost.isFrightened()) {
-			ghost.setTarget(coordinates.get((int)(Math.random()*coordinates.size())));
+			ghost.setTarget(coordinates.get((int)(Math.random()*(coordinates.size()-3))));
+		} else if(ghost.isGoingHome().get()) {
+			ghost.setTarget(ghost.getHouse());
+			ghost.setPosX(ghost.getPosition().getX());
+			ghost.setPosY(ghost.getPosition().getY());
 		}
 		ghost.setPath(map.getPath(ghost.getPosition(), ghost.getTarget()));
 		ghost.getPath().remove(0);
@@ -448,6 +476,17 @@ public class Game {
 	public boolean isEatingDots() {
 		byte type = food.get(pacman.getPosition()).getType();
 		return type == Food.PACDOT || type == Food.ENERGIZER;
+	}
+
+	public boolean isInTheTunnel(Ghost ghost) {
+		Coordinate pos = ghost.getPosition();
+		boolean tunnel =  pos.equals(coordinates.get(96));
+		tunnel |= pos.equals(coordinates.get(97));
+		tunnel |= pos.equals(coordinates.get(4));
+		tunnel |= pos.equals(coordinates.get(12));
+		tunnel |= pos.equals(coordinates.get(82));
+		tunnel |= pos.equals(coordinates.get(91));
+		return tunnel;
 	}
 
 	public IGraph<Coordinate> getMap() {

@@ -6,6 +6,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.function.BiConsumer;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -19,8 +21,8 @@ import javafx.scene.media.AudioClip;
 import model.Coordinate;
 import model.Direction;
 import model.Game;
+import model.Ghost;
 import model.Food;
-import threads.BlinkyThread;
 import threads.GhostThread;
 import threads.PacmanThread;
 
@@ -32,13 +34,13 @@ public class Controller {
 	public final static Image PACDOT_IMAGE = new Image(new File("resources/sprites/food/pacdot.png").toURI().toString());
 	public final static Image ENERGIZER_IMAGE = new Image(new File("resources/sprites/food/energizer.png").toURI().toString());
 	public final static Image BONUS_IMAGE = new Image(new File("resources/sprites/food/bonus/cherry.png").toURI().toString());
-	
-	@FXML
-    private Label highScoreLabel;
 
-    @FXML
-    private Label scoreLabel;
-    
+	@FXML
+	private Label highScoreLabel;
+
+	@FXML
+	private Label scoreLabel;
+
 	@FXML
 	private AnchorPane map;
 
@@ -99,7 +101,7 @@ public class Controller {
 	private Game game;
 
 	private PacmanThread pacmanThread;
-	private BlinkyThread blinkyThread;
+	private GhostThread blinkyThread;
 	private GhostThread inkyThread;
 	private GhostThread clydeThread;
 	private GhostThread pinkyThread;
@@ -110,8 +112,7 @@ public class Controller {
 	private AudioClip eatGhost;
 	private AudioClip extraLive;
 	private AudioClip death;
-	private AudioClip backgroundSound;
-	
+
 	private boolean onPause;
 
 	@FXML
@@ -131,7 +132,14 @@ public class Controller {
 		clyde.relocate(game.getClyde().getPosX(), game.getClyde().getPosY());
 		pinky.relocate(game.getPinky().getPosX(), game.getPinky().getPosY());
 		inky.relocate(game.getInky().getPosX(), game.getInky().getPosY());
-		
+
+		intro = new AudioClip(new File("resources/audio/intro.mp3").toURI().toString());
+		eatDot = new AudioClip(new File("resources/audio/eat_dot.mp3").toURI().toString());
+		eatFruit = new AudioClip(new File("resources/audio/eat_fruit.mp3").toURI().toString());
+		eatGhost = new AudioClip(new File("resources/audio/eat_ghost.mp3").toURI().toString());
+		extraLive = new AudioClip(new File("resources/audio/extrapac.mp3").toURI().toString());
+		death = new AudioClip(new File("resources/audio/pacman_death.mp3").toURI().toString());
+
 		game.getFood().forEach(new BiConsumer<Coordinate, Food>() {
 			@Override
 			public void accept(Coordinate t, Food u) {
@@ -142,24 +150,59 @@ public class Controller {
 				switch(u.getType()) {
 				case Food.BONUS:
 					food.setImage(BONUS_IMAGE);
+					u.getNotEaten().addListener(new ChangeListener<Boolean>() {
+						@Override
+						public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue,
+								Boolean newValue) {
+							if(!newValue) {
+								eatFruit.play();
+							}
+						}
+					});
 					break;
 				case Food.ENERGIZER:
 					food.setImage(ENERGIZER_IMAGE);
+					u.getNotEaten().addListener(new ChangeListener<Boolean>() {
+						@Override
+						public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue,
+								Boolean newValue) {
+							if(!newValue) {
+								eatDot.play();
+							}
+						}
+					});
 					break;
 				case Food.PACDOT:
 					food.setImage(PACDOT_IMAGE);
+					u.getNotEaten().addListener(new ChangeListener<Boolean>() {
+						@Override
+						public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue,
+								Boolean newValue) {
+							if(!newValue) {
+								eatDot.play();
+							}
+						}
+					});
 					break;
 				default:
 					break;
 				}
 			}
 		});
-		
-		backgroundSound = new AudioClip(new File("resources/audio/siren.mp3").toURI().toString());
-		intro = new AudioClip(new File("resources/audio/intro.mp3").toURI().toString());
-		eatDot = new AudioClip(new File("resources/audio/eat_dot.mp3").toURI().toString());
-		eatFruit = new AudioClip(new File("resources/audio/eat_fruit.mp3").toURI().toString());
-		
+
+		ChangeListener<Boolean> eatGhostListener = new ChangeListener<Boolean>() {
+			@Override
+			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue,
+					Boolean newValue) {
+				if(newValue) {
+					eatGhost.play();
+				}
+			}
+		};
+		game.getBlinky().isGoingHome().addListener(eatGhostListener);
+		game.getInky().isGoingHome().addListener(eatGhostListener);
+		game.getPinky().isGoingHome().addListener(eatGhostListener);
+		game.getClyde().isGoingHome().addListener(eatGhostListener);
 		//TODO acomodar los cuadritos negros del tunel si se detecta que es MacOS 
 		onPause = true;
 	}
@@ -180,9 +223,15 @@ public class Controller {
 
 	@FXML
 	public void printMapCoordinates(MouseEvent event) {
-		System.out.println(event.getX()+","+event.getY());
-		//		System.out.println(pacman.getLayoutX()+","+pacman.getLayoutY());
-		System.out.println("bonus: "+bonusImage.getLayoutX()+","+bonusImage.getLayoutY());
+		//System.out.println(event.getX()+","+event.getY());
+		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+		System.out.println("pacman image: "+pacman.getLayoutX()+","+pacman.getLayoutY()+" ~ pacman: "+game.getPacman().getPosX()+","+game.getPacman().getPosY());
+		System.out.println("blinky image: "+blinky.getLayoutX()+","+blinky.getLayoutY()+" ~ blinky: "+game.getBlinky().getPosX()+","+game.getBlinky().getPosY());
+		System.out.println("inky image: "+inky.getLayoutX()+","+inky.getLayoutY()+" ~ inky: "+game.getInky().getPosX()+","+game.getInky().getPosY());
+		System.out.println("pinky image: "+pinky.getLayoutX()+","+pinky.getLayoutY()+" ~ pinky: "+game.getPinky().getPosX()+","+game.getPinky().getPosY());
+		System.out.println("clyde image: "+clyde.getLayoutX()+","+clyde.getLayoutY()+" ~ clyde: "+game.getClyde().getPosX()+","+game.getClyde().getPosY());
+		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+		//System.out.println("bonus: "+bonusImage.getLayoutX()+","+bonusImage.getLayoutY());
 	}
 
 	@FXML
@@ -204,21 +253,18 @@ public class Controller {
 				intro.play();
 				TimerTask task = new TimerTask() {
 					@Override
-			        public void run() {
+					public void run() {
 						readyImage.setVisible(false);
 						MOVEMENT_COUNTER++;
 						startThreads();
-			        }
-			    };
-			    Timer timer = new Timer("Timer");
-			    long delay = 4000;
-			    timer.schedule(task, delay);
+					}
+				};
+				Timer timer = new Timer("Timer");
+				long delay = 4000;
+				timer.schedule(task, delay);
 			} else {
 				startThreads();
 			}
-			//backgroundSound.setCycleCount(10000);
-			//backgroundSound.play();
-		    //TODO consider using the cycle property instead of a timertask
 		} else {
 			//TODO callar sonidos
 		}
@@ -226,7 +272,7 @@ public class Controller {
 
 	public void startThreads() {
 		pacmanThread = new PacmanThread(this);
-		blinkyThread = new BlinkyThread(this);
+		blinkyThread = new GhostThread(this, game.getBlinky().getName());
 		inkyThread = new GhostThread(this, game.getInky().getName());
 		pinkyThread = new GhostThread(this, game.getPinky().getName());
 		clydeThread = new GhostThread(this, game.getClyde().getName());
@@ -344,5 +390,57 @@ public class Controller {
 
 	public AudioClip getDeath() {
 		return death;
+	}
+
+	public void refreshGhostImage(Ghost ghost) {
+		if(Controller.MOVEMENT_COUNTER%5 == 0) {
+			ImageView ghostImage = getGhostImage(ghost.getName());
+			if(ghost.isFrightened()) {
+				//TODO implementar, la linea que sigue sirve para cuando esta azulito
+				//TODO ahora falta para los tres parpadeos de advertencia al final, eso solo lo podras hacer con el timer y timertask
+				ghostImage.setImage(new Image(new File(Controller.GHOSTS_SPRITES+"vulnerable"+File.separator+((Controller.MOVEMENT_SPRITE%2)==0?0:2)+".png").toURI().toString()));
+			} else {
+				long number = (Controller.MOVEMENT_COUNTER%2);
+				String dir = "";
+				switch(ghost.getDirection()) {
+				case DOWN:
+					dir = "d";
+					break;
+				case LEFT:
+					dir = "l";
+					break;
+				case RIGHT:
+					dir = "r";
+					break;
+				case UP:
+					dir = "u";
+					break;
+				}
+				if(ghost.isGoingHome().get()) {
+					ghostImage.setImage(new Image(new File(Controller.GHOSTS_SPRITES+"eyes"+File.separator+dir+".png").toURI().toString()));
+				} else {
+					ghostImage.setImage(new Image(new File(Controller.GHOSTS_SPRITES+ghost.getName()+File.separator+dir+number+".png").toURI().toString()));
+				}
+			}
+		}
+		if(ghost.getPosX() == game.getPacman().getPosX() && ghost.getPosY() == game.getPacman().getPosY()) {
+			if(ghost.isFrightened()) {
+				ghost.setFrightened(false);
+			} else {
+
+			}
+		}
+	}
+
+	public ImageView getGhostImage(String name) {
+		if(name.equalsIgnoreCase(game.getBlinky().getName())) {
+			return blinky;
+		} else if(name.equalsIgnoreCase(game.getInky().getName())) {
+			return inky;
+		} else if(name.equalsIgnoreCase(game.getPinky().getName())) {
+			return pinky;
+		} else {
+			return clyde;
+		}
 	}
 }
