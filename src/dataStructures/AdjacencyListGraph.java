@@ -547,7 +547,7 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 					Vertex<E> d = vertices.get(ale.getDst());
 					if(d.getColor() == Color.WHITE && d.getDistance() > ale.getWeight()) {
 						pq.remove(d);
-						Vertex<E> pred = vertices.get(ale.getDst()).getPredecessor();
+						Vertex<E> pred = d.getPredecessor();
 						if(pred != null) { //remove the edge that has ale.dst as dst vertex
 							Edge<E> edgeToRemove = new Edge<>(pred.getElement(), ale.getDst(), 1);
 							prim.remove(edgeToRemove);

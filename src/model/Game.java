@@ -52,9 +52,6 @@ public class Game {
 	private void initCharacters() {
 		Coordinate tile = coordinates.get(45);
 		double xCoord = tile.getX()+15;
-		if(!runningLinux) {
-			xCoord -= 5; //TODO modificar hasta obtener buena pinta en MacOSX
-		}
 		pacman = new Pacman(tile, xCoord, tile.getY());
 		tile = coordinates.get(99);
 		pinky = new Ghost(tile, tile, "pinky", tile.getX(), tile.getY()+7);

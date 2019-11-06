@@ -490,20 +490,20 @@ public class AdjacencyListGraphTest {
 		for(Edge<Integer> ed : mst) {
 			System.out.println(ed.getSrc() + " ---> " + ed.getDst());
 		}
-		System.out.println(src);
 		src = 4;
+		System.out.println(src);
 		mst = graph.primMinimumSpanningTree(src);
 		for(Edge<Integer> ed : mst) {
 			System.out.println(ed.getSrc() + " ---> " + ed.getDst());
 		}
-		System.out.println(src);
 		src = 1;
+		System.out.println(src);
 		mst = graph.primMinimumSpanningTree(src);
 		for(Edge<Integer> ed : mst) {
 			System.out.println(ed.getSrc() + " ---> " + ed.getDst());
 		}
-		System.out.println(src);
 		src = 3;
+		System.out.println(src);
 		mst = graph.primMinimumSpanningTree(src);
 		for(Edge<Integer> ed : mst) {
 			System.out.println(ed.getSrc() + " ---> " + ed.getDst());

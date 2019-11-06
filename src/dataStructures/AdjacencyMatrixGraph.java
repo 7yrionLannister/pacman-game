@@ -342,6 +342,7 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 			for(int i = 0; i < keyToIndex.size(); i++) { //Fix the vertices configuration to make Dijkstra
 				vertices[i].setDistance(Integer.MAX_VALUE);
 				vertices[i].setPredecessor(null);
+				vertices[i].setColor(Color.WHITE);
 				pq.offer(vertices[i]);
 			}
 			pq.remove(lastSrc);
@@ -572,9 +573,8 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 	public ArrayList<Edge<E>> primMinimumSpanningTree(E src) {
 		ArrayList<Edge<E>> prim = new ArrayList<Edge<E>>();
 		if(keyToIndex.containsKey(src)) {
+			lastSrc = vertices[keyToIndex.get(src)];
 			PriorityQueue<Vertex<E>> pq = new PriorityQueue<Vertex<E>>();
-			Vertex<E> s = vertices[keyToIndex.get(src)];
-			lastSrc = s;
 			for(int i = 0; i < keyToIndex.size(); i++) { //Fix the vertices configuration to make Prim
 				vertices[i].setDistance(Integer.MAX_VALUE);
 				vertices[i].setColor(Color.WHITE);
@@ -584,21 +584,23 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 			pq.remove(lastSrc);
 			lastSrc.setDistance(0);
 			pq.offer(lastSrc);
+			
 			while(!pq.isEmpty()) {
 				Vertex<E> u = pq.poll();
 				int uIndex = keyToIndex.get(u.getElement());
 				for(int i = 0; i < keyToIndex.size(); i++) {
-					if(uIndex != i && edges[uIndex][i] != 0 && edges[uIndex][i] != Integer.MAX_VALUE && u.getColor() == Color.WHITE && vertices[i].getDistance() > edges[uIndex][i]) { //edge exists && the current shortest path can be improved
+					Vertex<E> v = vertices[i];
+					if(uIndex != i && edges[uIndex][i] != 0 && edges[uIndex][i] != Integer.MAX_VALUE && v.getColor() == Color.WHITE && vertices[i].getDistance() > edges[uIndex][i]) { //edge exists && the current shortest path can be improved
 						Edge<E> edge = new Edge<>(u.getElement(), vertices[i].getElement(), edges[uIndex][i]);
-						pq.remove(vertices[i]);
-						Vertex<E> pred = vertices[keyToIndex.get(edge.getDst())].getPredecessor();
-						if (pred != null) {
+						pq.remove(v);
+						Vertex<E> pred = v.getPredecessor();
+						if (pred != null) { //remove the edge that has v as dst vertex
 							Edge<E> edgeToRemove = new Edge<>(pred.getElement(), edge.getDst(),1);
 							prim.remove(edgeToRemove);
 						}
-						vertices[i].setDistance(edge.getWeight());
-						vertices[i].setPredecessor(u);
-						pq.offer(vertices[i]);
+						v.setDistance(edge.getWeight());
+						v.setPredecessor(u);
+						pq.offer(v);
 						prim.add(edge);
 					}
 				}
