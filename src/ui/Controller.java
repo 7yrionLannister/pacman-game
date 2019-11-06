@@ -139,7 +139,6 @@ public class Controller {
 		eatGhost = new AudioClip(new File("resources/audio/eat_ghost.mp3").toURI().toString());
 		extraLive = new AudioClip(new File("resources/audio/extrapac.mp3").toURI().toString());
 		death = new AudioClip(new File("resources/audio/pacman_death.mp3").toURI().toString());
-
 		game.getFood().forEach(new BiConsumer<Coordinate, Food>() {
 			@Override
 			public void accept(Coordinate t, Food u) {
@@ -147,6 +146,15 @@ public class Controller {
 				map.getChildren().add(food);
 				food.relocate(t.getX(), t.getY());
 				food.visibleProperty().bind(game.getFood().get(t).getNotEaten());
+				ChangeListener<Boolean> eatDotsListener = new ChangeListener<Boolean>() {
+					@Override
+					public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue,
+							Boolean newValue) {
+						if(!newValue) {
+							eatDot.play();
+						}
+					}
+				};
 				switch(u.getType()) {
 				case Food.BONUS:
 					food.setImage(BONUS_IMAGE);
@@ -162,27 +170,11 @@ public class Controller {
 					break;
 				case Food.ENERGIZER:
 					food.setImage(ENERGIZER_IMAGE);
-					u.getNotEaten().addListener(new ChangeListener<Boolean>() {
-						@Override
-						public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue,
-								Boolean newValue) {
-							if(!newValue) {
-								eatDot.play();
-							}
-						}
-					});
+					u.getNotEaten().addListener(eatDotsListener);
 					break;
 				case Food.PACDOT:
 					food.setImage(PACDOT_IMAGE);
-					u.getNotEaten().addListener(new ChangeListener<Boolean>() {
-						@Override
-						public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue,
-								Boolean newValue) {
-							if(!newValue) {
-								eatDot.play();
-							}
-						}
-					});
+					u.getNotEaten().addListener(eatDotsListener);
 					break;
 				default:
 					break;
@@ -421,13 +413,6 @@ public class Controller {
 				} else {
 					ghostImage.setImage(new Image(new File(Controller.GHOSTS_SPRITES+ghost.getName()+File.separator+dir+number+".png").toURI().toString()));
 				}
-			}
-		}
-		if(ghost.getPosX() == game.getPacman().getPosX() && ghost.getPosY() == game.getPacman().getPosY()) {
-			if(ghost.isFrightened()) {
-				ghost.setFrightened(false);
-			} else {
-
 			}
 		}
 	}

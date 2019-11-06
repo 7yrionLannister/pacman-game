@@ -46,6 +46,9 @@ public class GhostThread extends Thread {
 						rate = (long)((1 - level.getGhostsSpeed())*Level.REFERENCE_SPEED);
 					}
 				}
+				if(ghost.isGoingHome().get()) {
+					rate = 6;
+				}
 				sleep(rate);
 			} catch (InterruptedException e) {
 				e.printStackTrace();

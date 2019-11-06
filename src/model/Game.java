@@ -169,7 +169,7 @@ public class Game {
 		food.get(coordinates.get(96)).setType(Food.NOTHING);		getCurrentLevel().setDotsLeft(getCurrentLevel().getDotsLeft()-1);
 		food.get(coordinates.get(97)).setType(Food.NOTHING);		getCurrentLevel().setDotsLeft(getCurrentLevel().getDotsLeft()-1);
 
-		Ghost.state = State.SCATTERED;
+		Ghost.state = State.CHASE; //TODO inicia en scatter
 		initCharacters();
 		bonusTile = new Coordinate(pacman.getPosX(), coordinates.get(43).getY(), false, false, false, false);
 		food.put(bonusTile, new Food(Food.BONUS, true)); //TODO debe iniciar false y cambiar en algun momento del juego para que pacman lo coma
@@ -336,6 +336,7 @@ public class Game {
 	public void searchInkyTarget() {
 		switch(Ghost.state) {
 		case CHASE:
+			inky.setTarget(pacman.getPosition());
 			break;
 		case SCATTERED:
 			if(inky.getTarget().equals(coordinates.get(56))) {
@@ -352,6 +353,7 @@ public class Game {
 	public void searchPinkyTarget() {
 		switch(Ghost.state) {
 		case CHASE:
+			pinky.setTarget(pacman.getPosition());
 			break;
 		case SCATTERED:
 			if(!pinky.getTarget().equals(coordinates.get(17))) {
@@ -366,6 +368,7 @@ public class Game {
 	public void searchClydeTarget() {
 		switch(Ghost.state) {
 		case CHASE:
+			clyde.setTarget(pacman.getPosition());
 			break;
 		case SCATTERED:
 			if(clyde.getTarget().equals(coordinates.get(46))) {
@@ -383,49 +386,72 @@ public class Game {
 		int difX = (int)Math.abs(ghost.getPosX() - pacman.getPosX());
 		int difY = (int)Math.abs(ghost.getPosY() - pacman.getPosY());
 
-		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~");
-		System.out.println(inky.isFrightened());
-		System.out.println(pinky.isFrightened());
-		System.out.println(blinky.isFrightened());
-		System.out.println(clyde.isFrightened());
-		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~");
 		if(difX <= 2 && difY <= 2) {
 			if(ghost.isFrightened()) {
 				//TODO ghost dies, aumentar puntaje cuando sepa cuanto vale cada fantasma comido
-				//FIXME arreglar
-				//TODO si se quita el setposx y y se dania pero se esta viendo como un cambio brusco en la interfaz
 				ghost.setFrightened(false);
 				ghost.setGoingHome(true);
 				searchGhostTarget(ghost);
-				System.out.println("muere fantasma muere >:v!!!");
 			} else {
 				//TODO pacman dies
 				System.out.println("muere pacman muere >:v!!!");
 			}
 		}
-		if(!ghost.getPath().isEmpty()) {
+		/*if(Ghost.state != State.CHASE) {
+			searchGhostTarget(ghost);
+			Coordinate next = ghost.getPath().get(0);
+			if(ghost.getPosX() == next.getX() && ghost.getPosY() == next.getY()) {
+				ghost.setPosition(ghost.getPath().remove(0));
+				determineDirection(ghost);
+			}
+		}
+		else */if(!ghost.getPath().isEmpty()) {
 			Coordinate next = ghost.getPath().get(0);
 			if(ghost.getPosX() == next.getX() && ghost.getPosY() == next.getY()) {
 				ghost.setPosition(ghost.getPath().remove(0));
 				determineDirection(ghost);
 			}
 		} else {
-			ghost.setPosX(ghost.getPosition().getX());
-			ghost.setPosY(ghost.getPosition().getY());
+			//if(ghost.getPosX() == ghost.getPosition().getX() && ghost.getPosY() == ghost.getPosition().getY()) {
+			//ghost.setPosX(ghost.getPosition().getX());
+			//ghost.setPosY(ghost.getPosition().getY());
 			searchGhostTarget(ghost);
+			//}
 		}
 		switch(ghost.getDirection()) {
 		case DOWN:
 			ghost.setPosY(ghost.getPosY()+1);
+			if(ghost.getPath().isEmpty() && ghost.getPosY() > ghost.getPosition().getY()){
+				ghost.setPosY(ghost.getPosY()-1);
+			}
 			break;
 		case LEFT:
 			ghost.setPosX(ghost.getPosX()-1);
+			if(ghost.getPosition().equals(leftTileOfTheTunel)) {
+				ghost.setPosition(rightTileOfTheTunel);
+				ghost.setPosX(ghost.getPosition().getX());
+				ghost.setPosY(ghost.getPosition().getY());
+			}
+			if(ghost.getPath().isEmpty() && ghost.getPosX() < ghost.getPosition().getX()){
+				ghost.setPosX(ghost.getPosX()+1);
+			}
 			break;
 		case RIGHT:
 			ghost.setPosX(ghost.getPosX()+1);
+			if(ghost.getPosition().equals(rightTileOfTheTunel)) {
+				ghost.setPosition(leftTileOfTheTunel);
+				ghost.setPosX(ghost.getPosition().getX());
+				ghost.setPosY(ghost.getPosition().getY());
+			}
+			if(ghost.getPath().isEmpty() && ghost.getPosX() > ghost.getPosition().getX()){
+				ghost.setPosX(ghost.getPosX()-1);
+			}
 			break;
 		case UP:
 			ghost.setPosY(ghost.getPosY()-1);
+			if(ghost.getPath().isEmpty() && ghost.getPosY() < ghost.getPosition().getY()){
+				ghost.setPosY(ghost.getPosY()+1);
+			}
 			break;
 		}
 	}
