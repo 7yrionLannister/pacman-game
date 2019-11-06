@@ -45,8 +45,6 @@ public class Game {
 		runningLinux = System.getProperty("os.name").equals("Linux");
 		setGameToInitialState();
 		currentLevel = 0;
-		leftTileOfTheTunel = coordinates.get(96);
-		rightTileOfTheTunel = coordinates.get(97);
 	}
 
 	private void initCharacters() {
@@ -173,7 +171,10 @@ public class Game {
 		initCharacters();
 		bonusTile = new Coordinate(pacman.getPosX(), coordinates.get(43).getY(), false, false, false, false);
 		food.put(bonusTile, new Food(Food.BONUS, true)); //TODO debe iniciar false y cambiar en algun momento del juego para que pacman lo coma
-
+		
+		leftTileOfTheTunel = coordinates.get(96);
+		rightTileOfTheTunel = coordinates.get(97);
+		
 		searchGhostTarget(blinky);
 		searchGhostTarget(inky);
 		searchGhostTarget(pinky);
@@ -397,26 +398,14 @@ public class Game {
 				System.out.println("muere pacman muere >:v!!!");
 			}
 		}
-		/*if(Ghost.state != State.CHASE) {
-			searchGhostTarget(ghost);
-			Coordinate next = ghost.getPath().get(0);
-			if(ghost.getPosX() == next.getX() && ghost.getPosY() == next.getY()) {
-				ghost.setPosition(ghost.getPath().remove(0));
-				determineDirection(ghost);
-			}
-		}
-		else */if(!ghost.getPath().isEmpty()) {
+		if(!ghost.getPath().isEmpty()) {
 			Coordinate next = ghost.getPath().get(0);
 			if(ghost.getPosX() == next.getX() && ghost.getPosY() == next.getY()) {
 				ghost.setPosition(ghost.getPath().remove(0));
 				determineDirection(ghost);
 			}
 		} else {
-			//if(ghost.getPosX() == ghost.getPosition().getX() && ghost.getPosY() == ghost.getPosition().getY()) {
-			//ghost.setPosX(ghost.getPosition().getX());
-			//ghost.setPosY(ghost.getPosition().getY());
 			searchGhostTarget(ghost);
-			//}
 		}
 		switch(ghost.getDirection()) {
 		case DOWN:
@@ -424,11 +413,13 @@ public class Game {
 			if(ghost.getPath().isEmpty() && ghost.getPosY() > ghost.getPosition().getY()){
 				ghost.setPosY(ghost.getPosY()-1);
 			}
+			ghost.setPosX(ghost.getPosition().getX());
 			break;
 		case LEFT:
 			ghost.setPosX(ghost.getPosX()-1);
-			if(ghost.getPosition().equals(leftTileOfTheTunel)) {
-				ghost.setPosition(rightTileOfTheTunel);
+			ghost.setPosY(ghost.getPosition().getY());
+			if(ghost.getPosition().equals(leftTileOfTheTunel) && ghost.getPath().get(0).equals(rightTileOfTheTunel)) {
+				ghost.setPosition(ghost.getPath().remove(0));
 				ghost.setPosX(ghost.getPosition().getX());
 				ghost.setPosY(ghost.getPosition().getY());
 			}
@@ -438,8 +429,9 @@ public class Game {
 			break;
 		case RIGHT:
 			ghost.setPosX(ghost.getPosX()+1);
-			if(ghost.getPosition().equals(rightTileOfTheTunel)) {
-				ghost.setPosition(leftTileOfTheTunel);
+			ghost.setPosY(ghost.getPosition().getY());
+			if(ghost.getPosition().equals(rightTileOfTheTunel) && ghost.getPath().get(0).equals(leftTileOfTheTunel)) {
+				ghost.setPosition(ghost.getPath().remove(0));
 				ghost.setPosX(ghost.getPosition().getX());
 				ghost.setPosY(ghost.getPosition().getY());
 			}
@@ -452,6 +444,7 @@ public class Game {
 			if(ghost.getPath().isEmpty() && ghost.getPosY() < ghost.getPosition().getY()){
 				ghost.setPosY(ghost.getPosY()+1);
 			}
+			ghost.setPosX(ghost.getPosition().getX());
 			break;
 		}
 	}
@@ -484,9 +477,11 @@ public class Game {
 		if(!ghost.getPath().isEmpty()) {
 			Coordinate current = ghost.getPosition();
 			Coordinate next = ghost.getPath().get(0);
-			if(next.getX() > current.getX()) {
+			if((current.equals(rightTileOfTheTunel) && next.equals(leftTileOfTheTunel))
+					|| (next.getX() > current.getX())) {
 				ghost.setDirection(Direction.RIGHT);
-			} else if(next.getX() < current.getX()) {
+			} else if((current.equals(leftTileOfTheTunel) && next.equals(rightTileOfTheTunel))
+					|| (next.getX() < current.getX())) {
 				ghost.setDirection(Direction.LEFT);
 			} else if(next.getY() > current.getY()) {
 				ghost.setDirection(Direction.DOWN);

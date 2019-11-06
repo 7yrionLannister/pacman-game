@@ -217,11 +217,14 @@ public class Controller {
 	public void printMapCoordinates(MouseEvent event) {
 		//System.out.println(event.getX()+","+event.getY());
 		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-		System.out.println("pacman image: "+pacman.getLayoutX()+","+pacman.getLayoutY()+" ~ pacman: "+game.getPacman().getPosX()+","+game.getPacman().getPosY());
 		System.out.println("blinky image: "+blinky.getLayoutX()+","+blinky.getLayoutY()+" ~ blinky: "+game.getBlinky().getPosX()+","+game.getBlinky().getPosY());
+		System.out.println(game.getBlinky().getPosition());
 		System.out.println("inky image: "+inky.getLayoutX()+","+inky.getLayoutY()+" ~ inky: "+game.getInky().getPosX()+","+game.getInky().getPosY());
+		System.out.println(game.getInky().getPosition());
 		System.out.println("pinky image: "+pinky.getLayoutX()+","+pinky.getLayoutY()+" ~ pinky: "+game.getPinky().getPosX()+","+game.getPinky().getPosY());
+		System.out.println(game.getPinky().getPosition());
 		System.out.println("clyde image: "+clyde.getLayoutX()+","+clyde.getLayoutY()+" ~ clyde: "+game.getClyde().getPosX()+","+game.getClyde().getPosY());
+		System.out.println(game.getClyde().getPosition());
 		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 		//System.out.println("bonus: "+bonusImage.getLayoutX()+","+bonusImage.getLayoutY());
 	}

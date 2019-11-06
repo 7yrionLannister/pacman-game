@@ -46,4 +46,9 @@ public class Coordinate {
 		Coordinate a = (Coordinate)another; //throws exception if another is not a Coordinate
 		return a.X == X && a.Y == Y;
 	}
+	
+	@Override
+	public String toString() {
+		return "("+X+","+Y+")";
+	}
 }
