@@ -403,6 +403,12 @@ public class Game {
 			if(ghost.getPosX() == next.getX() && ghost.getPosY() == next.getY()) {
 				ghost.setPosition(ghost.getPath().remove(0));
 				determineDirection(ghost);
+			} else if((ghost.getPosition().equals(leftTileOfTheTunel) && ghost.getPath().get(0).equals(rightTileOfTheTunel))
+					|| (ghost.getPosition().equals(rightTileOfTheTunel) && ghost.getPath().get(0).equals(leftTileOfTheTunel))) {
+				ghost.setPosition(ghost.getPath().remove(0));
+				determineDirection(ghost);
+				ghost.setPosX(ghost.getPosition().getX());
+				ghost.setPosY(ghost.getPosition().getY());
 			}
 		} else {
 			searchGhostTarget(ghost);
@@ -418,11 +424,11 @@ public class Game {
 		case LEFT:
 			ghost.setPosX(ghost.getPosX()-1);
 			ghost.setPosY(ghost.getPosition().getY());
-			if(ghost.getPosition().equals(leftTileOfTheTunel) && ghost.getPath().get(0).equals(rightTileOfTheTunel)) {
+			/*if(ghost.getPosition().equals(leftTileOfTheTunel) && ghost.getPath().get(0).equals(rightTileOfTheTunel)) {
 				ghost.setPosition(ghost.getPath().remove(0));
 				ghost.setPosX(ghost.getPosition().getX());
 				ghost.setPosY(ghost.getPosition().getY());
-			}
+			}*/
 			if(ghost.getPath().isEmpty() && ghost.getPosX() < ghost.getPosition().getX()){
 				ghost.setPosX(ghost.getPosX()+1);
 			}
@@ -430,11 +436,11 @@ public class Game {
 		case RIGHT:
 			ghost.setPosX(ghost.getPosX()+1);
 			ghost.setPosY(ghost.getPosition().getY());
-			if(ghost.getPosition().equals(rightTileOfTheTunel) && ghost.getPath().get(0).equals(leftTileOfTheTunel)) {
+			/*if(ghost.getPosition().equals(rightTileOfTheTunel) && ghost.getPath().get(0).equals(leftTileOfTheTunel)) {
 				ghost.setPosition(ghost.getPath().remove(0));
 				ghost.setPosX(ghost.getPosition().getX());
 				ghost.setPosY(ghost.getPosition().getY());
-			}
+			}*/
 			if(ghost.getPath().isEmpty() && ghost.getPosX() > ghost.getPosition().getX()){
 				ghost.setPosX(ghost.getPosX()-1);
 			}
