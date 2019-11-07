@@ -37,6 +37,7 @@ public class GhostThread extends Thread {
 					} else {
 						rate = (long)((1 - level.getGhostsSpeed())*Level.REFERENCE_SPEED);
 					}
+					game.setFrightenedCountdown(game.getFrightenedCountdown()-rate);
 				} else {
 					if(ghost.isFrightened()) {
 						rate = (long)((1 - level.getFrightGhostsSpeed())*Level.REFERENCE_SPEED);

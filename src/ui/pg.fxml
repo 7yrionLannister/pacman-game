@@ -64,8 +64,8 @@
                         <Image url="@../../resources/sprites/food/bonus/cherry.png" />
                      </image>
                   </ImageView>
-                  <Rectangle arcHeight="5.0" arcWidth="5.0" height="40.0" layoutY="157.0" stroke="BLACK" strokeType="INSIDE" width="40.0" />
-                  <Rectangle arcHeight="5.0" arcWidth="5.0" height="40.0" layoutX="319.0" layoutY="157.0" stroke="BLACK" strokeType="INSIDE" width="40.0" />
+                  <Rectangle fx:id="blackSquare2" arcHeight="5.0" arcWidth="5.0" height="40.0" layoutY="157.0" stroke="BLACK" strokeType="INSIDE" width="40.0" />
+                  <Rectangle fx:id="blackSquare1" arcHeight="5.0" arcWidth="5.0" height="40.0" layoutX="319.0" layoutY="157.0" stroke="BLACK" strokeType="INSIDE" width="40.0" />
                </children></AnchorPane>
          </children>
       </StackPane>
@@ -167,7 +167,10 @@
          <children>
             <Label text="HIGH SCORE       " />
             <Label fx:id="highScoreLabel" text="0" />
-            <Label fx:id="scoreLabel" text="                          0" />
+            <Label fx:id="scoreLabel" text="0">
+               <HBox.margin>
+                  <Insets left="130.0" />
+               </HBox.margin></Label>
          </children>
       </HBox>
    </top>

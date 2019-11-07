@@ -18,6 +18,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.media.AudioClip;
+import javafx.scene.shape.Rectangle;
 import model.Coordinate;
 import model.Direction;
 import model.Game;
@@ -34,7 +35,8 @@ public class Controller {
 	public final static Image PACDOT_IMAGE = new Image(new File("resources/sprites/food/pacdot.png").toURI().toString());
 	public final static Image ENERGIZER_IMAGE = new Image(new File("resources/sprites/food/energizer.png").toURI().toString());
 	public final static Image BONUS_IMAGE = new Image(new File("resources/sprites/food/bonus/cherry.png").toURI().toString());
-
+	public final static String CAUGHT = "resources/sprites/pacman/caught/";
+	
 	@FXML
 	private Label highScoreLabel;
 
@@ -98,6 +100,12 @@ public class Controller {
 	@FXML
 	private ImageView cherry;
 
+	@FXML
+	private Rectangle blackSquare2;
+
+	@FXML
+	private Rectangle blackSquare1;
+
 	private Game game;
 
 	private PacmanThread pacmanThread;
@@ -142,8 +150,11 @@ public class Controller {
 		game.getFood().forEach(new BiConsumer<Coordinate, Food>() {
 			@Override
 			public void accept(Coordinate t, Food u) {
-				ImageView food = new ImageView();
+				ImageView food = bonusImage;
+				if(u.getType() != Food.BONUS) {
+					food = new ImageView();
 				map.getChildren().add(food);
+				}
 				food.relocate(t.getX(), t.getY());
 				food.visibleProperty().bind(game.getFood().get(t).getNotEaten());
 				ChangeListener<Boolean> eatDotsListener = new ChangeListener<Boolean>() {
@@ -195,7 +206,11 @@ public class Controller {
 		game.getInky().isGoingHome().addListener(eatGhostListener);
 		game.getPinky().isGoingHome().addListener(eatGhostListener);
 		game.getClyde().isGoingHome().addListener(eatGhostListener);
-		//TODO acomodar los cuadritos negros del tunel si se detecta que es MacOS 
+
+		if(!game.isRunningLinux()) {
+			blackSquare1.relocate(blackSquare1.getLayoutX()+5, blackSquare1.getLayoutY());
+			blackSquare2.relocate(blackSquare2.getLayoutX()+5, blackSquare2.getLayoutY());
+		}
 		onPause = true;
 	}
 
@@ -260,8 +275,6 @@ public class Controller {
 			} else {
 				startThreads();
 			}
-		} else {
-			//TODO callar sonidos
 		}
 	}
 
@@ -391,9 +404,12 @@ public class Controller {
 		if(Controller.MOVEMENT_COUNTER%5 == 0) {
 			ImageView ghostImage = getGhostImage(ghost.getName());
 			if(ghost.isFrightened()) {
-				//TODO implementar, la linea que sigue sirve para cuando esta azulito
-				//TODO ahora falta para los tres parpadeos de advertencia al final, eso solo lo podras hacer con el timer y timertask
-				ghostImage.setImage(new Image(new File(Controller.GHOSTS_SPRITES+"vulnerable"+File.separator+((Controller.MOVEMENT_SPRITE%2)==0?0:2)+".png").toURI().toString()));
+				int num = ((Controller.MOVEMENT_SPRITE%2)==0?0:2);
+				System.out.println(game.getFrightenedCountdown());
+				if(game.getFrightenedCountdown() < 2000 && MOVEMENT_SPRITE % 4 == 0) {
+					num++;
+				}
+				ghostImage.setImage(new Image(new File(Controller.GHOSTS_SPRITES+"vulnerable"+File.separator+num+".png").toURI().toString()));
 			} else {
 				long number = (Controller.MOVEMENT_COUNTER%2);
 				String dir = "";
@@ -430,5 +446,26 @@ public class Controller {
 		} else {
 			return clyde;
 		}
+	}
+
+	public void deathAnimation() {
+		Thread t = new Thread() {
+			@Override
+			public void run() {
+				int sprite = 0;
+				while(sprite < 10) {
+					pacman.setImage(new Image(new File(CAUGHT+sprite+".png").toURI().toString()));
+					try {
+						sleep(200);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					sprite++;
+				}
+			}
+		};
+		t.setDaemon(true);
+		t.run();
+		death.play();pacman.relocate(100,100);
 	}
 }

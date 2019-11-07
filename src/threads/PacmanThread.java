@@ -61,9 +61,6 @@ public class PacmanThread extends Thread {
 					if(level.isFrightened()) {
 						if(!game.atLeastAFrightenedGhost()) {
 							//TODO sonido de alarma fantasmas asustados
-							if(true) {
-								//TODO sonido cuando se come un fantasma
-							}
 						}
 						if(game.isEatingDots()) {
 							rate = (long)((1 - level.getPacmanWithEnergizerEatingDotsSpeed())*Level.REFERENCE_SPEED);
@@ -89,6 +86,11 @@ public class PacmanThread extends Thread {
 					ghost = game.getClyde();
 					controller.getClyde().relocate(ghost.getPosX(), ghost.getPosY());
 					controller.refreshGhostImage(ghost);
+					
+					if(pacman.isDying()) {
+						controller.setOnPause(true);
+						controller.deathAnimation();
+					}
 				}
 			});
 			try {

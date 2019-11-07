@@ -13,6 +13,7 @@ import dataStructures.AdjacencyListGraph;
 import dataStructures.AdjacencyMatrixGraph;
 import dataStructures.IGraph;
 import model.Ghost.State;
+import ui.Controller;
 
 
 public class Game {
@@ -40,6 +41,7 @@ public class Game {
 	private Ghost clyde;
 
 	private int score;
+	private long frightenedCountdown;
 
 	public Game() throws IOException {
 		runningLinux = System.getProperty("os.name").equals("Linux");
@@ -167,10 +169,10 @@ public class Game {
 		food.get(coordinates.get(96)).setType(Food.NOTHING);		getCurrentLevel().setDotsLeft(getCurrentLevel().getDotsLeft()-1);
 		food.get(coordinates.get(97)).setType(Food.NOTHING);		getCurrentLevel().setDotsLeft(getCurrentLevel().getDotsLeft()-1);
 
-		Ghost.state = State.CHASE; //TODO inicia en scatter
+		Ghost.state = State.SCATTERED;
 		initCharacters();
 		bonusTile = new Coordinate(pacman.getPosX(), coordinates.get(43).getY(), false, false, false, false);
-		food.put(bonusTile, new Food(Food.BONUS, true)); //TODO debe iniciar false y cambiar en algun momento del juego para que pacman lo coma
+		food.put(bonusTile, new Food(Food.BONUS, false));
 		
 		leftTileOfTheTunel = coordinates.get(96);
 		rightTileOfTheTunel = coordinates.get(97);
@@ -300,8 +302,8 @@ public class Game {
 					}
 				};
 				Timer timer = new Timer("Timer");
-				long delay = getCurrentLevel().getFrightTime();
-				timer.schedule(task, delay);
+				frightenedCountdown = getCurrentLevel().getFrightTime();
+				timer.schedule(task, frightenedCountdown);
 				break;
 			case Food.PACDOT:
 				getCurrentLevel().setDotsLeft(getCurrentLevel().getDotsLeft()-1);
@@ -386,15 +388,15 @@ public class Game {
 	public void moveGhost(Ghost ghost) {
 		int difX = (int)Math.abs(ghost.getPosX() - pacman.getPosX());
 		int difY = (int)Math.abs(ghost.getPosY() - pacman.getPosY());
-
 		if(difX <= 2 && difY <= 2) {
 			if(ghost.isFrightened()) {
 				//TODO ghost dies, aumentar puntaje cuando sepa cuanto vale cada fantasma comido
 				ghost.setFrightened(false);
 				ghost.setGoingHome(true);
 				searchGhostTarget(ghost);
-			} else {
+			} else if(!ghost.isGoingHome().get()){
 				//TODO pacman dies
+				pacman.setDying(true);
 				System.out.println("muere pacman muere >:v!!!");
 			}
 		}
@@ -424,11 +426,6 @@ public class Game {
 		case LEFT:
 			ghost.setPosX(ghost.getPosX()-1);
 			ghost.setPosY(ghost.getPosition().getY());
-			/*if(ghost.getPosition().equals(leftTileOfTheTunel) && ghost.getPath().get(0).equals(rightTileOfTheTunel)) {
-				ghost.setPosition(ghost.getPath().remove(0));
-				ghost.setPosX(ghost.getPosition().getX());
-				ghost.setPosY(ghost.getPosition().getY());
-			}*/
 			if(ghost.getPath().isEmpty() && ghost.getPosX() < ghost.getPosition().getX()){
 				ghost.setPosX(ghost.getPosX()+1);
 			}
@@ -436,11 +433,6 @@ public class Game {
 		case RIGHT:
 			ghost.setPosX(ghost.getPosX()+1);
 			ghost.setPosY(ghost.getPosition().getY());
-			/*if(ghost.getPosition().equals(rightTileOfTheTunel) && ghost.getPath().get(0).equals(leftTileOfTheTunel)) {
-				ghost.setPosition(ghost.getPath().remove(0));
-				ghost.setPosX(ghost.getPosition().getX());
-				ghost.setPosY(ghost.getPosition().getY());
-			}*/
 			if(ghost.getPath().isEmpty() && ghost.getPosX() > ghost.getPosition().getX()){
 				ghost.setPosX(ghost.getPosX()-1);
 			}
@@ -592,5 +584,17 @@ public class Game {
 		} else {
 			return clyde;
 		}
+	}
+
+	public long getFrightenedCountdown() {
+		return frightenedCountdown;
+	}
+
+	public void setFrightenedCountdown(long timeForWarning) {
+		this.frightenedCountdown = timeForWarning;
+	}
+	
+	public boolean isRunningLinux() {
+		return runningLinux;
 	}
 }
