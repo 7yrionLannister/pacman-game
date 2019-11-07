@@ -447,25 +447,4 @@ public class Controller {
 			return clyde;
 		}
 	}
-
-	public void deathAnimation() {
-		Thread t = new Thread() {
-			@Override
-			public void run() {
-				int sprite = 0;
-				while(sprite < 10) {
-					pacman.setImage(new Image(new File(CAUGHT+sprite+".png").toURI().toString()));
-					try {
-						sleep(200);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-					sprite++;
-				}
-			}
-		};
-		t.setDaemon(true);
-		t.run();
-		death.play();pacman.relocate(100,100);
-	}
 }

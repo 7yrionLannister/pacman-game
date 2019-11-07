@@ -39,6 +39,25 @@ public class PacmanThread extends Thread {
 					Controller.MOVEMENT_SPRITE = 0;
 				}
 			}
+			if(pacman.isDying()) {
+				controller.setOnPause(true);
+				controller.getDeath().play();
+				controller.getBlinky().setVisible(false);
+				controller.getPinky().setVisible(false);
+				controller.getInky().setVisible(false);
+				controller.getClyde().setVisible(false);
+				int sprite = 0;
+				while(sprite < 13) {
+					try {
+						pacmanImage.setRotate(0);
+						pacmanImage.setImage(new Image(new File(Controller.CAUGHT+sprite+".png").toURI().toString()));
+						sprite++;
+						sleep(100);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+			}
 			game.movePacman();
 			Platform.runLater(new Runnable() {
 				@Override
@@ -70,7 +89,7 @@ public class PacmanThread extends Thread {
 					}  else if(game.isEatingDots()){
 						rate = (long)((1 - level.getPacmanEatingDotsSpeed())*Level.REFERENCE_SPEED);
 					} else {
-					rate = (long)((1 - level.getPacmanSpeed())*Level.REFERENCE_SPEED);
+						rate = (long)((1 - level.getPacmanSpeed())*Level.REFERENCE_SPEED);
 					}
 					controller.getScoreLabel().setText(game.getScore()+"");
 					pacmanImage.relocate(pacman.getPosX(), pacman.getPosY());
@@ -86,11 +105,6 @@ public class PacmanThread extends Thread {
 					ghost = game.getClyde();
 					controller.getClyde().relocate(ghost.getPosX(), ghost.getPosY());
 					controller.refreshGhostImage(ghost);
-					
-					if(pacman.isDying()) {
-						controller.setOnPause(true);
-						controller.deathAnimation();
-					}
 				}
 			});
 			try {
