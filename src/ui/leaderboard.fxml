@@ -3,11 +3,11 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 
-<TableView maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@pg.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/10.0.1">
+<TableView fx:id="lb" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@pg.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/10.0.1" fx:controller="ui.LeaderboardController">
   <columns>
-    <TableColumn prefWidth="138.0" text="RANK" />
-    <TableColumn prefWidth="154.0" text="STAGE" />
-      <TableColumn prefWidth="165.0" text="SCORE" />
-      <TableColumn prefWidth="142.0" text="NAME" />
+    <TableColumn fx:id="rank" prefWidth="138.0" sortable="false" text="RANK" />
+    <TableColumn fx:id="stage" prefWidth="154.0" sortable="false" text="STAGE" />
+      <TableColumn fx:id="score" prefWidth="165.0" sortable="false" text="SCORE" />
+      <TableColumn fx:id="name" prefWidth="142.0" sortable="false" text="NAME" />
   </columns>
 </TableView>
