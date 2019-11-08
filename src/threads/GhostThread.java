@@ -31,8 +31,10 @@ public class GhostThread extends Thread {
 					} else if(game.isInTheTunnel(ghost)) {
 						rate = (long)((1 - level.getGhostsTunelSpeed())*Level.REFERENCE_SPEED);
 					}  else if(level.getDotsLeft() <= level.getCruiseElroyDotsLeft2()){
+						System.out.println("elroy 2");
 						rate = (long)((1 - level.getCruiseElroySpeed2())*Level.REFERENCE_SPEED);
 					} else if(level.getDotsLeft() <= level.getCruiseElroyDotsLeft1()){
+						System.out.println("elroy 1");
 						rate = (long)((1 - level.getCruiseElroySpeed1())*Level.REFERENCE_SPEED);
 					} else {
 						rate = (long)((1 - level.getGhostsSpeed())*Level.REFERENCE_SPEED);
@@ -50,7 +52,7 @@ public class GhostThread extends Thread {
 				if(ghost.isGoingHome().get()) {
 					rate = 6;
 				}
-				sleep(rate);
+				sleep(rate+1);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

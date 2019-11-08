@@ -8,18 +8,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.function.BiConsumer;
 
 import dataStructures.AdjacencyListGraph;
 import dataStructures.AdjacencyMatrixGraph;
 import dataStructures.IGraph;
 import model.Ghost.State;
-import ui.Controller;
 
 
 public class Game {
 	public final static String GRAPH_RESOURCE = "resources/map.txt";
 	public final static byte POINTS_PER_DOT = 30;
 	public final static byte POINTS_PER_ENERGIZER = 70;
+	private int initialNumberOfDots;
 	private  Coordinate leftTileOfTheTunel;
 
 	private  Coordinate rightTileOfTheTunel;
@@ -28,7 +29,7 @@ public class Game {
 
 	private IGraph<Coordinate> map;
 	private ArrayList<Level> levels;
-	private int currentLevel;
+	private int currentStage;
 	private ArrayList<Coordinate> coordinates;
 	private HashMap<Coordinate, Food> food;
 	private boolean runningLinux;
@@ -42,11 +43,16 @@ public class Game {
 
 	private int score;
 	private long frightenedCountdown;
+	private int ghostsEaten;
 
 	public Game() throws IOException {
 		runningLinux = System.getProperty("os.name").equals("Linux");
-		setGameToInitialState();
-		currentLevel = 0;
+		initLevels();
+		initGraph();
+		initCharacters();
+		initCoordinates();
+		setCharactersToInitialTiles();
+		setCurrentStage(0); //TODO debe ser cero, iniciada en otro valor solo por las pruebas
 	}
 
 	private void initCharacters() {
@@ -133,12 +139,10 @@ public class Game {
 		br.close();
 	}
 
-	public void setGameToInitialState() throws IOException {
-		initGraph();
-		initLevels();
+	private void initCoordinates() {
 		for(Coordinate coor : coordinates) {
 			food.put(coor, new Food(Food.PACDOT, true));
-			getCurrentLevel().setDotsLeft(getCurrentLevel().getDotsLeft()+1);
+			initialNumberOfDots++;
 		}
 		food.put(coordinates.get(1), new Food(Food.ENERGIZER, true));
 		food.put(coordinates.get(88), new Food(Food.ENERGIZER, true));
@@ -146,44 +150,174 @@ public class Game {
 		food.put(coordinates.get(93), new Food(Food.ENERGIZER, true));
 
 		//no food around the ghosts' house
-		food.get(coordinates.get(31)).setType(Food.NOTHING);	getCurrentLevel().setDotsLeft(getCurrentLevel().getDotsLeft()-1);
-		food.get(coordinates.get(32)).setType(Food.NOTHING);	getCurrentLevel().setDotsLeft(getCurrentLevel().getDotsLeft()-1);
-		food.get(coordinates.get(33)).setType(Food.NOTHING);	getCurrentLevel().setDotsLeft(getCurrentLevel().getDotsLeft()-1);
-		food.get(coordinates.get(42)).setType(Food.NOTHING);	getCurrentLevel().setDotsLeft(getCurrentLevel().getDotsLeft()-1);
-		food.get(coordinates.get(43)).setType(Food.NOTHING);	getCurrentLevel().setDotsLeft(getCurrentLevel().getDotsLeft()-1);
-		food.get(coordinates.get(52)).setType(Food.NOTHING);	getCurrentLevel().setDotsLeft(getCurrentLevel().getDotsLeft()-1);
-		food.get(coordinates.get(53)).setType(Food.NOTHING);	getCurrentLevel().setDotsLeft(getCurrentLevel().getDotsLeft()-1);
-		food.get(coordinates.get(61)).setType(Food.NOTHING);	getCurrentLevel().setDotsLeft(getCurrentLevel().getDotsLeft()-1);
-		food.get(coordinates.get(62)).setType(Food.NOTHING);	getCurrentLevel().setDotsLeft(getCurrentLevel().getDotsLeft()-1);
-		food.get(coordinates.get(63)).setType(Food.NOTHING);	getCurrentLevel().setDotsLeft(getCurrentLevel().getDotsLeft()-1);
-		food.get(coordinates.get(98)).setType(Food.NOTHING);	getCurrentLevel().setDotsLeft(getCurrentLevel().getDotsLeft()-1);
-		food.get(coordinates.get(99)).setType(Food.NOTHING);	getCurrentLevel().setDotsLeft(getCurrentLevel().getDotsLeft()-1);
-		food.get(coordinates.get(100)).setType(Food.NOTHING);	getCurrentLevel().setDotsLeft(getCurrentLevel().getDotsLeft()-1);
-		food.get(coordinates.get(101)).setType(Food.NOTHING);	getCurrentLevel().setDotsLeft(getCurrentLevel().getDotsLeft()-1);
+		food.get(coordinates.get(31)).setType(Food.NOTHING);	initialNumberOfDots--;
+		food.get(coordinates.get(32)).setType(Food.NOTHING);	initialNumberOfDots--;
+		food.get(coordinates.get(33)).setType(Food.NOTHING);	initialNumberOfDots--;
+		food.get(coordinates.get(42)).setType(Food.NOTHING);	initialNumberOfDots--;
+		food.get(coordinates.get(43)).setType(Food.NOTHING);	initialNumberOfDots--;
+		food.get(coordinates.get(52)).setType(Food.NOTHING);	initialNumberOfDots--;
+		food.get(coordinates.get(53)).setType(Food.NOTHING);	initialNumberOfDots--;
+		food.get(coordinates.get(61)).setType(Food.NOTHING);	initialNumberOfDots--;
+		food.get(coordinates.get(62)).setType(Food.NOTHING);	initialNumberOfDots--;
+		food.get(coordinates.get(63)).setType(Food.NOTHING);	initialNumberOfDots--;
+		food.get(coordinates.get(98)).setType(Food.NOTHING);	initialNumberOfDots--;
+		food.get(coordinates.get(99)).setType(Food.NOTHING);	initialNumberOfDots--;
+		food.get(coordinates.get(100)).setType(Food.NOTHING);	initialNumberOfDots--;
+		food.get(coordinates.get(101)).setType(Food.NOTHING);	initialNumberOfDots--;
 
 		//no food in the tunnel
-		food.get(coordinates.get(4)).setType(Food.NOTHING);		getCurrentLevel().setDotsLeft(getCurrentLevel().getDotsLeft()-1);
-		food.get(coordinates.get(12)).setType(Food.NOTHING);		getCurrentLevel().setDotsLeft(getCurrentLevel().getDotsLeft()-1);
-		food.get(coordinates.get(82)).setType(Food.NOTHING);		getCurrentLevel().setDotsLeft(getCurrentLevel().getDotsLeft()-1);
-		food.get(coordinates.get(91)).setType(Food.NOTHING);		getCurrentLevel().setDotsLeft(getCurrentLevel().getDotsLeft()-1);
-		food.get(coordinates.get(96)).setType(Food.NOTHING);		getCurrentLevel().setDotsLeft(getCurrentLevel().getDotsLeft()-1);
-		food.get(coordinates.get(97)).setType(Food.NOTHING);		getCurrentLevel().setDotsLeft(getCurrentLevel().getDotsLeft()-1);
+		food.get(coordinates.get(4)).setType(Food.NOTHING);		initialNumberOfDots--;
+		food.get(coordinates.get(12)).setType(Food.NOTHING);	initialNumberOfDots--;
+		food.get(coordinates.get(82)).setType(Food.NOTHING);	initialNumberOfDots--;
+		food.get(coordinates.get(91)).setType(Food.NOTHING);	initialNumberOfDots--;
+		food.get(coordinates.get(96)).setType(Food.NOTHING);	initialNumberOfDots--;
+		food.get(coordinates.get(97)).setType(Food.NOTHING);	initialNumberOfDots--;
 
-		Ghost.state = State.SCATTERED;
-		initCharacters();
-		bonusTile = new Coordinate(pacman.getPosX(), coordinates.get(43).getY(), false, false, false, false);
-		food.put(bonusTile, new Food(Food.BONUS, false));
+		getCurrentLevel().setDotsLeft(initialNumberOfDots);
 		
 		leftTileOfTheTunel = coordinates.get(96);
 		rightTileOfTheTunel = coordinates.get(97);
+		bonusTile = new Coordinate(pacman.getPosX(), coordinates.get(43).getY(), false, false, false, false);
+		food.put(bonusTile, new Food(Food.BONUS, false));
+	}
+	
+	public void setCharactersToInitialTiles() {
+		Ghost.state = State.SCATTERED;
+		
+		Coordinate tile = coordinates.get(45);
+		double xCoord = tile.getX()+15;
+		pacman.setPosition(tile);
+		pacman.setPosX(xCoord);
+		pacman.setPosY(tile.getY());
+		pacman.setDirection(Direction.LEFT);
+		tile = coordinates.get(99);
+		pinky.setPosition(tile);
+		pinky.setPosX(tile.getX());
+		pinky.setPosY(tile.getY()+7);
+		pinky.setDirection(Direction.UP);
+		pinky.setTarget(coordinates.get(17));
+		tile = coordinates.get(98);
+		blinky.setPosition(tile);
+		blinky.setPosX(xCoord);
+		blinky.setPosY(tile.getY());
+		blinky.setDirection(Direction.LEFT);
+		blinky.setTarget(coordinates.get(68));
+		tile = coordinates.get(100);
+		inky.setPosition(tile);
+		inky.setPosX(tile.getX());
+		inky.setPosY(tile.getY());
+		inky.setDirection(Direction.DOWN);
+		inky.setTarget(coordinates.get(77));
+		tile = coordinates.get(101);
+		clyde.setPosition(tile);
+		clyde.setPosX(tile.getX());
+		clyde.setPosY(tile.getY());
+		clyde.setDirection(Direction.DOWN);
+		clyde.setTarget(coordinates.get(26));
 		
 		searchGhostTarget(blinky);
 		searchGhostTarget(inky);
 		searchGhostTarget(pinky);
 		searchGhostTarget(clyde);
 	}
+	
+	public void restartMap() {
+		food.forEach(new BiConsumer<Coordinate, Food>() {
+			@Override
+			public void accept(Coordinate t, Food u) {
+				u.setType(Food.PACDOT);
+				u.setNotEaten(true);
+			}
+		});
+		Food f = food.get(coordinates.get(1));
+		f.setType(Food.ENERGIZER);	f.setNotEaten(true);
+		f = food.get(coordinates.get(88));
+		f.setType(Food.ENERGIZER);	f.setNotEaten(true);
+		f = food.get(coordinates.get(6));
+		f.setType(Food.ENERGIZER);	f.setNotEaten(true);
+		f = food.get(coordinates.get(93));
+		f.setType(Food.ENERGIZER);	f.setNotEaten(true);
+
+		//no food around the ghosts' house
+		food.get(coordinates.get(31)).setType(Food.NOTHING);
+		food.get(coordinates.get(32)).setType(Food.NOTHING);
+		food.get(coordinates.get(33)).setType(Food.NOTHING);
+		food.get(coordinates.get(42)).setType(Food.NOTHING);
+		food.get(coordinates.get(43)).setType(Food.NOTHING);
+		food.get(coordinates.get(52)).setType(Food.NOTHING);
+		food.get(coordinates.get(53)).setType(Food.NOTHING);
+		food.get(coordinates.get(61)).setType(Food.NOTHING);
+		food.get(coordinates.get(62)).setType(Food.NOTHING);
+		food.get(coordinates.get(63)).setType(Food.NOTHING);
+		food.get(coordinates.get(98)).setType(Food.NOTHING);
+		food.get(coordinates.get(99)).setType(Food.NOTHING);
+		food.get(coordinates.get(100)).setType(Food.NOTHING);
+		food.get(coordinates.get(101)).setType(Food.NOTHING);
+
+		//no food in the tunnel
+		food.get(coordinates.get(4)).setType(Food.NOTHING);
+		food.get(coordinates.get(12)).setType(Food.NOTHING);
+		food.get(coordinates.get(82)).setType(Food.NOTHING);
+		food.get(coordinates.get(91)).setType(Food.NOTHING);
+		food.get(coordinates.get(96)).setType(Food.NOTHING);
+		food.get(coordinates.get(97)).setType(Food.NOTHING);
+		
+		getCurrentLevel().setDotsLeft(initialNumberOfDots);
+	}
 
 	public void movePacman() {
+		move();
+		if(pacman.getPosY() == pacman.getPosition().getY() && pacman.getPosX() == pacman.getPosition().getX()) {
+			if(((pacman.getPosition().hasRightTile() && pacman.getRequestedDirection() == Direction.RIGHT) || (pacman.getPosition().hasLeftTile() && pacman.getRequestedDirection() == Direction.LEFT)) || ((pacman.getPosition().hasUpTile() && pacman.getRequestedDirection() == Direction.UP) || (pacman.getPosition().hasDownTile() && pacman.getRequestedDirection() == Direction.DOWN))) {
+				pacman.setDirection(pacman.getRequestedDirection());
+			}
+
+			switch(food.get(pacman.getPosition()).getType()) {
+			case Food.ENERGIZER:
+				blinky.setFrightened(true);
+				inky.setFrightened(true);
+				pinky.setFrightened(true);
+				clyde.setFrightened(true);
+
+				getCurrentLevel().setDotsLeft(getCurrentLevel().getDotsLeft()-1);
+				score += POINTS_PER_ENERGIZER;
+				TimerTask task = new TimerTask() {
+					@Override
+					public void run() {
+						ghostsEaten = 0;
+						blinky.setFrightened(false);
+						inky.setFrightened(false);
+						pinky.setFrightened(false);
+						clyde.setFrightened(false);
+					}
+				};
+				Timer timer = new Timer("Timer");
+				frightenedCountdown = getCurrentLevel().getFrightTime();
+				timer.schedule(task, frightenedCountdown);
+				break;
+			case Food.PACDOT:
+				getCurrentLevel().setDotsLeft(getCurrentLevel().getDotsLeft()-1);
+				score += POINTS_PER_DOT;
+				break;
+			default:
+				//c:
+				break;
+			}
+
+			food.get(pacman.getPosition()).setType(Food.NOTHING); //pacman ate
+			Level level = getCurrentLevel();
+			level.setDotsLeft(level.getDotsLeft());
+			if(level.getDotsLeft() == 0) {
+				System.out.println("HEEEEEEEEEEEEEEEEYYYYYYY");
+			}
+		} else if(pacman.getPosX() == bonusTile.getX() && pacman.getPosY() == bonusTile.getY() && food.get(bonusTile).getNotEaten().get()) {
+			score += getCurrentLevel().getBonusScore();
+			food.get(bonusTile).setType(Food.NOTHING);
+			food.get(bonusTile).setNotEaten(false);
+		}
+	}
+
+	private void move() {
 		switch(pacman.getDirection()) {
 		case DOWN:
 			pacman.setPosY(pacman.getPosY()+1);
@@ -278,48 +412,6 @@ public class Game {
 			}
 			break;
 		}
-		if(pacman.getPosY() == pacman.getPosition().getY() && pacman.getPosX() == pacman.getPosition().getX()) {
-			if(((pacman.getPosition().hasRightTile() && pacman.getRequestedDirection() == Direction.RIGHT) || (pacman.getPosition().hasLeftTile() && pacman.getRequestedDirection() == Direction.LEFT)) || ((pacman.getPosition().hasUpTile() && pacman.getRequestedDirection() == Direction.UP) || (pacman.getPosition().hasDownTile() && pacman.getRequestedDirection() == Direction.DOWN))) {
-				pacman.setDirection(pacman.getRequestedDirection());
-			}
-
-			switch(food.get(pacman.getPosition()).getType()) {
-			case Food.ENERGIZER:
-				blinky.setFrightened(true);
-				inky.setFrightened(true);
-				pinky.setFrightened(true);
-				clyde.setFrightened(true);
-
-				getCurrentLevel().setDotsLeft(getCurrentLevel().getDotsLeft()-1);
-				score += POINTS_PER_ENERGIZER;
-				TimerTask task = new TimerTask() {
-					@Override
-					public void run() {
-						blinky.setFrightened(false);
-						inky.setFrightened(false);
-						pinky.setFrightened(false);
-						clyde.setFrightened(false);
-					}
-				};
-				Timer timer = new Timer("Timer");
-				frightenedCountdown = getCurrentLevel().getFrightTime();
-				timer.schedule(task, frightenedCountdown);
-				break;
-			case Food.PACDOT:
-				getCurrentLevel().setDotsLeft(getCurrentLevel().getDotsLeft()-1);
-				score += POINTS_PER_DOT;
-				break;
-			default:
-				//c:
-				break;
-			}
-
-			food.get(pacman.getPosition()).setType(Food.NOTHING); //pacman ate
-		} else if(pacman.getPosX() == bonusTile.getX() && pacman.getPosY() == bonusTile.getY() && food.get(bonusTile).getNotEaten().get()) {
-			score += getCurrentLevel().getBonusScore();
-			food.get(bonusTile).setType(Food.NOTHING);
-			food.get(bonusTile).setNotEaten(false);
-		}
 	}
 
 	public void searchBlinkyTarget() {
@@ -390,7 +482,16 @@ public class Game {
 		int difY = (int)Math.abs(ghost.getPosY() - pacman.getPosY());
 		if(difX <= 2 && difY <= 2) {
 			if(ghost.isFrightened()) {
-				//TODO ghost dies, aumentar puntaje cuando sepa cuanto vale cada fantasma comido
+				ghostsEaten++;
+				if(ghostsEaten == 1) {
+					score += Level.ONE_GHOST_SCORE;
+				} else if(ghostsEaten == 2) {
+					score += Level.TWO_GHOSTS_SCORE;
+				} else if(ghostsEaten == 3) {
+					score += Level.THREE_GHOSTS_SCORE;
+				} else {
+					score += Level.FOUR_GHOSTS_SCORE;
+				}
 				ghost.setFrightened(false);
 				ghost.setGoingHome(true);
 				searchGhostTarget(ghost);
@@ -520,9 +621,23 @@ public class Game {
 	public void setLevels(ArrayList<Level> levels) {
 		this.levels = levels;
 	}
-
+	
 	public Level getCurrentLevel() {
-		return levels.get(currentLevel);
+		if(currentStage < levels.size()) {
+			return levels.get(currentStage);
+		} else {
+			return levels.get(levels.size()-1);
+		}
+	}
+
+	public int getCurrentStage() {
+		return currentStage;
+	}
+	
+	public void setCurrentStage(int stage) {
+		currentStage = stage;
+		Level c = getCurrentLevel();
+		c.setDotsLeft(initialNumberOfDots);
 	}
 
 	public Ghost getInky() {
@@ -594,7 +709,19 @@ public class Game {
 		this.frightenedCountdown = timeForWarning;
 	}
 	
+	public int getGhostsEaten() {
+		return ghostsEaten;
+	}
+
+	public void setGhostsEaten(int ghostsEaten) {
+		this.ghostsEaten = ghostsEaten;
+	}
+	
 	public boolean isRunningLinux() {
 		return runningLinux;
+	}
+
+	public int getInitialNumberOfDots() {
+		return initialNumberOfDots;
 	}
 }

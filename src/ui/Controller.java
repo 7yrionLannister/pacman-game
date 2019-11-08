@@ -36,7 +36,7 @@ public class Controller {
 	public final static Image ENERGIZER_IMAGE = new Image(new File("resources/sprites/food/energizer.png").toURI().toString());
 	public final static Image BONUS_IMAGE = new Image(new File("resources/sprites/food/bonus/cherry.png").toURI().toString());
 	public final static String CAUGHT = "resources/sprites/pacman/caught/";
-	
+
 	@FXML
 	private Label highScoreLabel;
 
@@ -153,7 +153,7 @@ public class Controller {
 				ImageView food = bonusImage;
 				if(u.getType() != Food.BONUS) {
 					food = new ImageView();
-				map.getChildren().add(food);
+					map.getChildren().add(food);
 				}
 				food.relocate(t.getX(), t.getY());
 				food.visibleProperty().bind(game.getFood().get(t).getNotEaten());
@@ -163,6 +163,27 @@ public class Controller {
 							Boolean newValue) {
 						if(!newValue) {
 							eatDot.play();
+							if(game.getCurrentLevel().getDotsLeft() == 0) {
+								onPause = true;
+								TimerTask task = new TimerTask() {
+									@Override
+									public void run() {
+										game.restartMap();
+										game.setCharactersToInitialTiles();
+										pacman.relocate(game.getPacman().getPosX(), game.getPacman().getPosY());
+										blinky.relocate(game.getBlinky().getPosX(), game.getBlinky().getPosY());
+										inky.relocate(game.getInky().getPosX(), game.getInky().getPosY());
+										pinky.relocate(game.getPinky().getPosX(), game.getPinky().getPosY());
+										clyde.relocate(game.getClyde().getPosX(), game.getClyde().getPosY());
+
+										game.setCurrentStage(game.getCurrentStage() + 1);
+
+										startPlayPauseButtonPressed(null);
+									}
+								};
+								Timer timer = new Timer("Timer");
+								timer.schedule(task, 3000);
+							}
 						}
 					}
 				};
@@ -230,7 +251,6 @@ public class Controller {
 
 	@FXML
 	public void printMapCoordinates(MouseEvent event) {
-		//System.out.println(event.getX()+","+event.getY());
 		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 		System.out.println("blinky image: "+blinky.getLayoutX()+","+blinky.getLayoutY()+" ~ blinky: "+game.getBlinky().getPosX()+","+game.getBlinky().getPosY());
 		System.out.println(game.getBlinky().getPosition());
@@ -241,7 +261,6 @@ public class Controller {
 		System.out.println("clyde image: "+clyde.getLayoutX()+","+clyde.getLayoutY()+" ~ clyde: "+game.getClyde().getPosX()+","+game.getClyde().getPosY());
 		System.out.println(game.getClyde().getPosition());
 		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-		//System.out.println("bonus: "+bonusImage.getLayoutX()+","+bonusImage.getLayoutY());
 	}
 
 	@FXML
@@ -258,9 +277,23 @@ public class Controller {
 	public void startPlayPauseButtonPressed(ActionEvent event) {
 		onPause = !onPause;
 		if(!onPause) {
-			if(game.getCurrentLevel().getDotsLeft() == 82) { //first in the game
+			if(game.getCurrentLevel().getDotsLeft() == game.getInitialNumberOfDots()) { //no dots eaten in the stage
+				System.out.println("turutururuturuturutururuturu");
+				try {
+					if(pacmanThread != null && pacmanThread.isAlive()) {
+						pacmanThread.join();
+						blinkyThread.join();
+						inkyThread.join();
+						pinkyThread.join();
+						clydeThread.join();
+					}
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 				readyImage.setVisible(true);
-				intro.play();
+				if(game.getCurrentLevel().getStage() == 1) { //plays intro sound in the first stage
+					intro.play();
+				}
 				TimerTask task = new TimerTask() {
 					@Override
 					public void run() {
@@ -405,7 +438,6 @@ public class Controller {
 			ImageView ghostImage = getGhostImage(ghost.getName());
 			if(ghost.isFrightened()) {
 				int num = ((Controller.MOVEMENT_SPRITE%2)==0?0:2);
-				System.out.println(game.getFrightenedCountdown());
 				if(game.getFrightenedCountdown() < 2000 && MOVEMENT_SPRITE % 4 == 0) {
 					num++;
 				}

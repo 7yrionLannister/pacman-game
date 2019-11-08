@@ -11,7 +11,12 @@ public class Level {
 	public final static String BELL = "resources/sprites/food/bonus/bell.png";
 	public final static String KEYS = "resources/sprites/food/bonus/keys.png";
 
-	public final static double REFERENCE_SPEED = 80;
+	public final static double REFERENCE_SPEED = 100;
+	
+	public final static int ONE_GHOST_SCORE = 200;
+	public final static int TWO_GHOSTS_SCORE = 400;
+	public final static int THREE_GHOSTS_SCORE = 800;
+	public final static int FOUR_GHOSTS_SCORE = 1600;
 	
 	private int stage;
 	private String bonus;

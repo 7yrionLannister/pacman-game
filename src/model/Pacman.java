@@ -1,6 +1,5 @@
 package model;
 
-import javafx.beans.property.SimpleBooleanProperty;
 
 public class Pacman extends Character {
 	

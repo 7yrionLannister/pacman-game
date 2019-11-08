@@ -108,7 +108,7 @@ public class PacmanThread extends Thread {
 				}
 			});
 			try {
-				sleep(rate);
+				sleep(rate+1);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
