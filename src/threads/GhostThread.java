@@ -20,8 +20,10 @@ public class GhostThread extends Thread {
 
 	@Override
 	public void run() {
-		while(!controller.isOnPause()) {
-			game.moveGhost(ghost);
+		while(true) {
+			if(!controller.isOnPause()) {
+				game.moveGhost(ghost);
+			}
 			try {
 				Level level = game.getCurrentLevel();
 				long rate = 0;
@@ -56,6 +58,7 @@ public class GhostThread extends Thread {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
+
 		}
 	}
 }

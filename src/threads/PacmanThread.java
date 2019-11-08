@@ -30,83 +30,89 @@ public class PacmanThread extends Thread {
 
 	@Override
 	public void run() {
-		while(!controller.isOnPause()) {
-			pacmanImage.setImage(new Image(new File(MOVEMENTS+Controller.MOVEMENT_SPRITE+".png").toURI().toString()));
-			Controller.MOVEMENT_COUNTER++;
-			if(Controller.MOVEMENT_COUNTER % 3 == 0) {
-				Controller.MOVEMENT_SPRITE++;
-				if(Controller.MOVEMENT_SPRITE > 3) {
-					Controller.MOVEMENT_SPRITE = 0;
-				}
-			}
-			if(pacman.isDying()) {
-				controller.setOnPause(true);
-				controller.getDeath().play();
-				controller.getBlinky().setVisible(false);
-				controller.getPinky().setVisible(false);
-				controller.getInky().setVisible(false);
-				controller.getClyde().setVisible(false);
-				int sprite = 0;
-				while(sprite < 13) {
-					try {
-						pacmanImage.setRotate(0);
-						pacmanImage.setImage(new Image(new File(Controller.CAUGHT+sprite+".png").toURI().toString()));
-						sprite++;
-						sleep(100);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
+		while(true) {
+			if(!controller.isOnPause()) {
+				pacmanImage.setImage(new Image(new File(MOVEMENTS+Controller.MOVEMENT_SPRITE+".png").toURI().toString()));
+				Controller.MOVEMENT_COUNTER++;
+				if(Controller.MOVEMENT_COUNTER % 3 == 0) {
+					Controller.MOVEMENT_SPRITE++;
+					if(Controller.MOVEMENT_SPRITE > 3) {
+						Controller.MOVEMENT_SPRITE = 0;
 					}
 				}
-			}
-			game.movePacman();
-			Platform.runLater(new Runnable() {
-				@Override
-				public void run() {
-					switch(pacman.getDirection()) {
-					case DOWN:
-						pacmanImage.setRotate(90);
-						break;
-					case LEFT:
-						pacmanImage.setRotate(180);
-						break;
-					case RIGHT:
-						pacmanImage.setRotate(0);
-						break;
-					case UP:
-						pacmanImage.setRotate(270);
-						break;
-					}
-					Level level = game.getCurrentLevel();
-					if(level.isFrightened()) {
-						if(!game.atLeastAFrightenedGhost()) {
-							//TODO sonido de alarma fantasmas asustados
+				if(pacman.isDying()) {
+					controller.setOnPause(true);
+					controller.getDeath().play();
+					controller.getBlinky().setVisible(false);
+					controller.getPinky().setVisible(false);
+					controller.getInky().setVisible(false);
+					controller.getClyde().setVisible(false);
+					int sprite = 0;
+					while(sprite < 13) {
+						try {
+							pacmanImage.setRotate(0);
+							pacmanImage.setImage(new Image(new File(Controller.CAUGHT+sprite+".png").toURI().toString()));
+							sprite++;
+							sleep(100);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
 						}
-						if(game.isEatingDots()) {
-							rate = (long)((1 - level.getPacmanWithEnergizerEatingDotsSpeed())*Level.REFERENCE_SPEED);
+					}
+					game.setCharactersToInitialTiles();
+					controller.setGUItoInitialState();
+					game.getPacman().setDying(false);
+					controller.startPlayPauseButtonPressed(null);
+				}
+				game.movePacman();
+				Platform.runLater(new Runnable() {
+					@Override
+					public void run() {
+						switch(pacman.getDirection()) {
+						case DOWN:
+							pacmanImage.setRotate(90);
+							break;
+						case LEFT:
+							pacmanImage.setRotate(180);
+							break;
+						case RIGHT:
+							pacmanImage.setRotate(0);
+							break;
+						case UP:
+							pacmanImage.setRotate(270);
+							break;
+						}
+						Level level = game.getCurrentLevel();
+						if(level.isFrightened()) {
+							if(!game.atLeastAFrightenedGhost()) {
+								//TODO sonido de alarma fantasmas asustados
+							}
+							if(game.isEatingDots()) {
+								rate = (long)((1 - level.getPacmanWithEnergizerEatingDotsSpeed())*Level.REFERENCE_SPEED);
+							} else {
+								rate = (long)((1 - level.getPacmanWithEnergizerSpeed())*Level.REFERENCE_SPEED);
+							}
+						}  else if(game.isEatingDots()){
+							rate = (long)((1 - level.getPacmanEatingDotsSpeed())*Level.REFERENCE_SPEED);
 						} else {
-							rate = (long)((1 - level.getPacmanWithEnergizerSpeed())*Level.REFERENCE_SPEED);
+							rate = (long)((1 - level.getPacmanSpeed())*Level.REFERENCE_SPEED);
 						}
-					}  else if(game.isEatingDots()){
-						rate = (long)((1 - level.getPacmanEatingDotsSpeed())*Level.REFERENCE_SPEED);
-					} else {
-						rate = (long)((1 - level.getPacmanSpeed())*Level.REFERENCE_SPEED);
+						controller.getScoreLabel().setText(game.getScore()+"");
+						pacmanImage.relocate(pacman.getPosX(), pacman.getPosY());
+						Ghost ghost = game.getBlinky();
+						controller.getBlinky().relocate(ghost.getPosX(), ghost.getPosY());
+						controller.refreshGhostImage(ghost);
+						ghost = game.getInky();
+						controller.getInky().relocate(ghost.getPosX(), ghost.getPosY());
+						controller.refreshGhostImage(ghost);
+						ghost = game.getPinky();
+						controller.getPinky().relocate(ghost.getPosX(), ghost.getPosY());
+						controller.refreshGhostImage(ghost);
+						ghost = game.getClyde();
+						controller.getClyde().relocate(ghost.getPosX(), ghost.getPosY());
+						controller.refreshGhostImage(ghost);
 					}
-					controller.getScoreLabel().setText(game.getScore()+"");
-					pacmanImage.relocate(pacman.getPosX(), pacman.getPosY());
-					Ghost ghost = game.getBlinky();
-					controller.getBlinky().relocate(ghost.getPosX(), ghost.getPosY());
-					controller.refreshGhostImage(ghost);
-					ghost = game.getInky();
-					controller.getInky().relocate(ghost.getPosX(), ghost.getPosY());
-					controller.refreshGhostImage(ghost);
-					ghost = game.getPinky();
-					controller.getPinky().relocate(ghost.getPosX(), ghost.getPosY());
-					controller.refreshGhostImage(ghost);
-					ghost = game.getClyde();
-					controller.getClyde().relocate(ghost.getPosX(), ghost.getPosY());
-					controller.refreshGhostImage(ghost);
-				}
-			});
+				});
+			}
 			try {
 				sleep(rate+1);
 			} catch (InterruptedException e) {

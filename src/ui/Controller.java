@@ -165,24 +165,8 @@ public class Controller {
 							eatDot.play();
 							if(game.getCurrentLevel().getDotsLeft() == 0) {
 								onPause = true;
-								TimerTask task = new TimerTask() {
-									@Override
-									public void run() {
-										game.restartMap();
-										game.setCharactersToInitialTiles();
-										pacman.relocate(game.getPacman().getPosX(), game.getPacman().getPosY());
-										blinky.relocate(game.getBlinky().getPosX(), game.getBlinky().getPosY());
-										inky.relocate(game.getInky().getPosX(), game.getInky().getPosY());
-										pinky.relocate(game.getPinky().getPosX(), game.getPinky().getPosY());
-										clyde.relocate(game.getClyde().getPosX(), game.getClyde().getPosY());
-
-										game.setCurrentStage(game.getCurrentStage() + 1);
-
-										startPlayPauseButtonPressed(null);
-									}
-								};
-								Timer timer = new Timer("Timer");
-								timer.schedule(task, 3000);
+								setGUItoInitialState();
+								game.setCurrentStage(game.getCurrentStage() + 1);
 							}
 						}
 					}
@@ -233,6 +217,7 @@ public class Controller {
 			blackSquare2.relocate(blackSquare2.getLayoutX()+5, blackSquare2.getLayoutY());
 		}
 		onPause = true;
+		startThreads();
 	}
 
 	@FXML
@@ -277,19 +262,9 @@ public class Controller {
 	public void startPlayPauseButtonPressed(ActionEvent event) {
 		onPause = !onPause;
 		if(!onPause) {
+			onPause = true;
 			if(game.getCurrentLevel().getDotsLeft() == game.getInitialNumberOfDots()) { //no dots eaten in the stage
 				System.out.println("turutururuturuturutururuturu");
-				try {
-					if(pacmanThread != null && pacmanThread.isAlive()) {
-						pacmanThread.join();
-						blinkyThread.join();
-						inkyThread.join();
-						pinkyThread.join();
-						clydeThread.join();
-					}
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
 				readyImage.setVisible(true);
 				if(game.getCurrentLevel().getStage() == 1) { //plays intro sound in the first stage
 					intro.play();
@@ -299,19 +274,18 @@ public class Controller {
 					public void run() {
 						readyImage.setVisible(false);
 						MOVEMENT_COUNTER++;
-						startThreads();
+						//startThreads();
+						onPause = false;
 					}
 				};
 				Timer timer = new Timer("Timer");
 				long delay = 4000;
 				timer.schedule(task, delay);
-			} else {
-				startThreads();
 			}
 		}
 	}
 
-	public void startThreads() {
+	private void startThreads() {
 		pacmanThread = new PacmanThread(this);
 		blinkyThread = new GhostThread(this, game.getBlinky().getName());
 		inkyThread = new GhostThread(this, game.getInky().getName());
@@ -466,6 +440,30 @@ public class Controller {
 				}
 			}
 		}
+	}
+	
+	public void setGUItoInitialState() {
+		TimerTask task = new TimerTask() {
+			@Override
+			public void run() {
+				game.restartMap();
+				game.setCharactersToInitialTiles();
+				pacman.setVisible(true);
+				blinky.setVisible(true);
+				pinky.setVisible(true);
+				inky.setVisible(true);
+				clyde.setVisible(true);
+				pacman.relocate(game.getPacman().getPosX(), game.getPacman().getPosY());
+				blinky.relocate(game.getBlinky().getPosX(), game.getBlinky().getPosY());
+				inky.relocate(game.getInky().getPosX(), game.getInky().getPosY());
+				pinky.relocate(game.getPinky().getPosX(), game.getPinky().getPosY());
+				clyde.relocate(game.getClyde().getPosX(), game.getClyde().getPosY());
+
+				startPlayPauseButtonPressed(null);
+			}
+		};
+		Timer timer = new Timer("Timer");
+		timer.schedule(task, 3000);
 	}
 
 	public ImageView getGhostImage(String name) {
