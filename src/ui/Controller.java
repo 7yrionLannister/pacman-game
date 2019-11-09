@@ -259,6 +259,21 @@ public class Controller {
 	public void highScoresButtonPressed(ActionEvent event) {
 		openPlayerRegister();
 		try {
+			Parent root = FXMLLoader.load(getClass().getResource("leaderboard.fxml"));
+			Scene s = new Scene(root);
+			Stage st = new Stage();
+			st.setScene(s);
+			st.setResizable(false);
+			st.initOwner(pacman.getParent().getScene().getWindow());
+			st.initModality(Modality.WINDOW_MODAL);
+			st.showAndWait();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+	}
+	
+	public void openPlayerRegister() {
+		try {
 			Parent root = FXMLLoader.load(getClass().getResource("nameregister.fxml"));
 			Scene s = new Scene(root);
 			Stage st = new Stage();
@@ -481,21 +496,6 @@ public class Controller {
 		};
 		Timer timer = new Timer("Timer");
 		timer.schedule(task, 3000);
-	}
-	
-	public void openPlayerRegister() {
-		try {
-			Parent root = FXMLLoader.load(getClass().getResource("leaderboard.fxml"));
-			Scene s = new Scene(root);
-			Stage st = new Stage();
-			st.setScene(s);
-			st.setResizable(false);
-			st.initOwner(pacman.getParent().getScene().getWindow());
-			st.initModality(Modality.WINDOW_MODAL);
-			st.showAndWait();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
 	}
 	
 	public ImageView getGhostImage(String name) {

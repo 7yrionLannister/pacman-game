@@ -19,18 +19,12 @@ public class NameRegisterController {
     
     private Player p;
     
-    private Controller c;
-    
-    public NameRegisterController(Controller c) {
-    	this.c = c;
-	}
-    
     @FXML
     public void handleCloseButtonAction(ActionEvent event) {
-    	playerName = name.getText();
+    	/*playerName = name.getText();
     	p = new Player("1ST", c.getGame().getScore(), c.getGame().getLevels().size(), playerName);
         Stage stage = (Stage) register.getScene().getWindow();
-        stage.close();
+        stage.close();*/
     }
     
     public Player getPlayer() {

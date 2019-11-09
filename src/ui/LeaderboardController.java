@@ -23,14 +23,8 @@ public class LeaderboardController {
     @FXML
     private TableColumn<Player, String> name;
     
-    private NameRegisterController nrc;
-    
     @FXML
 	public void initialize() {
-    	rank.setText(nrc.getPlayer().getRank());
-    	score.setText(nrc.getPlayer().getScore() + "");
-    	stage.setText(nrc.getPlayer().getStage() + "");
-    	name.setText(nrc.getPlayer().getName());
     }
     
 }
