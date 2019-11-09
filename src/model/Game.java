@@ -81,31 +81,117 @@ public class Game {
 		levels = new ArrayList<>();
 		//levels.add(new Level(stage, bonus, pacmanSpeed, pacmanEatingDotsSpeed, ghostsSpeed, ghostsTunelSpeed, cruiseElroyDotsLeft1, cruiseElroySpeed1, cruiseElroyDotsLeft2, cruiseElroySpeed2, pacmanWithEnergizerSpeed, pacmanWithEnergizerEatingDotsSpeed, frightGhostsSpeed, frightTime))
 		//1
-		levels.add(new Level(1, Level.CHERRIES, 0.8, 0.71, 0.75, 0.4, 20, 0.8, 10, 0.85, 0.9, 0.79, 0.5, 6000));
+		Level level = new Level(1, Level.CHERRIES, 17, 20, 19, 35, 20, 17, 10, 16, 17, 18, 28, 6000);
+		levels.add(level);
 		//2
-		levels.add(new Level(2, Level.STRAWBERRY, 0.9, 0.79, 0.85, 0.45, 30, 0.9, 15, 0.95, 0.95, 0.83, 0.55, 5000));
+		level = new Level(2, Level.STRAWBERRY, 16, 18, 16, 31, 30, 16, 15, 15, 15, 17, 25, 5000);
+		levels.add(level);
 		//3
-		levels.add(new Level(3, Level.PEACH, 0.9, 0.79, 0.85, 0.45, 40, 0.9, 20, 0.95, 0.95, 0.83, 0.55, 4000));
+		level = level.clone();
+		level.setStage(3);
+		level.setBonus(Level.PEACH);
+		level.setCruiseElroyDotsLeft1(40);
+		level.setCruiseElroyDotsLeft2(20);
+		level.setFrightTime(4000);
+		levels.add(level);
 		//4
-		levels.add(new Level(4, Level.PEACH, 0.9, 0.79, 0.85, 0.45, 40, 0.9, 20, 0.95, 0.95, 0.83, 0.55, 3000));
+		level = level.clone();
+		level.setStage(4);
+		level.setFrightTime(3000);
+		levels.add(level);
 		//5
-		levels.add(new Level(5, Level.APPLE, 1, 0.87, 0.95, 0.5, 40, 1, 20, 1.05, 1, 0.87, 0.6, 2000));
+		level = new Level(5, Level.APPLE, 14, 16, 15, 28, 40, 14, 20, 13, 14, 16, 23, 2000);
+		levels.add(level);
 		//6
-		levels.add(new Level(6, Level.APPLE, 1, 0.87, 0.95, 0.5, 50, 1, 25, 1.05, 1, 0.87, 0.6, 5000));
+		level = level.clone();
+		level.setStage(6);
+		level.setCruiseElroyDotsLeft1(50);
+		level.setCruiseElroyDotsLeft2(25);
+		level.setFrightTime(5000);
+		levels.add(level);
 		//7
-		levels.add(new Level(7, Level.MELON, 1, 0.87, 0.95, 0.5, 50, 1, 25, 1.05, 1, 0.87, 0.6, 2000));
+		level = level.clone();
+		level.setStage(7);
+		level.setBonus(Level.MELON);
+		level.setFrightTime(2000);
+		levels.add(level);
 		//8
-		levels.add(new Level(8, Level.MELON, 1, 0.87, 0.95, 0.5, 50, 1, 25, 1.05, 1, 0.87, 0.6, 2000));
+		level = level.clone();
+		level.setStage(8);
+		levels.add(level);
 		//9
-		levels.add(new Level(9, Level.GALAXIAN, 1, 0.87, 0.95, 0.5, 60, 1, 30, 1.05, 1, 0.87, 0.6, 1000));
+		level = level.clone();
+		level.setStage(9);
+		level.setBonus(Level.GALAXIAN);
+		level.setCruiseElroyDotsLeft1(60);
+		level.setCruiseElroyDotsLeft2(30);
+		level.setFrightTime(1000);
+		levels.add(level);
 		//10
-		levels.add(new Level(10, Level.GALAXIAN, 1, 0.87, 0.95, 0.5, 60, 1, 30, 1.05, 1, 0.87, 0.6, 5000));
+		level = level.clone();
+		level.setStage(10);
+		level.setFrightTime(5000);
+		levels.add(level);
 		//11
-		levels.add(new Level(11, Level.BELL, 1, 0.87, 0.95, 0.5, 60, 1, 30, 1.05, 1, 0.87, 0.6, 2000));
+		level = level.clone();
+		level.setStage(11);
+		level.setBonus(Level.BELL);
+		level.setFrightTime(2000);
+		levels.add(level);
 		//12
-		levels.add(new Level(12, Level.BELL, 1, 0.87, 0.95, 0.5, 80, 1, 40, 1.05, 1, 0.87, 0.6, 1000));
-		//13 TODO de aqui hasta el 18 son variantes de lo mismo, del 19 en adelante son los mismos
-		levels.add(new Level(12, Level.KEYS, 1, 0.87, 0.95, 0.5, 80, 1, 40, 1.05, 1, 0.87, 0.6, 1000));
+		level = level.clone();
+		level.setStage(12);
+		level.setCruiseElroyDotsLeft1(80);
+		level.setCruiseElroyDotsLeft2(40);
+		level.setFrightTime(1000);
+		levels.add(level);
+		//13
+		level = level.clone();
+		level.setStage(13);
+		level.setBonus(Level.KEYS);
+		levels.add(level);
+		//14
+		level = level.clone();
+		level.setStage(14);
+		level.setFrightTime(3000);
+		levels.add(level);
+		//15
+		level = level.clone();
+		level.setStage(15);
+		level.setCruiseElroyDotsLeft1(100);
+		level.setCruiseElroyDotsLeft2(50);
+		level.setFrightTime(1000);
+		levels.add(level);
+		//16
+		level = level.clone();
+		level.setStage(16);
+		levels.add(level);
+		//17
+		level = level.clone();
+		level.setStage(17);
+		levels.add(level);
+		//18
+		level = level.clone();
+		level.setStage(18);
+		levels.add(level);
+		//19
+		level = level.clone();
+		level.setStage(19);
+		level.setCruiseElroyDotsLeft1(120);
+		level.setCruiseElroyDotsLeft2(60);
+		levels.add(level);
+		//20
+		level = level.clone();
+		level.setStage(20);
+		levels.add(level);
+		//21
+		level = level.clone();
+		level.setStage(21);
+		level.setPacmanSpeed(15);
+		level.setPacmanEatingDotsSpeed(18);
+		level.setCruiseElroyDotsLeft2(60);
+		levels.add(level);
+		//The other levels have the same parameters as level 21	
 	}
 
 	private void initGraph() throws IOException {
@@ -174,16 +260,16 @@ public class Game {
 		food.get(coordinates.get(97)).setType(Food.NOTHING);	initialNumberOfDots--;
 
 		getCurrentLevel().setDotsLeft(initialNumberOfDots);
-		
+
 		leftTileOfTheTunel = coordinates.get(96);
 		rightTileOfTheTunel = coordinates.get(97);
 		bonusTile = new Coordinate(pacman.getPosX(), coordinates.get(43).getY(), false, false, false, false);
 		food.put(bonusTile, new Food(Food.BONUS, false));
 	}
-	
+
 	public void setCharactersToInitialTiles() {
 		Ghost.state = State.SCATTERED;
-		
+
 		Coordinate tile = coordinates.get(45);
 		double xCoord = tile.getX()+15;
 		pacman.setPosition(tile);
@@ -214,13 +300,13 @@ public class Game {
 		clyde.setPosY(tile.getY());
 		clyde.setDirection(Direction.DOWN);
 		clyde.setTarget(coordinates.get(26));
-		
+
 		searchGhostTarget(blinky);
 		searchGhostTarget(inky);
 		searchGhostTarget(pinky);
 		searchGhostTarget(clyde);
 	}
-	
+
 	public void restartMap() {
 		food.forEach(new BiConsumer<Coordinate, Food>() {
 			@Override
@@ -261,7 +347,7 @@ public class Game {
 		food.get(coordinates.get(91)).setType(Food.NOTHING);
 		food.get(coordinates.get(96)).setType(Food.NOTHING);
 		food.get(coordinates.get(97)).setType(Food.NOTHING);
-		
+
 		getCurrentLevel().setDotsLeft(initialNumberOfDots);
 	}
 
@@ -498,7 +584,6 @@ public class Game {
 			} else if(!ghost.isGoingHome().get()){
 				//TODO pacman dies
 				pacman.setDying(true);
-				System.out.println("muere pacman muere >:v!!!");
 			}
 		}
 		if(!ghost.getPath().isEmpty()) {
@@ -621,7 +706,7 @@ public class Game {
 	public void setLevels(ArrayList<Level> levels) {
 		this.levels = levels;
 	}
-	
+
 	public Level getCurrentLevel() {
 		if(currentStage < levels.size()) {
 			return levels.get(currentStage);
@@ -633,7 +718,7 @@ public class Game {
 	public int getCurrentStage() {
 		return currentStage;
 	}
-	
+
 	public void setCurrentStage(int stage) {
 		currentStage = stage;
 		Level c = getCurrentLevel();
@@ -708,7 +793,7 @@ public class Game {
 	public void setFrightenedCountdown(long timeForWarning) {
 		this.frightenedCountdown = timeForWarning;
 	}
-	
+
 	public int getGhostsEaten() {
 		return ghostsEaten;
 	}
@@ -716,7 +801,7 @@ public class Game {
 	public void setGhostsEaten(int ghostsEaten) {
 		this.ghostsEaten = ghostsEaten;
 	}
-	
+
 	public boolean isRunningLinux() {
 		return runningLinux;
 	}

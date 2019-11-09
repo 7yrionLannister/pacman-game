@@ -32,8 +32,10 @@ public class PacmanThread extends Thread {
 	public void run() {
 		while(true) {
 			if(!controller.isOnPause()) {
-				pacmanImage.setImage(new Image(new File(MOVEMENTS+Controller.MOVEMENT_SPRITE+".png").toURI().toString()));
 				Controller.MOVEMENT_COUNTER++;
+				if((Controller.MOVEMENT_COUNTER*Controller.MOVEMENT_SPRITE) % 2 == 0) {
+					pacmanImage.setImage(new Image(new File(MOVEMENTS+Controller.MOVEMENT_SPRITE+".png").toURI().toString()));
+				}
 				if(Controller.MOVEMENT_COUNTER % 3 == 0) {
 					Controller.MOVEMENT_SPRITE++;
 					if(Controller.MOVEMENT_SPRITE > 3) {
@@ -87,14 +89,14 @@ public class PacmanThread extends Thread {
 								//TODO sonido de alarma fantasmas asustados
 							}
 							if(game.isEatingDots()) {
-								rate = (long)((1 - level.getPacmanWithEnergizerEatingDotsSpeed())*Level.REFERENCE_SPEED);
+								rate = level.getPacmanWithEnergizerEatingDotsSpeed();
 							} else {
-								rate = (long)((1 - level.getPacmanWithEnergizerSpeed())*Level.REFERENCE_SPEED);
+								rate = level.getPacmanWithEnergizerSpeed();
 							}
 						}  else if(game.isEatingDots()){
-							rate = (long)((1 - level.getPacmanEatingDotsSpeed())*Level.REFERENCE_SPEED);
+							rate = level.getPacmanEatingDotsSpeed();
 						} else {
-							rate = (long)((1 - level.getPacmanSpeed())*Level.REFERENCE_SPEED);
+							rate = level.getPacmanSpeed();
 						}
 						controller.getScoreLabel().setText(game.getScore()+"");
 						pacmanImage.relocate(pacman.getPosX(), pacman.getPosY());
@@ -113,8 +115,8 @@ public class PacmanThread extends Thread {
 					}
 				});
 			}
-			try {
-				sleep(rate+1);
+			try {System.out.println(rate);
+				sleep(rate);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

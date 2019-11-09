@@ -10,8 +10,6 @@ public class Level {
 	public final static String GALAXIAN = "resources/sprites/food/bonus/galaxian.png";
 	public final static String BELL = "resources/sprites/food/bonus/bell.png";
 	public final static String KEYS = "resources/sprites/food/bonus/keys.png";
-
-	public final static double REFERENCE_SPEED = 80;
 	
 	public final static int ONE_GHOST_SCORE = 200;
 	public final static int TWO_GHOSTS_SCORE = 400;
@@ -20,26 +18,25 @@ public class Level {
 	
 	private int stage;
 	private String bonus;
-	private double pacmanSpeed;
-	private double pacmanEatingDotsSpeed;
-	private double ghostsSpeed;
-	private double ghostsTunelSpeed;
+	private int pacmanSpeed;
+	private int pacmanEatingDotsSpeed;
+	private int ghostsSpeed;
+	private int ghostsTunelSpeed;
 	private int cruiseElroyDotsLeft1;
-	private double cruiseElroySpeed1;
+	private int cruiseElroySpeed1;
 	private int cruiseElroyDotsLeft2;
-	private double cruiseElroySpeed2;
-	private double pacmanWithEnergizerSpeed;
-	private double pacmanWithEnergizerEatingDotsSpeed;
-	private double frightGhostsSpeed;
+	private int cruiseElroySpeed2;
+	private int pacmanWithEnergizerSpeed;
+	private int pacmanWithEnergizerEatingDotsSpeed;
+	private int frightGhostsSpeed;
 	private int frightTime; 
 	private boolean frightened;
 	private int dotsLeft;
 
-	//speeds are values between 0 and 1 representing the percentage of the global reference speed
-	public Level(int stage, String bonus, double pacmanSpeed, double pacmanEatingDotsSpeed, double ghostsSpeed,
-			double ghostsTunelSpeed, int cruiseElroyDotsLeft1, double cruiseElroySpeed1, int cruiseElroyDotsLeft2,
-			double cruiseElroySpeed2, double pacmanWithEnergizerSpeed, double pacmanWithEnergizerEatingDotsSpeed,
-			double frightGhostsSpeed, int frightTime) {
+	public Level(int stage, String bonus, int pacmanSpeed, int pacmanEatingDotsSpeed, int ghostsSpeed,
+			int ghostsTunelSpeed, int cruiseElroyDotsLeft1, int cruiseElroySpeed1, int cruiseElroyDotsLeft2,
+			int cruiseElroySpeed2, int pacmanWithEnergizerSpeed, int pacmanWithEnergizerEatingDotsSpeed,
+			int frightGhostsSpeed, int frightTime) {
 		this.stage = stage;
 		this.bonus = bonus;
 		this.pacmanSpeed = pacmanSpeed;
@@ -104,35 +101,35 @@ public class Level {
 		this.bonus = bonus;
 	}
 
-	public double getPacmanSpeed() {
+	public int getPacmanSpeed() {
 		return pacmanSpeed;
 	}
 
-	public void setPacmanSpeed(double pacmanSpeed) {
+	public void setPacmanSpeed(int pacmanSpeed) {
 		this.pacmanSpeed = pacmanSpeed;
 	}
 
-	public double getPacmanEatingDotsSpeed() {
+	public int getPacmanEatingDotsSpeed() {
 		return pacmanEatingDotsSpeed;
 	}
 
-	public void setPacmanEatingDotsSpeed(double pacmanEatingDotsSpeed) {
+	public void setPacmanEatingDotsSpeed(int pacmanEatingDotsSpeed) {
 		this.pacmanEatingDotsSpeed = pacmanEatingDotsSpeed;
 	}
 
-	public double getGhostsSpeed() {
+	public int getGhostsSpeed() {
 		return ghostsSpeed;
 	}
 
-	public void setGhostsSpeed(double ghostsSpeed) {
+	public void setGhostsSpeed(int ghostsSpeed) {
 		this.ghostsSpeed = ghostsSpeed;
 	}
 
-	public double getGhostsTunelSpeed() {
+	public int getGhostsTunelSpeed() {
 		return ghostsTunelSpeed;
 	}
 
-	public void setGhostsTunelSpeed(double ghostsTunelSpeed) {
+	public void setGhostsTunelSpeed(int ghostsTunelSpeed) {
 		this.ghostsTunelSpeed = ghostsTunelSpeed;
 	}
 
@@ -144,11 +141,11 @@ public class Level {
 		this.cruiseElroyDotsLeft1 = cruiseElroyDotsLeft1;
 	}
 
-	public double getCruiseElroySpeed1() {
+	public int getCruiseElroySpeed1() {
 		return cruiseElroySpeed1;
 	}
 
-	public void setCruiseElroySpeed1(double cruiseElroySpeed1) {
+	public void setCruiseElroySpeed1(int cruiseElroySpeed1) {
 		this.cruiseElroySpeed1 = cruiseElroySpeed1;
 	}
 
@@ -160,35 +157,35 @@ public class Level {
 		this.cruiseElroyDotsLeft2 = cruiseElroyDotsLeft2;
 	}
 
-	public double getCruiseElroySpeed2() {
+	public int getCruiseElroySpeed2() {
 		return cruiseElroySpeed2;
 	}
 
-	public void setCruiseElroySpeed2(double cruiseElroySpeed2) {
+	public void setCruiseElroySpeed2(int cruiseElroySpeed2) {
 		this.cruiseElroySpeed2 = cruiseElroySpeed2;
 	}
 
-	public double getPacmanWithEnergizerSpeed() {
+	public int getPacmanWithEnergizerSpeed() {
 		return pacmanWithEnergizerSpeed;
 	}
 
-	public void setPacmanWithEnergizerSpeed(double pacmanWithEnergizerSpeed) {
+	public void setPacmanWithEnergizerSpeed(int pacmanWithEnergizerSpeed) {
 		this.pacmanWithEnergizerSpeed = pacmanWithEnergizerSpeed;
 	}
 
-	public double getPacmanWithEnergizerEatingDotsSpeed() {
+	public int getPacmanWithEnergizerEatingDotsSpeed() {
 		return pacmanWithEnergizerEatingDotsSpeed;
 	}
 
-	public void setPacmanWithEnergizerEatingDotsSpeed(double pacmanWithEnergizerEatingDotsSpeed) {
+	public void setPacmanWithEnergizerEatingDotsSpeed(int pacmanWithEnergizerEatingDotsSpeed) {
 		this.pacmanWithEnergizerEatingDotsSpeed = pacmanWithEnergizerEatingDotsSpeed;
 	}
 
-	public double getFrightGhostsSpeed() {
+	public int getFrightGhostsSpeed() {
 		return frightGhostsSpeed;
 	}
 
-	public void setFrightGhostsSpeed(double frightGhostsSpeed) {
+	public void setFrightGhostsSpeed(int frightGhostsSpeed) {
 		this.frightGhostsSpeed = frightGhostsSpeed;
 	}
 
@@ -214,5 +211,10 @@ public class Level {
 
 	public void setDotsLeft(int dotsLeft) {
 		this.dotsLeft = dotsLeft;
+	}
+	
+	@Override
+	public Level clone() {
+		return new Level(stage, bonus, pacmanSpeed, pacmanEatingDotsSpeed, ghostsSpeed, ghostsTunelSpeed, cruiseElroyDotsLeft1, cruiseElroySpeed1, cruiseElroyDotsLeft2, cruiseElroySpeed2, pacmanWithEnergizerSpeed, pacmanWithEnergizerEatingDotsSpeed, frightGhostsSpeed, frightTime);
 	}
 }

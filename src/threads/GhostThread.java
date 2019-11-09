@@ -29,32 +29,32 @@ public class GhostThread extends Thread {
 				long rate = 0;
 				if(ghost.equals(game.getBlinky())) {
 					if(ghost.isFrightened()) {
-						rate = (long)((1 - level.getFrightGhostsSpeed())*Level.REFERENCE_SPEED);
+						rate = level.getFrightGhostsSpeed();
 					} else if(game.isInTheTunnel(ghost)) {
-						rate = (long)((1 - level.getGhostsTunelSpeed())*Level.REFERENCE_SPEED);
+						rate = level.getGhostsTunelSpeed();
 					}  else if(level.getDotsLeft() <= level.getCruiseElroyDotsLeft2()){
 						System.out.println("elroy 2");
-						rate = (long)((1 - level.getCruiseElroySpeed2())*Level.REFERENCE_SPEED);
+						rate = level.getCruiseElroySpeed2();
 					} else if(level.getDotsLeft() <= level.getCruiseElroyDotsLeft1()){
 						System.out.println("elroy 1");
-						rate = (long)((1 - level.getCruiseElroySpeed1())*Level.REFERENCE_SPEED);
+						rate = level.getCruiseElroySpeed1();
 					} else {
-						rate = (long)((1 - level.getGhostsSpeed())*Level.REFERENCE_SPEED);
+						rate = level.getGhostsSpeed();
 					}
 					game.setFrightenedCountdown(game.getFrightenedCountdown()-rate);
 				} else {
 					if(ghost.isFrightened()) {
-						rate = (long)((1 - level.getFrightGhostsSpeed())*Level.REFERENCE_SPEED);
+						rate = level.getFrightGhostsSpeed();
 					} else if(game.isInTheTunnel(ghost)) {
-						rate = (long)((1 - level.getGhostsTunelSpeed())*Level.REFERENCE_SPEED);
+						rate = level.getGhostsTunelSpeed();
 					} else {
-						rate = (long)((1 - level.getGhostsSpeed())*Level.REFERENCE_SPEED);
+						rate = level.getGhostsSpeed();
 					}
 				}
 				if(ghost.isGoingHome().get()) {
 					rate = 6;
 				}
-				sleep(rate+1);
+				sleep(rate);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

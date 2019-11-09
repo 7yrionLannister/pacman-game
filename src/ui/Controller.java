@@ -165,6 +165,7 @@ public class Controller {
 							eatDot.play();
 							if(game.getCurrentLevel().getDotsLeft() == 0) {
 								onPause = true;
+								game.restartMap();
 								setGUItoInitialState();
 								game.setCurrentStage(game.getCurrentStage() + 1);
 							}
@@ -264,26 +265,25 @@ public class Controller {
 		if(!onPause) {
 			onPause = true;
 			if(game.getCurrentLevel().getDotsLeft() == game.getInitialNumberOfDots()) { //no dots eaten in the stage
-				System.out.println("turutururuturuturutururuturu");
 				readyImage.setVisible(true);
 				if(game.getCurrentLevel().getStage() == 1) { //plays intro sound in the first stage
 					intro.play();
 				}
-				TimerTask task = new TimerTask() {
-					@Override
-					public void run() {
-						readyImage.setVisible(false);
-						MOVEMENT_COUNTER++;
-						//startThreads();
-						onPause = false;
-					}
-				};
-				Timer timer = new Timer("Timer");
-				long delay = 4000;
-				timer.schedule(task, delay);
 			}
+			TimerTask task = new TimerTask() {
+				@Override
+				public void run() {
+					readyImage.setVisible(false);
+					MOVEMENT_COUNTER++;
+					onPause = false;
+				}
+			};
+			Timer timer = new Timer("Timer");
+			long delay = 4000;
+			timer.schedule(task, delay);
 		}
 	}
+
 
 	private void startThreads() {
 		pacmanThread = new PacmanThread(this);
@@ -441,12 +441,11 @@ public class Controller {
 			}
 		}
 	}
-	
+
 	public void setGUItoInitialState() {
 		TimerTask task = new TimerTask() {
 			@Override
 			public void run() {
-				game.restartMap();
 				game.setCharactersToInitialTiles();
 				pacman.setVisible(true);
 				blinky.setVisible(true);
