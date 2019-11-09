@@ -2,7 +2,7 @@ package model;
 
 import java.io.Serializable;
 
-public class Player implements Serializable {
+public class Player implements Serializable, Comparable<Player> {
 	
 	/**
 	 */
@@ -76,5 +76,10 @@ public class Player implements Serializable {
 	 */
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	@Override
+	public int compareTo(Player p1) {
+		return 	Integer.compare(score, p1.getScore());
 	}
 }

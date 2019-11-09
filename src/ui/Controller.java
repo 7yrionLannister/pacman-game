@@ -6,10 +6,14 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.function.BiConsumer;
 
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -19,6 +23,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.media.AudioClip;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
 import model.Coordinate;
 import model.Direction;
 import model.Game;
@@ -251,7 +256,16 @@ public class Controller {
 
 	@FXML
 	public void highScoresButtonPressed(ActionEvent event) {
-		//TODO implementar
+		try {
+			Parent root = FXMLLoader.load(getClass().getResource("nameregister.fxml"));
+			Scene s = new Scene(root);
+			Stage st = new Stage();
+			st.setScene(s);
+			st.setResizable(false);
+			st.showAndWait();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
 	}
 
 	@FXML
@@ -464,7 +478,19 @@ public class Controller {
 		Timer timer = new Timer("Timer");
 		timer.schedule(task, 3000);
 	}
-
+	public void openPlayerRegister() {
+		try {
+			Parent root = FXMLLoader.load(getClass().getResource("leaderboard.fxml"));
+			Scene s = new Scene(root);
+			Stage st = new Stage();
+			st.setScene(s);
+			st.setResizable(false);
+			st.showAndWait();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+	}
+	
 	public ImageView getGhostImage(String name) {
 		if(name.equalsIgnoreCase(game.getBlinky().getName())) {
 			return blinky;
