@@ -7,7 +7,7 @@ import dataStructures.Vertex.Color;
 
 
 public class AdjacencyMatrixGraph<E> implements IGraph<E> {
-	
+
 	/**It is a matrix of integers that represents all the graph edges. 
 	 */
 	private int[][] edges;
@@ -35,7 +35,7 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 	/**It is a matrix of vertices that indicates the shortest path of all pairs of vertices. 
 	 */
 	private Vertex<E>[][] allPairsShortestPath;
-	
+
 	/**It creates a matrix as a array of edges of a graph either directed or undirected with a size that arrives as parameter.
 	 * @param size is an Integer that represents the size of the Adjacency Matrix. 
 	 * @param isDIrected is a boolean that indicates if the Adjacency Matrix is going to represent a directed graph or not.
@@ -129,16 +129,16 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 				edges[d][s] = weight;
 			}
 
-		insertVertex(src); //Inserts src if not currently in the graph
-		insertVertex(dst); //Inserts dst if not currently in the graph
-		s = keyToIndex.get(src);
-		d = keyToIndex.get(dst);
-		edges[s][d] = weight;
-		if(!isDirected) { //Add the additional edge if this graph is undirected
-			edges[d][s] = weight;
+			insertVertex(src); //Inserts src if not currently in the graph
+			insertVertex(dst); //Inserts dst if not currently in the graph
+			s = keyToIndex.get(src);
+			d = keyToIndex.get(dst);
+			edges[s][d] = weight;
+			if(!isDirected) { //Add the additional edge if this graph is undirected
+				edges[d][s] = weight;
+			}
 		}
 	}
-}
 	/**This method unlinks a source vertex with another vertex denoted as dst where the other edge is removed if the graph is undirected.
 	 * @return A boolean that indicates if the unlinking process was done correctly.
 	 * @param src is an E object that represents the source vertex from the dst vertex is going to be unlinked. 
@@ -416,6 +416,7 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 	/**It allows to get all the actual graph vertices in a ArrayList. 
 	 * @return An ArrayList of E type with all the actual graph vertices.
 	 */
+	@Override
 	public ArrayList<E> getVertices() {
 		ArrayList<E> verts = new ArrayList<E>();
 		for(int i = 0; i < keyToIndex.size(); i++) {
@@ -584,7 +585,7 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 			pq.remove(lastSrc);
 			lastSrc.setDistance(0);
 			pq.offer(lastSrc);
-			
+
 			while(!pq.isEmpty()) {
 				Vertex<E> u = pq.poll();
 				int uIndex = keyToIndex.get(u.getElement());
@@ -615,6 +616,19 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 	@Override
 	public ArrayList<Edge<E>> kruskalMinimumSpannigTree() {
 		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public E getVertexAtGivenDistance(E src, int distance) {
+		if(keyToIndex.containsKey(src)) {
+			int s = keyToIndex.get(src);
+			for(int i = 0; i < keyToIndex.size(); i++) {
+				if(edges[s][i] == distance) {
+					return vertices[i].getElement();
+				}
+			}
+		}
 		return null;
 	}
 }

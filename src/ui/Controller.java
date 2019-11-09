@@ -271,7 +271,7 @@ public class Controller {
 			e1.printStackTrace();
 		}
 	}
-	
+
 	public void openPlayerRegister() {
 		try {
 			Parent root = FXMLLoader.load(getClass().getResource("nameregister.fxml"));
@@ -309,6 +309,9 @@ public class Controller {
 					readyImage.setVisible(false);
 					MOVEMENT_COUNTER++;
 					onPause = false;
+					if(game.allGhostsInTheirHouse()) {
+						game.startSequence();
+					}
 				}
 			};
 			Timer timer = new Timer("Timer");
@@ -316,7 +319,6 @@ public class Controller {
 			timer.schedule(task, delay);
 		}
 	}
-
 
 	private void startThreads() {
 		pacmanThread = new PacmanThread(this);
@@ -476,6 +478,7 @@ public class Controller {
 	}
 
 	public void setGUItoInitialState() {
+		pacman.setImage(new Image(new File(PacmanThread.MOVEMENTS+0+".png").toURI().toString()));
 		TimerTask task = new TimerTask() {
 			@Override
 			public void run() {
@@ -497,7 +500,7 @@ public class Controller {
 		Timer timer = new Timer("Timer");
 		timer.schedule(task, 3000);
 	}
-	
+
 	public ImageView getGhostImage(String name) {
 		if(name.equalsIgnoreCase(game.getBlinky().getName())) {
 			return blinky;

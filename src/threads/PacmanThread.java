@@ -62,7 +62,6 @@ public class PacmanThread extends Thread {
 							e.printStackTrace();
 						}
 					}
-					game.setCharactersToInitialTiles();
 					controller.setGUItoInitialState();
 					game.getPacman().setDying(false);
 					controller.startPlayPauseButtonPressed(null);
