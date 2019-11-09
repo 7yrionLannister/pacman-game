@@ -12,6 +12,7 @@ import model.Pacman;
 import ui.Controller;
 
 
+
 public class PacmanThread extends Thread {
 	public final static String MOVEMENTS = "resources/sprites/pacman/movements/";
 	private Controller controller;
@@ -19,6 +20,7 @@ public class PacmanThread extends Thread {
 	private Game game;
 	private Pacman pacman;
 	private long rate = 0;
+	
 	public PacmanThread(Controller c) {
 		this.controller = c;
 		pacmanImage = c.getPacman();

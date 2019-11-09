@@ -44,6 +44,7 @@ public class Game {
 	private int score;
 	private long frightenedCountdown;
 	private int ghostsEaten;
+	private int timesDead;
 
 	public Game() throws IOException {
 		runningLinux = System.getProperty("os.name").equals("Linux");
@@ -497,6 +498,7 @@ public class Game {
 				searchGhostTarget(ghost);
 			} else if(!ghost.isGoingHome().get()){
 				//TODO pacman dies
+				timesDead++;
 				pacman.setDying(true);
 				System.out.println("muere pacman muere >:v!!!");
 			}
@@ -723,5 +725,8 @@ public class Game {
 
 	public int getInitialNumberOfDots() {
 		return initialNumberOfDots;
+	}
+	public int getTimesDead() {
+		return timesDead;
 	}
 }
