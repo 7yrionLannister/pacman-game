@@ -273,8 +273,8 @@ public class Game {
 
 		leftTileOfTheTunel = coordinates.get(96);
 		rightTileOfTheTunel = coordinates.get(97);
-		bonusTile = new Coordinate(pacman.getPosX(), coordinates.get(43).getY(), false, false, false, false);
-		food.put(bonusTile, new Food(Food.BONUS, false));
+		bonusTile = coordinates.get(102);
+		food.put(bonusTile, new Food(Food.BONUS, false));	initialNumberOfDots--;
 	}
 
 	public void setCharactersToInitialTiles() {
@@ -387,6 +387,9 @@ public class Game {
 		food.get(coordinates.get(96)).setType(Food.NOTHING);
 		food.get(coordinates.get(97)).setType(Food.NOTHING);
 
+		food.get(bonusTile).setType(Food.BONUS);
+		food.get(bonusTile).setNotEaten(false);
+		
 		getCurrentLevel().setDotsLeft(initialNumberOfDots);
 	}
 
@@ -424,21 +427,17 @@ public class Game {
 				getCurrentLevel().setDotsLeft(getCurrentLevel().getDotsLeft()-1);
 				score += POINTS_PER_DOT;
 				break;
-			default:
-				//c:
+			case Food.BONUS:
+				if(food.get(pacman.getPosition()).getNotEaten().get()) {
+					score += getCurrentLevel().getBonusScore();
+				}
 				break;
 			}
 
 			food.get(pacman.getPosition()).setType(Food.NOTHING); //pacman ate
-			Level level = getCurrentLevel();
-			level.setDotsLeft(level.getDotsLeft());
-			if(level.getDotsLeft() == 0) {
-				System.out.println("HEEEEEEEEEEEEEEEEYYYYYYY");
+			if(getCurrentLevel().getDotsLeft() == initialNumberOfDots/2) { //bonus at half way
+				food.get(bonusTile).setNotEaten(true);
 			}
-		} else if(pacman.getPosX() == bonusTile.getX() && pacman.getPosY() == bonusTile.getY() && food.get(bonusTile).getNotEaten().get()) {
-			score += getCurrentLevel().getBonusScore();
-			food.get(bonusTile).setType(Food.NOTHING);
-			food.get(bonusTile).setNotEaten(false);
 		}
 	}
 
@@ -606,7 +605,6 @@ public class Game {
 		switch(Ghost.state) {
 		case CHASE:
 			if(map.getDistance(clyde.getPosition(), pacman.getPosition()) <= 3) {
-				System.out.println("cerca a pacman");
 				if(clyde.getTarget().equals(coordinates.get(46))) {
 					clyde.setTarget(coordinates.get(26));
 				} else if(clyde.getTarget().equals(coordinates.get(26))) {
@@ -615,7 +613,6 @@ public class Game {
 					clyde.setTarget(coordinates.get(46));
 				}
 			} else {
-				System.out.println("lejos pacman");
 				clyde.setTarget(pacman.getPosition());
 			}
 			break;
@@ -651,6 +648,11 @@ public class Game {
 				searchGhostTarget(ghost);
 			} else if(!ghost.isGoingHome().get()){
 				//TODO pacman dies
+				pacman.setLives(pacman.getLives()-1);
+				blinky.setPosition(coordinates.get(98));
+				pinky.setPosition(pinky.getHouse());
+				inky.setPosition(inky.getHouse());
+				clyde.setPosition(clyde.getHouse());
 				Ghost.state = State.SCATTER;
 				pacman.setDying(true);
 			}
@@ -839,6 +841,10 @@ public class Game {
 
 	public int getScore() {
 		return score;
+	}
+	
+	public void setScore(int score) {
+		this.score = score;
 	}
 
 	public boolean atLeastAFrightenedGhost() {

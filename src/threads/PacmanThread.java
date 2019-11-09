@@ -1,7 +1,6 @@
 package threads;
 
 import java.io.File;
-
 import javafx.application.Platform;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -12,7 +11,6 @@ import model.Pacman;
 import ui.Controller;
 
 
-
 public class PacmanThread extends Thread {
 	public final static String MOVEMENTS = "resources/sprites/pacman/movements/";
 	private Controller controller;
@@ -20,7 +18,7 @@ public class PacmanThread extends Thread {
 	private Game game;
 	private Pacman pacman;
 	private long rate = 0;
-	
+
 	public PacmanThread(Controller c) {
 		this.controller = c;
 		pacmanImage = c.getPacman();
@@ -33,6 +31,7 @@ public class PacmanThread extends Thread {
 	@Override
 	public void run() {
 		while(true) {
+			System.out.println(game.getCurrentLevel().getDotsLeft());
 			if(!controller.isOnPause()) {
 				Controller.MOVEMENT_COUNTER++;
 				if((Controller.MOVEMENT_COUNTER*Controller.MOVEMENT_SPRITE) % 2 == 0) {
@@ -45,26 +44,7 @@ public class PacmanThread extends Thread {
 					}
 				}
 				if(pacman.isDying()) {
-					controller.setOnPause(true);
-					controller.getDeath().play();
-					controller.getBlinky().setVisible(false);
-					controller.getPinky().setVisible(false);
-					controller.getInky().setVisible(false);
-					controller.getClyde().setVisible(false);
-					int sprite = 0;
-					while(sprite < 13) {
-						try {
-							pacmanImage.setRotate(0);
-							pacmanImage.setImage(new Image(new File(Controller.CAUGHT+sprite+".png").toURI().toString()));
-							sprite++;
-							sleep(100);
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
-					}
-					controller.setGUItoInitialState();
-					game.getPacman().setDying(false);
-					controller.startPlayPauseButtonPressed(null);
+					die();
 				}
 				game.movePacman();
 				Platform.runLater(new Runnable() {
@@ -113,6 +93,8 @@ public class PacmanThread extends Thread {
 						ghost = game.getClyde();
 						controller.getClyde().relocate(ghost.getPosX(), ghost.getPosY());
 						controller.refreshGhostImage(ghost);
+						
+						controller.refreshLivesCounter();
 					}
 				});
 			}
@@ -122,5 +104,36 @@ public class PacmanThread extends Thread {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	private void die() {
+		controller.setOnPause(true);
+		controller.getDeath().play();
+		controller.getBlinky().setVisible(false);
+		controller.getPinky().setVisible(false);
+		controller.getInky().setVisible(false);
+		controller.getClyde().setVisible(false);
+		int sprite = 0;
+		while(sprite < 13) {
+			try {
+				pacmanImage.setRotate(0);
+				pacmanImage.setImage(new Image(new File(Controller.CAUGHT+sprite+".png").toURI().toString()));
+				sprite++;
+				sleep(100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		if(pacman.getLives() > 0) {
+			controller.setGUItoInitialState();
+			controller.startPlayPauseButtonPressed(null);
+		} else {
+			controller.getGameOverImage().setVisible(true);
+			controller.setOnPause(true);
+			if(true) { //TODO aqui se muestra la pantalla de inscripcion si se hizo un puntaje alto
+				Platform.runLater(() -> controller.openPlayerRegister());
+			}
+		}
+		game.getPacman().setDying(false);
 	}
 }
