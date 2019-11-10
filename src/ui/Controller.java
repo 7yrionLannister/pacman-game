@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.function.BiConsumer;
-
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -36,100 +35,95 @@ import threads.PacmanThread;
 
 
 public class Controller {
+	
+	/**
+	 */
 	public static long MOVEMENT_COUNTER;
+	/**
+	 */
 	public static long MOVEMENT_SPRITE;
+	/**
+	 */
 	public final static String GHOSTS_SPRITES = "resources/sprites/ghosts/";
+	/**
+	 */
 	public final static Image PACDOT_IMAGE = new Image(new File("resources/sprites/food/pacdot.png").toURI().toString());
+	/**
+	 */
 	public final static Image ENERGIZER_IMAGE = new Image(new File("resources/sprites/food/energizer.png").toURI().toString());
+	/**
+	 */
 	public final static String CAUGHT = "resources/sprites/pacman/caught/";
 
-	@FXML
-	private Label highScoreLabel;
-
-	@FXML
-	private Label scoreLabel;
-
-	@FXML
-	private AnchorPane map;
-
-	@FXML
-	private FlowPane livesContainer;
-
-	@FXML
-	private FlowPane bonusFruitsContainer;
-
-	@FXML
-	private ImageView inky;
-
-	@FXML
-	private ImageView pinky;
-
-	@FXML
-	private ImageView clyde;
-
-	@FXML
-	private ImageView blinky;
-
-	@FXML
-	private ImageView pacman;
-
-	@FXML
-	private ImageView readyImage;
-
-	@FXML
-	private ImageView gameOverImage;
-
-	@FXML
-	private ImageView bonusImage;
-
-	@FXML
-	private ImageView key;
-
-	@FXML
-	private ImageView bell;
-
-	@FXML
-	private ImageView galaxian;
-
-	@FXML
-	private ImageView melon;
-
-	@FXML
-	private ImageView apple;
-
-	@FXML
-	private ImageView peach;
-
-	@FXML
-	private ImageView strawberry;
-
-	@FXML
-	private ImageView cherry;
-
-	@FXML
-	private Rectangle blackSquare2;
-
-	@FXML
-	private Rectangle blackSquare1;
-
+	@FXML private Label highScoreLabel;
+	@FXML private Label scoreLabel;
+	@FXML private AnchorPane map;
+	@FXML private FlowPane livesContainer;
+	@FXML private FlowPane bonusFruitsContainer;
+	@FXML private ImageView inky;
+	@FXML private ImageView pinky;
+	@FXML private ImageView clyde;
+	@FXML private ImageView blinky;
+	@FXML private ImageView pacman;
+	@FXML private ImageView readyImage;
+	@FXML private ImageView gameOverImage;
+	@FXML private ImageView bonusImage;
+	@FXML private ImageView key;
+	@FXML private ImageView bell;
+	@FXML private ImageView galaxian;
+	@FXML private ImageView melon;
+	@FXML private ImageView apple;
+	@FXML private ImageView peach;
+	@FXML private ImageView strawberry;
+	@FXML private ImageView cherry;
+	@FXML private Rectangle blackSquare2;
+	@FXML private Rectangle blackSquare1;
+	
+	/**
+	 */
 	private Game game;
-
+	
+	/**
+	 */
 	private PacmanThread pacmanThread;
+	/**
+	 */
 	private GhostThread blinkyThread;
+	/**
+	 */
 	private GhostThread inkyThread;
+	/**
+	 */
 	private GhostThread clydeThread;
+	/**
+	 */
 	private GhostThread pinkyThread;
 
+	/**
+	 */
 	private AudioClip intro;
+	/**
+	 */
 	private AudioClip eatDot;
+	/**
+	 */
 	private AudioClip eatFruit;
+	/**
+	 */
 	private AudioClip eatGhost;
+	/**
+	 */
 	private AudioClip extraLive;
+	/**
+	 */
 	private AudioClip death;
-
+	
+	/**
+	 */
 	private boolean onPause;
 	
-	
+	/**
+	 */
 	@FXML
 	public void initialize() {
 		try {
@@ -230,6 +224,9 @@ public class Controller {
 		startThreads();
 	}
 	
+	/**
+	 * @param event
+	 */
 	@FXML
 	public void changeDirection(KeyEvent event) {
 		String key = event.getCode().getName().toLowerCase();
@@ -244,6 +241,9 @@ public class Controller {
 		}
 	}
 
+	/**
+	 * @param event
+	 */
 	@FXML
 	public void printMapCoordinates(MouseEvent event) {
 		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
@@ -257,7 +257,10 @@ public class Controller {
 		System.out.println(game.getClyde().getPosition());
 		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 	}
-
+	
+	/**
+	 * @param event
+	 */
 	@FXML
 	public void highScoresButtonPressed(ActionEvent event) {
 		try {
@@ -274,12 +277,17 @@ public class Controller {
 			e1.printStackTrace();
 		}
 	}
-
+	
+	/**
+	 * @param event
+	 */
 	@FXML
 	public void newGameButtonPressed(ActionEvent event) {
 		System.out.println("hola mundo");
 	}
-
+	/**
+	 * @param event
+	 */
 	@FXML
 	public void startPlayPauseButtonPressed(ActionEvent event) {
 		onPause = !onPause;
@@ -309,7 +317,9 @@ public class Controller {
 			timer.schedule(task, delay);
 		}
 	}
-
+	
+	/**
+	 */
 	private void startThreads() {
 		pacmanThread = new PacmanThread(this);
 		blinkyThread = new GhostThread(this, game.getBlinky().getName());
@@ -323,7 +333,10 @@ public class Controller {
 		pinkyThread.start();
 		clydeThread.start();
 	}
-
+	 /**
+	  * 
+	  * @param ghost
+	  */
 	public void refreshGhostImage(Ghost ghost) {
 		if(Controller.MOVEMENT_COUNTER%5 == 0) {
 			ImageView ghostImage = getGhostImage(ghost.getName());
@@ -358,7 +371,8 @@ public class Controller {
 			}
 		}
 	}
-
+	/**
+	 */
 	public void setGUItoInitialState() {
 		pacman.setImage(new Image(new File(PacmanThread.MOVEMENTS+0+".png").toURI().toString()));
 		TimerTask task = new TimerTask() {
@@ -380,7 +394,10 @@ public class Controller {
 		Timer timer = new Timer("Timer");
 		timer.schedule(task, 3000);
 	}
-
+	/**
+	 * @param name
+	 * @return
+	 */
 	public ImageView getGhostImage(String name) {
 		if(name.equalsIgnoreCase(game.getBlinky().getName())) {
 			return blinky;
@@ -392,7 +409,8 @@ public class Controller {
 			return clyde;
 		}
 	}
-
+	/**
+	 */
 	public void refreshLivesCounter() {
 		for(Node node : livesContainer.getChildren()) {
 			node.setVisible(false);
@@ -402,7 +420,8 @@ public class Controller {
 			livesContainer.getChildren().get(i).setVisible(true);
 		}
 	}
-
+	/**
+	 */
 	public void openPlayerRegister() {
 		try {
 			onPause = true;
@@ -426,111 +445,165 @@ public class Controller {
 			e1.printStackTrace();
 		}
 	}
-
+	/**
+	 * @return
+	 */
 	public FlowPane getLivesContainer() {
 		return livesContainer;
 	}
-
+	/**
+	 * @return
+	 */
 	public FlowPane getBonusFruitsContainer() {
 		return bonusFruitsContainer;
 	}
-
+	/**
+	 * @return
+	 */
 	public ImageView getInky() {
 		return inky;
 	}
-
+	/**
+	 * @return
+	 */
 	public ImageView getPinky() {
 		return pinky;
 	}
-
+	/**
+	 * @return
+	 */
 	public ImageView getClyde() {
 		return clyde;
 	}
-
+	/**
+	 * @return
+	 */
 	public ImageView getBlinky() {
 		return blinky;
 	}
-
+	/**
+	 * @return
+	 */
 	public ImageView getPacman() {
 		return pacman;
 	}
-
+	/**
+	 * @return
+	 */
 	public ImageView getReadyImage() {
 		return readyImage;
 	}
-
+	/**
+	 * @return
+	 */
 	public ImageView getGameOverImage() {
 		return gameOverImage;
 	}
-
+	/**
+	 * @return
+	 */
 	public ImageView getBonusImage() {
 		return bonusImage;
 	}
-
+	/**
+	 * @return
+	 */
 	public ImageView getKey() {
 		return key;
 	}
-
+	/**
+	 * @return
+	 */
 	public ImageView getBell() {
 		return bell;
 	}
-
+	/**
+	 * @return
+	 */
 	public ImageView getGalaxian() {
 		return galaxian;
 	}
-
+	/**
+	 * @return
+	 */
 	public ImageView getMelon() {
 		return melon;
 	}
-
+	/**
+	 * @return
+	 */
 	public ImageView getApple() {
 		return apple;
 	}
-
+	/**
+	 * @return
+	 */
 	public ImageView getPeach() {
 		return peach;
 	}
-
+	/**
+	 * @return
+	 */
 	public ImageView getStrawberry() {
 		return strawberry;
 	}
-
+	/**
+	 * @return
+	 */
 	public ImageView getCherry() {
 		return cherry;
 	}
-
+	/**
+	 * @return
+	 */
 	public Game getGame() {
 		return game;
 	}
-
+	/**
+	 * @return
+	 */
 	public boolean isOnPause() {
 		return onPause;
 	}
-
+	/**
+	 * @param onPause
+	 */
 	public void setOnPause(boolean onPause) {
 		this.onPause = onPause;
 	}
-
+	/**
+	 * @return
+	 */
 	public Label getScoreLabel() {
 		return scoreLabel;
 	}
-
+	/**
+	 * @return
+	 */
 	public AudioClip getEatDot() {
 		return eatDot;
 	}
-
+	/**
+	 * @return
+	 */
 	public AudioClip getEatFruit() {
 		return eatFruit;
 	}
-
+	/**
+	 * @return
+	 */
 	public AudioClip getEatGhost() {
 		return eatGhost;
 	}
-
+	/**
+	 * @return
+	 */
 	public AudioClip getExtraLive() {
 		return extraLive;
 	}
-
+	/**
+	 * @return
+	 */
 	public AudioClip getDeath() {
 		return death;
 	}
