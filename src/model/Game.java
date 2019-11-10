@@ -45,6 +45,8 @@ public class Game {
 	private long frightenedCountdown;
 	private int ghostsEaten;
 	private int timesDead;
+	
+	
 
 	public Game() throws IOException {
 		runningLinux = System.getProperty("os.name").equals("Linux");

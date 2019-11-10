@@ -128,7 +128,8 @@ public class Controller {
 	private AudioClip death;
 
 	private boolean onPause;
-
+	
+	
 	@FXML
 	public void initialize() {
 		try {
@@ -153,6 +154,7 @@ public class Controller {
 		eatGhost = new AudioClip(new File("resources/audio/eat_ghost.mp3").toURI().toString());
 		extraLive = new AudioClip(new File("resources/audio/extrapac.mp3").toURI().toString());
 		death = new AudioClip(new File("resources/audio/pacman_death.mp3").toURI().toString());
+		
 		game.getFood().forEach(new BiConsumer<Coordinate, Food>() {
 			@Override
 			public void accept(Coordinate t, Food u) {
@@ -204,7 +206,7 @@ public class Controller {
 				}
 			}
 		});
-
+		
 		ChangeListener<Boolean> eatGhostListener = new ChangeListener<Boolean>() {
 			@Override
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue,
@@ -226,7 +228,7 @@ public class Controller {
 		onPause = true;
 		startThreads();
 	}
-
+	
 	@FXML
 	public void changeDirection(KeyEvent event) {
 		String key = event.getCode().getName().toLowerCase();
@@ -257,9 +259,9 @@ public class Controller {
 
 	@FXML
 	public void highScoresButtonPressed(ActionEvent event) {
-		openPlayerRegister();
 		try {
-			Parent root = FXMLLoader.load(getClass().getResource("nameregister.fxml"));
+			LeaderboardController lb = new LeaderboardController();
+			Parent root = FXMLLoader.load(getClass().getResource("leaderboard.fxml"));
 			Scene s = new Scene(root);
 			Stage st = new Stage();
 			st.setScene(s);
@@ -483,20 +485,6 @@ public class Controller {
 		timer.schedule(task, 3000);
 	}
 	
-	public void openPlayerRegister() {
-		try {
-			Parent root = FXMLLoader.load(getClass().getResource("leaderboard.fxml"));
-			Scene s = new Scene(root);
-			Stage st = new Stage();
-			st.setScene(s);
-			st.setResizable(false);
-			st.initOwner(pacman.getParent().getScene().getWindow());
-			st.initModality(Modality.WINDOW_MODAL);
-			st.showAndWait();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-	}
 	
 	public ImageView getGhostImage(String name) {
 		if(name.equalsIgnoreCase(game.getBlinky().getName())) {
