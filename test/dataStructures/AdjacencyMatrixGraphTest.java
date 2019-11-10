@@ -493,40 +493,43 @@ public class AdjacencyMatrixGraphTest {
 	public void primTest() {
 		linkVerticesInUndirectedGraphTest();
 		int src = 7;
-		System.out.println("--------------------PRIM MATRIX--------------------");
-		System.out.println(src);
 		ArrayList<Edge<Integer>> mst = graph.primMinimumSpanningTree(src);
+		int weight = 0;
 		for(Edge<Integer> ed : mst) {
-			System.out.println(ed.getSrc() + " ---> " + ed.getDst());
+			weight += ed.getWeight();
 		}
+		assertTrue(weight == 35, "It is not a minimum spanning tree");
 		src = 4;
-		System.out.println(src);
 		mst = graph.primMinimumSpanningTree(src);
+		weight = 0;
 		for(Edge<Integer> ed : mst) {
-			System.out.println(ed.getSrc() + " ---> " + ed.getDst());
+			weight += ed.getWeight();
 		}
-		src = 1;
-		System.out.println(src);
+		assertTrue(weight == 35, "It is not a minimum spanning tree");
 		mst = graph.primMinimumSpanningTree(src);
+		weight = 0;
 		for(Edge<Integer> ed : mst) {
-			System.out.println(ed.getSrc() + " ---> " + ed.getDst());
+			weight += ed.getWeight();
 		}
+		assertTrue(weight == 35, "It is not a minimum spanning tree");
 		src = 3;
-		System.out.println(src);
 		mst = graph.primMinimumSpanningTree(src);
+		weight = 0;
 		for(Edge<Integer> ed : mst) {
-			System.out.println(ed.getSrc() + " ---> " + ed.getDst());
+			weight += ed.getWeight();
 		}
+		assertTrue(weight == 35, "It is not a minimum spanning tree");
 	}
 	
 	@Test
 	public void kruskalTest() {
 		linkVerticesInUndirectedGraphTest();
 		ArrayList<Edge<Integer>> mst = graph.kruskalMinimumSpannigTree();
-		System.out.println("--------------------KRUSKAL--------------------");
-		/*for(Edge<Integer> ed : mst) {
-			System.out.println(ed.getSrc() + " ---> " + ed.getDst());
-		}*/
+		int weight = 0;
+		for(Edge<Integer> ed : mst) {
+			weight += ed.getWeight();
+		}
+		assertTrue(weight == 35, "It is not a minimum spanning tree");
 	}
 	
 	private void vertexInsertionLoop() {

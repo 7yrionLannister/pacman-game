@@ -18,7 +18,7 @@ public class PacmanThread extends Thread {
 	private Game game;
 	private Pacman pacman;
 	private long rate = 0;
-
+	
 	public PacmanThread(Controller c) {
 		this.controller = c;
 		pacmanImage = c.getPacman();
@@ -31,7 +31,6 @@ public class PacmanThread extends Thread {
 	@Override
 	public void run() {
 		while(true) {
-			System.out.println(game.getCurrentLevel().getDotsLeft());
 			if(!controller.isOnPause()) {
 				Controller.MOVEMENT_COUNTER++;
 				if((Controller.MOVEMENT_COUNTER*Controller.MOVEMENT_SPRITE) % 2 == 0) {

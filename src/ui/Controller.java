@@ -6,7 +6,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.function.BiConsumer;
 
-
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -41,7 +40,6 @@ public class Controller {
 	public final static String GHOSTS_SPRITES = "resources/sprites/ghosts/";
 	public final static Image PACDOT_IMAGE = new Image(new File("resources/sprites/food/pacdot.png").toURI().toString());
 	public final static Image ENERGIZER_IMAGE = new Image(new File("resources/sprites/food/energizer.png").toURI().toString());
-	public final static Image BONUS_IMAGE = new Image(new File("resources/sprites/food/bonus/cherry.png").toURI().toString());
 	public final static String CAUGHT = "resources/sprites/pacman/caught/";
 
 	@FXML
@@ -173,15 +171,15 @@ public class Controller {
 							if(game.getCurrentLevel().getDotsLeft() == 0) {
 								onPause = true;
 								game.restartMap();
-								setGUItoInitialState();
 								game.setCurrentStage(game.getCurrentStage() + 1);
+								setGUItoInitialState();
+								startPlayPauseButtonPressed(null);
 							}
 						}
 					}
 				};
 				switch(u.getType()) {
 				case Food.BONUS:
-					food.setImage(BONUS_IMAGE);
 					u.getNotEaten().addListener(new ChangeListener<Boolean>() {
 						@Override
 						public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue,
@@ -282,17 +280,11 @@ public class Controller {
 	public void startPlayPauseButtonPressed(ActionEvent event) {
 		onPause = !onPause;
 		gameOverImage.setVisible(false);
-		if(game.getPacman().getLives() == 0) {
-			game.getPacman().setLives(3);
-			game.restartMap();
-			game.setScore(0);
-			scoreLabel.setText("0");
-			onPause = true;
-			setGUItoInitialState();
-		} else if(!onPause) {
+		if(!onPause) {
 			onPause = true;
 			if(game.getCurrentLevel().getDotsLeft() == game.getInitialNumberOfDots()) { //no dots eaten in the stage
 				readyImage.setVisible(true);
+				bonusImage.setImage(new Image(new File(game.getCurrentLevel().getBonus()).toURI().toString()));
 				if(game.getCurrentLevel().getStage() == 1) { //plays intro sound in the first stage
 					intro.play();
 				}
@@ -379,8 +371,6 @@ public class Controller {
 				inky.relocate(game.getInky().getPosX(), game.getInky().getPosY());
 				pinky.relocate(game.getPinky().getPosX(), game.getPinky().getPosY());
 				clyde.relocate(game.getClyde().getPosX(), game.getClyde().getPosY());
-
-				startPlayPauseButtonPressed(null);
 			}
 		};
 		Timer timer = new Timer("Timer");
@@ -420,6 +410,14 @@ public class Controller {
 			st.initOwner(pacman.getParent().getScene().getWindow());
 			st.initModality(Modality.WINDOW_MODAL);
 			st.showAndWait();
+			
+			game.getPacman().setLives(3);
+			game.setCurrentStage(0);
+			game.restartMap();
+			game.setScore(0);
+			scoreLabel.setText("0");
+			onPause = true;
+			setGUItoInitialState();
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}

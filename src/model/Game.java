@@ -20,7 +20,8 @@ public class Game {
 	public final static String GRAPH_RESOURCE = "resources/map.txt";
 	public final static byte POINTS_PER_DOT = 30;
 	public final static byte POINTS_PER_ENERGIZER = 70;
-
+	public final static int POINTS_EXTRA_LIVE = 4000; //TODO no cae exacto siempre entonces hay que usar una estrategia diferente a la del residuo
+	
 	private int initialNumberOfDots;
 
 	private  Coordinate leftTileOfTheTunel;
@@ -269,12 +270,12 @@ public class Game {
 		food.get(coordinates.get(96)).setType(Food.NOTHING);	initialNumberOfDots--;
 		food.get(coordinates.get(97)).setType(Food.NOTHING);	initialNumberOfDots--;
 
-		getCurrentLevel().setDotsLeft(initialNumberOfDots);
-
 		leftTileOfTheTunel = coordinates.get(96);
 		rightTileOfTheTunel = coordinates.get(97);
 		bonusTile = coordinates.get(102);
 		food.put(bonusTile, new Food(Food.BONUS, false));	initialNumberOfDots--;
+		
+		getCurrentLevel().setDotsLeft(initialNumberOfDots);
 	}
 
 	public void setCharactersToInitialTiles() {
@@ -408,7 +409,7 @@ public class Game {
 				clyde.setFrightened(true);
 
 				getCurrentLevel().setDotsLeft(getCurrentLevel().getDotsLeft()-1);
-				score += POINTS_PER_ENERGIZER;
+				setScore(getScore() + POINTS_PER_ENERGIZER);
 				TimerTask task = new TimerTask() {
 					@Override
 					public void run() {
@@ -425,11 +426,11 @@ public class Game {
 				break;
 			case Food.PACDOT:
 				getCurrentLevel().setDotsLeft(getCurrentLevel().getDotsLeft()-1);
-				score += POINTS_PER_DOT;
+				setScore(getScore() + POINTS_PER_DOT);
 				break;
 			case Food.BONUS:
 				if(food.get(pacman.getPosition()).getNotEaten().get()) {
-					score += getCurrentLevel().getBonusScore();
+					setScore(getScore() + getCurrentLevel().getBonusScore());
 				}
 				break;
 			}
@@ -845,6 +846,9 @@ public class Game {
 	
 	public void setScore(int score) {
 		this.score = score;
+		if(score % POINTS_EXTRA_LIVE == 0 && pacman.getLives() < 5) {
+			pacman.setLives(pacman.getLives()+1);
+		}
 	}
 
 	public boolean atLeastAFrightenedGhost() {
