@@ -27,8 +27,10 @@ public class Game {
 	public final static byte POINTS_PER_ENERGIZER = 70;
 	/**
 	 */
-	public final static int POINTS_EXTRA_LIVE = 4000; //TODO no cae exacto siempre entonces hay que usar una estrategia diferente a la del residuo
-	
+	public final static int POINTS_EXTRA_LIVE1 = 4000; //TODO no cae exacto siempre entonces hay que usar una estrategia diferente a la del residuo
+	/**
+	 */
+	public  static int POINTS_EXTRA_LIVE = 5000;
 	/**
 	 */
 	private int initialNumberOfDots;
@@ -968,8 +970,9 @@ public class Game {
 	 */
 	public void setScore(int score) {
 		this.score = score;
-		if(score % POINTS_EXTRA_LIVE == 0 && pacman.getLives() < 5) {
+		if(score >= POINTS_EXTRA_LIVE && pacman.getLives() < 5) {
 			pacman.setLives(pacman.getLives()+1);
+			POINTS_EXTRA_LIVE += 5000;
 		}
 	}
 	/**

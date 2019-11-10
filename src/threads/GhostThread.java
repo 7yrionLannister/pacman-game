@@ -3,15 +3,15 @@ package threads;
 import model.Game;
 import model.Ghost;
 import model.Level;
-import ui.Controller;
+import ui.PrimaryStageController;
 
 
 public class GhostThread extends Thread {
-	private Controller controller;
+	private PrimaryStageController controller;
 	private Game game;
 	private Ghost ghost;
 
-	public GhostThread(Controller c, String name) {
+	public GhostThread(PrimaryStageController c, String name) {
 		this.controller = c;
 		game = c.getGame();
 		ghost = game.getGhost(name);

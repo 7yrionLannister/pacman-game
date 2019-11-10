@@ -8,14 +8,13 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-
-<BorderPane maxHeight="431.0" stylesheets="@pg.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.LeaderboardController">
+<BorderPane maxHeight="375.0" stylesheets="@pg.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.LeaderboardController">
    <center>
       <TableView fx:id="lb" cache="true" editable="true" stylesheets="@pg.css" BorderPane.alignment="CENTER">
         <columns>
-          <TableColumn fx:id="rank" maxWidth="-1.0" minWidth="60.0" prefWidth="-1.0" sortable="false" text="RANK" />
-          <TableColumn fx:id="stage" maxWidth="-1.0" minWidth="60.0" prefWidth="-1.0" sortable="false" text="STAGE" />
-            <TableColumn fx:id="score" maxWidth="-1.0" minWidth="100.0" prefWidth="-1.0" sortable="false" text="SCORE" />
+          <TableColumn fx:id="rank" maxWidth="-1.0" minWidth="70.0" prefWidth="-1.0" sortable="false" text="RANK" />
+          <TableColumn fx:id="stage" maxWidth="-1.0" minWidth="75.0" prefWidth="-1.0" sortable="false" text="STAGE" />
+            <TableColumn fx:id="score" maxWidth="-1.0" minWidth="75.0" prefWidth="-1.0" sortable="false" text="SCORE" />
             <TableColumn fx:id="name" maxWidth="-1.0" minWidth="70.0" prefWidth="-1.0" sortable="false" text="NAME" />
         </columns>
          <BorderPane.margin>

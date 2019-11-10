@@ -1,7 +1,10 @@
 package ui;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.function.BiConsumer;
@@ -29,15 +32,20 @@ import model.Coordinate;
 import model.Direction;
 import model.Game;
 import model.Ghost;
+import model.Player;
 import model.Food;
 import threads.GhostThread;
 import threads.PacmanThread;
 
 
+<<<<<<< HEAD:src/ui/Controller.java
 public class Controller {
 	
 	/**
 	 */
+=======
+public class PrimaryStageController {
+>>>>>>> 96fcfca7b6edf05ab6eb84022f8ea11bd885c367:src/ui/PrimaryStageController.java
 	public static long MOVEMENT_COUNTER;
 	/**
 	 */
@@ -117,6 +125,7 @@ public class Controller {
 	/**
 	 */
 	private AudioClip death;
+<<<<<<< HEAD:src/ui/Controller.java
 	
 	/**
 	 */
@@ -124,6 +133,12 @@ public class Controller {
 	
 	/**
 	 */
+=======
+
+	private boolean onPause;
+
+
+>>>>>>> 96fcfca7b6edf05ab6eb84022f8ea11bd885c367:src/ui/PrimaryStageController.java
 	@FXML
 	public void initialize() {
 		try {
@@ -148,7 +163,7 @@ public class Controller {
 		eatGhost = new AudioClip(new File("resources/audio/eat_ghost.mp3").toURI().toString());
 		extraLive = new AudioClip(new File("resources/audio/extrapac.mp3").toURI().toString());
 		death = new AudioClip(new File("resources/audio/pacman_death.mp3").toURI().toString());
-		
+
 		game.getFood().forEach(new BiConsumer<Coordinate, Food>() {
 			@Override
 			public void accept(Coordinate t, Food u) {
@@ -200,7 +215,7 @@ public class Controller {
 				}
 			}
 		});
-		
+
 		ChangeListener<Boolean> eatGhostListener = new ChangeListener<Boolean>() {
 			@Override
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue,
@@ -223,10 +238,14 @@ public class Controller {
 		refreshLivesCounter();
 		startThreads();
 	}
+<<<<<<< HEAD:src/ui/Controller.java
 	
 	/**
 	 * @param event
 	 */
+=======
+
+>>>>>>> 96fcfca7b6edf05ab6eb84022f8ea11bd885c367:src/ui/PrimaryStageController.java
 	@FXML
 	public void changeDirection(KeyEvent event) {
 		String key = event.getCode().getName().toLowerCase();
@@ -284,6 +303,7 @@ public class Controller {
 	@FXML
 	public void newGameButtonPressed(ActionEvent event) {
 		System.out.println("hola mundo");
+		Game.POINTS_EXTRA_LIVE = 5000;
 	}
 	/**
 	 * @param event
@@ -338,16 +358,16 @@ public class Controller {
 	  * @param ghost
 	  */
 	public void refreshGhostImage(Ghost ghost) {
-		if(Controller.MOVEMENT_COUNTER%5 == 0) {
+		if(PrimaryStageController.MOVEMENT_COUNTER%5 == 0) {
 			ImageView ghostImage = getGhostImage(ghost.getName());
 			if(ghost.isFrightened()) {
-				int num = ((Controller.MOVEMENT_SPRITE%2)==0?0:2);
+				int num = ((PrimaryStageController.MOVEMENT_SPRITE%2)==0?0:2);
 				if(game.getFrightenedCountdown() < 2000 && MOVEMENT_SPRITE % 4 == 0) {
 					num++;
 				}
-				ghostImage.setImage(new Image(new File(Controller.GHOSTS_SPRITES+"vulnerable"+File.separator+num+".png").toURI().toString()));
+				ghostImage.setImage(new Image(new File(PrimaryStageController.GHOSTS_SPRITES+"vulnerable"+File.separator+num+".png").toURI().toString()));
 			} else {
-				long number = (Controller.MOVEMENT_COUNTER%2);
+				long number = (PrimaryStageController.MOVEMENT_COUNTER%2);
 				String dir = "";
 				switch(ghost.getDirection()) {
 				case DOWN:
@@ -364,9 +384,9 @@ public class Controller {
 					break;
 				}
 				if(ghost.isGoingHome().get()) {
-					ghostImage.setImage(new Image(new File(Controller.GHOSTS_SPRITES+"eyes"+File.separator+dir+".png").toURI().toString()));
+					ghostImage.setImage(new Image(new File(PrimaryStageController.GHOSTS_SPRITES+"eyes"+File.separator+dir+".png").toURI().toString()));
 				} else {
-					ghostImage.setImage(new Image(new File(Controller.GHOSTS_SPRITES+ghost.getName()+File.separator+dir+number+".png").toURI().toString()));
+					ghostImage.setImage(new Image(new File(PrimaryStageController.GHOSTS_SPRITES+ghost.getName()+File.separator+dir+number+".png").toURI().toString()));
 				}
 			}
 		}
@@ -423,27 +443,45 @@ public class Controller {
 	/**
 	 */
 	public void openPlayerRegister() {
+		ArrayList<Player> lb = new ArrayList<>();
 		try {
-			onPause = true;
-			Parent root = FXMLLoader.load(getClass().getResource("nameregister.fxml"));
-			Scene s = new Scene(root);
-			Stage st = new Stage();
-			st.setScene(s);
-			st.setResizable(false);
-			st.initOwner(pacman.getParent().getScene().getWindow());
-			st.initModality(Modality.WINDOW_MODAL);
-			st.showAndWait();
-			
-			game.getPacman().setLives(3);
-			game.setCurrentStage(0);
-			game.restartMap();
-			game.setScore(0);
-			scoreLabel.setText("0");
-			onPause = true;
-			setGUItoInitialState();
-		} catch (IOException e1) {
-			e1.printStackTrace();
+			FileInputStream fis = new FileInputStream(LeaderboardController.LEADER_BOARD_PATH);
+			ObjectInputStream ois = new ObjectInputStream(fis);
+			lb = (ArrayList<Player>)ois.readObject();
+			fis.close();
+			ois.close();
+		} catch (IOException | ClassNotFoundException e) {
+			//c:
 		}
+
+
+		if(lb.size() < 10 || game.getScore() > lb.get(lb.size()-1).getScore()) {
+			try {
+				onPause = true;
+				FXMLLoader fxmll = new FXMLLoader(getClass().getResource("nameregister.fxml"));
+				Parent root = fxmll.load();
+				NameRegisterController nrc = fxmll.getController();
+				nrc.setScore(game.getScore());
+				nrc.setStage(game.getCurrentStage()+1);
+				Scene s = new Scene(root);
+				Stage st = new Stage();
+				st.setScene(s);
+				st.setResizable(false);
+				st.initOwner(pacman.getParent().getScene().getWindow());
+				st.initModality(Modality.WINDOW_MODAL);
+				st.showAndWait();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+		}
+		
+		game.getPacman().setLives(3);
+		game.setCurrentStage(0);
+		game.restartMap();
+		game.setScore(0);
+		scoreLabel.setText("0");
+		onPause = true;
+		setGUItoInitialState();
 	}
 	/**
 	 * @return
@@ -607,5 +645,4 @@ public class Controller {
 	public AudioClip getDeath() {
 		return death;
 	}
-
 }

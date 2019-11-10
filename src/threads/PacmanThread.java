@@ -8,23 +8,23 @@ import model.Game;
 import model.Ghost;
 import model.Level;
 import model.Pacman;
-import ui.Controller;
+import ui.PrimaryStageController;
 
 
 public class PacmanThread extends Thread {
 	public final static String MOVEMENTS = "resources/sprites/pacman/movements/";
-	private Controller controller;
+	private PrimaryStageController controller;
 	private ImageView pacmanImage;
 	private Game game;
 	private Pacman pacman;
 	private long rate = 0;
 	
-	public PacmanThread(Controller c) {
+	public PacmanThread(PrimaryStageController c) {
 		this.controller = c;
 		pacmanImage = c.getPacman();
 		game = c.getGame();
 		pacman = game.getPacman();
-		Controller.MOVEMENT_SPRITE = 0;
+		PrimaryStageController.MOVEMENT_SPRITE = 0;
 		setDaemon(true);
 	}
 
@@ -32,14 +32,14 @@ public class PacmanThread extends Thread {
 	public void run() {
 		while(true) {
 			if(!controller.isOnPause()) {
-				Controller.MOVEMENT_COUNTER++;
-				if((Controller.MOVEMENT_COUNTER*Controller.MOVEMENT_SPRITE) % 2 == 0) {
-					pacmanImage.setImage(new Image(new File(MOVEMENTS+Controller.MOVEMENT_SPRITE+".png").toURI().toString()));
+				PrimaryStageController.MOVEMENT_COUNTER++;
+				if((PrimaryStageController.MOVEMENT_COUNTER*PrimaryStageController.MOVEMENT_SPRITE) % 2 == 0) {
+					pacmanImage.setImage(new Image(new File(MOVEMENTS+PrimaryStageController.MOVEMENT_SPRITE+".png").toURI().toString()));
 				}
-				if(Controller.MOVEMENT_COUNTER % 3 == 0) {
-					Controller.MOVEMENT_SPRITE++;
-					if(Controller.MOVEMENT_SPRITE > 3) {
-						Controller.MOVEMENT_SPRITE = 0;
+				if(PrimaryStageController.MOVEMENT_COUNTER % 3 == 0) {
+					PrimaryStageController.MOVEMENT_SPRITE++;
+					if(PrimaryStageController.MOVEMENT_SPRITE > 3) {
+						PrimaryStageController.MOVEMENT_SPRITE = 0;
 					}
 				}
 				if(pacman.isDying()) {
@@ -116,7 +116,7 @@ public class PacmanThread extends Thread {
 		while(sprite < 13) {
 			try {
 				pacmanImage.setRotate(0);
-				pacmanImage.setImage(new Image(new File(Controller.CAUGHT+sprite+".png").toURI().toString()));
+				pacmanImage.setImage(new Image(new File(PrimaryStageController.CAUGHT+sprite+".png").toURI().toString()));
 				sprite++;
 				sleep(100);
 			} catch (InterruptedException e) {
@@ -127,6 +127,7 @@ public class PacmanThread extends Thread {
 			controller.setGUItoInitialState();
 			controller.startPlayPauseButtonPressed(null);
 		} else {
+			Game.POINTS_EXTRA_LIVE = 5000;
 			controller.getGameOverImage().setVisible(true);
 			controller.setOnPause(true);
 			if(true) { //TODO aqui se muestra la pantalla de inscripcion si se hizo un puntaje alto
