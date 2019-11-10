@@ -1,11 +1,16 @@
-BorderPane, TableView {
+
+
+BorderPane, TableView, .table-cell, .button, .table-column {
     -fx-background-color: black;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
 }
 .button, .table-column {
     -fx-border-color: blue;
     -fx-background-color: indigo;
-    -fx-text-fill: white;
-    -fx-font-weight: bold;
+}
+.table-cell {
+    -fx-background-color: black;   
 }
 .label {
     -fx-text-fill: white;

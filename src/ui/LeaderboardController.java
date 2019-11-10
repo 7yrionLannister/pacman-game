@@ -32,17 +32,19 @@ public class LeaderboardController {
     
 	@FXML
 	public void initialize() {
-    	rank.setCellValueFactory(new PropertyValueFactory<Player, String>("RANK"));
-    	score.setCellValueFactory(new PropertyValueFactory<Player, Integer>("SCORE"));
-    	stage.setCellValueFactory(new PropertyValueFactory<Player, Integer>("STAGE"));
-    	name.setCellValueFactory(new PropertyValueFactory<Player, String>("NAME"));
+    	rank.setCellValueFactory(new PropertyValueFactory<Player, String>("rank"));
+    	score.setCellValueFactory(new PropertyValueFactory<Player, Integer>("score"));
+    	stage.setCellValueFactory(new PropertyValueFactory<Player, Integer>("stage"));
+    	name.setCellValueFactory(new PropertyValueFactory<Player, String>("name"));
     	try {
     		FileInputStream fis = new FileInputStream(LEADER_BOARD_PATH);
 			ObjectInputStream ois = new ObjectInputStream(fis);
 			lb.setItems(FXCollections.observableArrayList(((ArrayList<Player>)ois.readObject())));
+			System.out.println(lb.getItems().size());
 			fis.close();
 			ois.close();
 		} catch (IOException | ClassNotFoundException e) {
+			e.printStackTrace();
 		}
 	}
 }

@@ -81,6 +81,6 @@ public class Player implements Serializable, Comparable<Player> {
 	
 	@Override
 	public int compareTo(Player p1) {
-		return 	Integer.compare(score, p1.getScore());
+		return 	Integer.compare(p1.getScore(), score);
 	}
 }
