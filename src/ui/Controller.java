@@ -25,6 +25,7 @@ import javafx.scene.media.AudioClip;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import model.Coordinate;
 import model.Direction;
 import model.Game;
@@ -260,16 +261,15 @@ public class Controller {
 	@FXML
 	public void highScoresButtonPressed(ActionEvent event) {
 		try {
-
-			LeaderboardController lb = new LeaderboardController();
 			Parent root = FXMLLoader.load(getClass().getResource("leaderboard.fxml"));
 			Scene s = new Scene(root);
 			Stage st = new Stage();
 			st.setScene(s);
 			st.setResizable(false);
-			st.initOwner(pacman.getParent().getScene().getWindow());
-			st.initModality(Modality.WINDOW_MODAL);
-			st.showAndWait();
+			Window w = pacman.getParent().getScene().getWindow();
+			st.setX(w.getX()+495);
+			st.setY(w.getY());
+			st.show();
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}

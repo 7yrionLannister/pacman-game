@@ -1,7 +1,7 @@
-BorderPane {
+BorderPane, TableView {
     -fx-background-color: black;
 }
-.button {
+.button, .table-column {
     -fx-border-color: blue;
     -fx-background-color: indigo;
     -fx-text-fill: white;

@@ -1,31 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 
 
-<Pane minHeight="400.0" prefWidth="600.0" stylesheets="@pg.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.LeaderboardController">
-   <children>
-      <TableView fx:id="lb" layoutX="-7.0" layoutY="148.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="252.0" prefWidth="607.0" stylesheets="@pg.css">
+<BorderPane maxHeight="431.0" stylesheets="@pg.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.LeaderboardController">
+   <center>
+      <TableView fx:id="lb" cache="true" editable="true" stylesheets="@pg.css" BorderPane.alignment="CENTER">
         <columns>
-          <TableColumn fx:id="rank" prefWidth="138.0" sortable="false" text="RANK" />
-          <TableColumn fx:id="stage" prefWidth="154.0" sortable="false" text="STAGE" />
-            <TableColumn fx:id="score" prefWidth="165.0" sortable="false" text="SCORE" />
-            <TableColumn fx:id="name" prefWidth="149.0" sortable="false" text="NAME" />
+          <TableColumn fx:id="rank" maxWidth="-1.0" minWidth="60.0" prefWidth="-1.0" sortable="false" text="RANK" />
+          <TableColumn fx:id="stage" maxWidth="-1.0" minWidth="60.0" prefWidth="-1.0" sortable="false" text="STAGE" />
+            <TableColumn fx:id="score" maxWidth="-1.0" minWidth="100.0" prefWidth="-1.0" sortable="false" text="SCORE" />
+            <TableColumn fx:id="name" maxWidth="-1.0" minWidth="70.0" prefWidth="-1.0" sortable="false" text="NAME" />
         </columns>
+         <BorderPane.margin>
+            <Insets bottom="7.0" left="7.0" right="7.0" top="7.0" />
+         </BorderPane.margin>
       </TableView>
-      <Button fx:id="register" layoutX="398.0" layoutY="107.0" mnemonicParsing="false" onAction="#RegisterPlayer" text="Register Score" />
-      <TextField fx:id="nameField" layoutX="373.0" layoutY="68.0" />
-      <Label layoutX="390.0" layoutY="43.0" text="Put your name here:" />
-      <Label fx:id="playerState" layoutX="149.0" layoutY="35.0" />
-      <ImageView fx:id="inky" fitHeight="56.0" fitWidth="58.0" layoutX="25.0" layoutY="83.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="pinky" fitHeight="56.0" fitWidth="58.0" layoutX="83.0" layoutY="83.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="clyde" fitHeight="56.0" fitWidth="58.0" layoutX="141.0" layoutY="83.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="blinky" fitHeight="56.0" fitWidth="58.0" layoutX="199.0" layoutY="83.0" pickOnBounds="true" preserveRatio="true" />
-   </children>
-</Pane>
+   </center>
+   <bottom>
+      <HBox BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fitHeight="75.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../resources/sprites/ghosts/inky/u0.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="75.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../resources/sprites/ghosts/pinky/u1.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="75.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../resources/sprites/ghosts/blinky/u0.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="75.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../resources/sprites/ghosts/clyde/u1.png" />
+               </image>
+            </ImageView>
+         </children>
+      </HBox>
+   </bottom>
+</BorderPane>
