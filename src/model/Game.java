@@ -27,10 +27,7 @@ public class Game {
 	public final static byte POINTS_PER_ENERGIZER = 70;
 	/**
 	 */
-	public final static int POINTS_EXTRA_LIVE1 = 4000; //TODO no cae exacto siempre entonces hay que usar una estrategia diferente a la del residuo
-	/**
-	 */
-	public  static int POINTS_EXTRA_LIVE = 5000;
+	public static int POINTS_EXTRA_LIVE = 5000;
 	/**
 	 */
 	private int initialNumberOfDots;
@@ -104,7 +101,7 @@ public class Game {
 	 */
 	private Sequence fifthLevelAndAbove;
 	
-	/**
+	/**Creates a game starting all the initial levels, characters, maze, coordinates with respect to a determinate sequence.  
 	 */
 	public Game() throws IOException {
 		runningLinux = System.getProperty("os.name").equals("Linux");

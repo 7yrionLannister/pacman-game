@@ -37,9 +37,8 @@ import model.Food;
 import threads.GhostThread;
 import threads.PacmanThread;
 	
-	/**
-	 */
 public class PrimaryStageController {
+	
 	public static long MOVEMENT_COUNTER;
 	/**
 	 */

@@ -5,22 +5,21 @@ import model.Ghost;
 import model.Level;
 import ui.PrimaryStageController;
 
-
 public class GhostThread extends Thread {
 	
-	/**
+	/**It represents the controller where the game is controlled. 
 	 */
 	private PrimaryStageController controller;
-	/**
+	/**It represents the actual game.
 	 */
 	private Game game;
-	/**
+	/**It represents the ghost that will be controlled by this thread.
 	 */
 	private Ghost ghost;
 	
-	/**
-	 * @param c
-	 * @param name
+	/**Creates a thread for moving the ghost as from a game controller and the ghost name.
+	 * @param c that represents the controller where the game is controlled.
+	 * @param name is a String that represents the ghost name.
 	 */
 	public GhostThread(PrimaryStageController c, String name) {
 		this.controller = c;
@@ -28,7 +27,7 @@ public class GhostThread extends Thread {
 		ghost = game.getGhost(name);
 		setDaemon(true);
 	}
-	/**
+	/**This moves the ghost with respect to its name and its state inside the game.
 	 */
 	@Override
 	public void run() {
