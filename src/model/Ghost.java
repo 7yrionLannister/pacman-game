@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import javafx.beans.property.SimpleBooleanProperty;
 
 public class Ghost extends Character {
-	public static enum State {SCATTERED, CHASE}
+	public static enum State {SCATTER, CHASE}
 	public static State state;
 	private boolean frightened;
 	private SimpleBooleanProperty goingHome;
@@ -67,5 +67,9 @@ public class Ghost extends Character {
 
 	public Coordinate getHouse() {
 		return house;
+	}
+
+	public boolean isAtHome() {
+		return getPosition().equals(house);
 	}
 }

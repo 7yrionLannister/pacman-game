@@ -1,13 +1,15 @@
 package dataStructures;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.PriorityQueue;
 import dataStructures.Vertex.Color;
 
 
 public class AdjacencyMatrixGraph<E> implements IGraph<E> {
-	
+
 	/**It is a matrix of integers that represents all the graph edges. 
 	 */
 	private int[][] edges;
@@ -35,7 +37,7 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 	/**It is a matrix of vertices that indicates the shortest path of all pairs of vertices. 
 	 */
 	private Vertex<E>[][] allPairsShortestPath;
-	
+
 	/**It creates a matrix as a array of edges of a graph either directed or undirected with a size that arrives as parameter.
 	 * @param size is an Integer that represents the size of the Adjacency Matrix. 
 	 * @param isDIrected is a boolean that indicates if the Adjacency Matrix is going to represent a directed graph or not.
@@ -53,6 +55,7 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 		vertices = (Vertex<E>[])new Vertex[size];
 		freeRow = 0;
 	}
+	
 	/**This inserts a vertex, defined with an element of type E that arrives as parameter, in a free row and verifies if the insertion process 
 	 * was done rightly. 
 	 * @return A boolean that indicates if the insertion process was done rightly.
@@ -85,6 +88,7 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 		}
 		return false;
 	}
+	
 	/**This deletes a vertex, defined with a E object that arrives as parameter, looking for the respective key inside the matrix and verifies if 
 	 * the deletion process was done rightly.
 	 * @return A boolean that indicates if the deletion process was done rightly.
@@ -112,6 +116,7 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 		}
 		return false;
 	}
+	
 	/**This method links a source vertex with another vertex denoted as dst assigning it a weight to their respective connection where a edge is 
 	 * added if the graph is undirected. 
 	 * @param src is an E object that represents the source vertex from the dst vertex is going to be linked. 
@@ -129,16 +134,17 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 				edges[d][s] = weight;
 			}
 
-		insertVertex(src); //Inserts src if not currently in the graph
-		insertVertex(dst); //Inserts dst if not currently in the graph
-		s = keyToIndex.get(src);
-		d = keyToIndex.get(dst);
-		edges[s][d] = weight;
-		if(!isDirected) { //Add the additional edge if this graph is undirected
-			edges[d][s] = weight;
+			insertVertex(src); //Inserts src if not currently in the graph
+			insertVertex(dst); //Inserts dst if not currently in the graph
+			s = keyToIndex.get(src);
+			d = keyToIndex.get(dst);
+			edges[s][d] = weight;
+			if(!isDirected) { //Add the additional edge if this graph is undirected
+				edges[d][s] = weight;
+			}
 		}
 	}
-}
+	
 	/**This method unlinks a source vertex with another vertex denoted as dst where the other edge is removed if the graph is undirected.
 	 * @return A boolean that indicates if the unlinking process was done correctly.
 	 * @param src is an E object that represents the source vertex from the dst vertex is going to be unlinked. 
@@ -157,6 +163,7 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 		}
 		return false;
 	}
+	
 	/**It verifies if the actual keyToIndex contains a key of E type that arrives as parameter.
 	 * @return A boolean that indicates if the actual vertices contains a key of E type that arrives as parameter.
 	 * @param key is vertex that is going to be searched inside keyToIndex.
@@ -165,6 +172,7 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 	public boolean containsVertex(E key) {
 		return keyToIndex.containsKey(key);
 	}
+	
 	/**It allows to get the order as an integer that represents the actual keyToIndex size.
 	 * @return An Integer that represents the actual keyToIndex size.
 	 */
@@ -172,6 +180,7 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 	public int getOrder() {
 		return keyToIndex.size();
 	}
+	
 	/**It verifies if the actual keyToIndex is empty or not.
 	 * @return A boolean that indicates if the actual keyToIndex is empty or not.
 	 */
@@ -179,6 +188,7 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 	public boolean isEmpty() {
 		return keyToIndex.isEmpty();
 	}
+	
 	/**This performs BFS as from a source vertex where the vertices configuration is going to be fixed in order to BFS can be finished right.
 	 * @return A boolean that indicates if BSF was done correctly. 
 	 * @param src is a reference vertex to do BFS. 
@@ -220,6 +230,7 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 		}
 		return false;
 	}
+	
 	/**This method returns an ArrayList of vertices that represents the single path for a specified vertex that arrive as parameter if and only if
 	 * bfs, dfs or dijkstra have been called before to determinate this path where if the ArrayList is empty is because there is no possible path
 	 * to reach that vertex.
@@ -241,6 +252,7 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 
 		return path;
 	}
+	
 	/**This method appoints a path between two vertices that arrive as parameters inside a ArrayList.
 	 * @param src A Vertex<E> that represents the source where dst is associated.
 	 * @param dst A Vertex<E> that represents the vertex which src is connected with.
@@ -254,6 +266,7 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 			path.add(dst.getElement());
 		}
 	}
+	
 	/**This performs DFS which is recursive and traverses every vertex independent if it is not reachable from certain vertices
 	 *where is needed a stack of recursive calls in DFSVisit method. Moreover, some vertices configuration have to fixed in 
 	 * order to complete DFS rightly.
@@ -271,6 +284,7 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 			}
 		}
 	}
+	
 	/**This performs the DFS visit process recursively as from a vertex that arrives as parameter where every reachable vertex from u is going
 	 * to be traversed. 
 	 * @param u is a Vertex<E> that represents the initial point of DFS visit process.
@@ -292,6 +306,7 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 		DFStime++;
 		u.setFinished(DFStime);
 	}
+	
 	/**This performs the DFS taking into account a source vertex that arrives as parameter where some vertices configuration have to fixed in 
 	 * order to complete DFS rightly.
 	 * @param src is a reference vertex to start DFS process.
@@ -330,6 +345,7 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 			}
 		}
 	}
+	
 	/**This performs Dijkstra which finds the shortest path and distances from a vertex to all that can be reached from src. 
 	 * @param src is a reference vertex to start Dijkstra process.
 	 */
@@ -362,6 +378,7 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 			}
 		}
 	}
+	
 	/**This performs FloydWarshall which find the shortest distances and paths between every pair of vertices. 
 	 */
 	@Override
@@ -388,6 +405,7 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 			}
 		}
 	}
+	
 	/**It allows to get the weight between two pairs of vertices that arrive as parameters. Returns infinite if there is no edge between these 
 	 * two vertices.
 	 * @return An Integer that represents the cost of the entire edge formed by src and dst. 
@@ -401,21 +419,25 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 		}
 		return Integer.MAX_VALUE;
 	}
+	
 	/**It allows to get all the actual graph edges. 
 	 * @return An int[][] that represents all the actual graph edges.
 	 */
 	public int[][] getEdges() {
 		return edges;
 	}
+	
 	/**It allows to obtain a boolean that represents if the graph is directed or not.
 	 * @return A boolean that indicates if the graph is directed or not.
 	 */
 	public boolean isDirected() {
 		return isDirected;
 	}
+	
 	/**It allows to get all the actual graph vertices in a ArrayList. 
 	 * @return An ArrayList of E type with all the actual graph vertices.
 	 */
+	@Override
 	public ArrayList<E> getVertices() {
 		ArrayList<E> verts = new ArrayList<E>();
 		for(int i = 0; i < keyToIndex.size(); i++) {
@@ -423,18 +445,21 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 		}
 		return verts;
 	}
+	
 	/**It returns the last source vertex inside the graph. 
 	 * @return An E object that represents the last source vertex inside the graph. 
 	 */
 	public E getLastSrc() {
 		return lastSrc.getElement();
 	}
+	
 	/**It returns the free row value as an integer.
 	 * @return An Integer that represents the free row value.
 	 */
 	public int getFreeRow() {
 		return freeRow;
 	}
+	
 	/**It allows to obtain the distance of a single vertex specified as parameter. Returns infinite if dst does not exist in the matrix. 
 	 * @return An Integer the distance of the entire single path of dst. 
 	 * @param dst is a vertex from where distance is going to be calculated. 
@@ -446,6 +471,7 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 		}
 		return Integer.MAX_VALUE;
 	}
+	
 	/**It allows to obtain the time that DFS performs discovering a vertex that arrives as parameter.
 	 * @return An Integer that indicates how many time took to discover the inside the matrix. 
 	 * @param key is a vertex that is going to be discovered inside the matrix. 
@@ -457,6 +483,7 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 		}
 		return 0;
 	}
+	
 	/**It allows to obtain the time that DFS performs finishing a vertex that arrives as parameter.
 	 * @return An Integer that indicates how many time took to finish the inside the matrix. 
 	 * @param key is a vertex that is going to be finished inside the matrix.
@@ -468,6 +495,7 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 		}
 		return 0;
 	}
+	
 	/**It allows to obtain the key state as a color. 
 	 * @return A State that indicates the vertex color. 
 	 * @param key is a vertex which its color is going to be extracted. 
@@ -479,6 +507,7 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 		}
 		return null;
 	}
+	
 	/**It allows to obtain a single predecessor of a determinate vertex that arrives as parameter.
 	 * @return A E object that represents the single predecessor. 
 	 * @param key is a ordinary vertex of the matrix.  
@@ -490,6 +519,7 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 		}
 		return null;
 	}
+	
 	/**It allows to obtain the path between two pair of vertices through an ArrayList of vertices.
 	 * @return An ArrayList<E> that represents the path between src and dst. 
 	 * @param src is a vertex from which we can access to dst. 
@@ -510,6 +540,7 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 		}
 		return path;
 	}
+	
 	/**It allows to determinate the path between two pairs of vertices saving it in an ArrayList of vertices.
 	 * @param src A Vertex<E> that represents the source where dst is associated.
 	 * @param dst A Vertex<E> that represents the vertex which src is connected with.
@@ -523,6 +554,7 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 			path.add(dst.getElement());
 		}
 	}
+	
 	/**It allows to get the distance between two pairs of vertices.
 	 * @return An Integer that represents the distance between two pairs of vertices.
 	 * @param src is a vertex from which we can access to dst.
@@ -535,6 +567,7 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 		}
 		return 0;
 	}
+	
 	/**It allows to determinate if two pairs of vertices have and edge in common.
 	 * @return A boolean that indicates if the list contains this edge.
 	 * @param src is a vertex from which we can access to dst.
@@ -549,6 +582,7 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 		}
 		return false;
 	}
+	
 	/**It allows to obtain all the adjacent vertices of a determinate source that arrives as parameter.
 	 * @return An ArrayList<E> that represents all the adjacent vertices of a determinate source that arrives as parameter.
 	 * @param key is a vertex which its adjacent vertices are going to be found.
@@ -565,6 +599,7 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 		}
 		return adj;
 	}
+	
 	/**This performs Prim which finds the minimum spanning tree edges of a graph when this is connected and there is a source vertex. 
 	 * @return An ArrayList<Edge<E>> which has all the edges of the minimum spanning tree.
 	 * @param src is a reference vertex to start Prim process.
@@ -584,7 +619,7 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 			pq.remove(lastSrc);
 			lastSrc.setDistance(0);
 			pq.offer(lastSrc);
-			
+
 			while(!pq.isEmpty()) {
 				Vertex<E> u = pq.poll();
 				int uIndex = keyToIndex.get(u.getElement());
@@ -609,12 +644,44 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 		}
 		return prim;
 	}
+	
 	/**This performs Kruskal which finds the minimum spanning tree edges of a graph regardless of this is connected or not.
 	 * @return An ArrayList<Edge<E>> which has all the edges of the minimum spanning tree.
 	 */
 	@Override
 	public ArrayList<Edge<E>> kruskalMinimumSpannigTree() {
-		// TODO Auto-generated method stub
+		UnionFind<E> uf = new UnionFind<>(getVertices());
+		ArrayList<Edge<E>> kruskal = new ArrayList<>();
+		ArrayList<Edge<E>> edgesList = new ArrayList<>();
+		//TODO as the matrix is symmetric the running time can be improved by checking only the half of the cells
+		for(int i = 0; i < keyToIndex.size(); i++) {
+			for(int j = 0; j < keyToIndex.size(); j++) {
+				if(edges[i][j] != 0 && edges[i][j] != Integer.MAX_VALUE && !edgesList.contains(new Edge<>(vertices[j].getElement(), vertices[i].getElement(), 1))) {
+					edgesList.add(new Edge<>(vertices[i].getElement(), vertices[j].getElement(), edges[i][j]));
+				}
+			}
+		}
+		Collections.sort((List) edgesList);
+		for(int i = 0; i < edgesList.size(); i++) {
+			Edge<E> edge = edgesList.get(i);
+			if(uf.find(edge.getSrc()) != uf.find(edge.getDst())) {
+				uf.union(edge.getSrc(), edge.getDst());
+				kruskal.add(edge);
+			}
+		}
+		return kruskal;
+	}
+	
+	@Override
+	public E getVertexAtGivenDistance(E src, int distance) {
+		if(keyToIndex.containsKey(src)) {
+			int s = keyToIndex.get(src);
+			for(int i = 0; i < keyToIndex.size(); i++) {
+				if(edges[s][i] == distance) {
+					return vertices[i].getElement();
+				}
+			}
+		}
 		return null;
 	}
 }

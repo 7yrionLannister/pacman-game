@@ -140,4 +140,8 @@ public interface IGraph<E> {
 	 * @param dst is the vertex which dst can access.
 	 */
 	int getEdgeWeight(E src, E dst);
+	
+	ArrayList<E> getVertices();
+	
+	E getVertexAtGivenDistance(E src, int distance);
 }

@@ -74,6 +74,10 @@ public class LeaderboardController implements Initializable{
     	pol.add(p);
     	refreshTable();
     }
+    @FXML
+	public void initialize() {
+
+    }
     
     public void refreshTable() {
     	lb.refresh();

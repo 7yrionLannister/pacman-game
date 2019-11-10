@@ -1,3 +1,6 @@
+BorderPane {
+    -fx-background-color: black;
+}
 .button {
     -fx-border-color: blue;
     -fx-background-color: indigo;
