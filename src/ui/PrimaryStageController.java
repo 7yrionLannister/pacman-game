@@ -36,16 +36,10 @@ import model.Player;
 import model.Food;
 import threads.GhostThread;
 import threads.PacmanThread;
-
-
-<<<<<<< HEAD:src/ui/Controller.java
-public class Controller {
 	
 	/**
 	 */
-=======
 public class PrimaryStageController {
->>>>>>> 96fcfca7b6edf05ab6eb84022f8ea11bd885c367:src/ui/PrimaryStageController.java
 	public static long MOVEMENT_COUNTER;
 	/**
 	 */
@@ -125,7 +119,6 @@ public class PrimaryStageController {
 	/**
 	 */
 	private AudioClip death;
-<<<<<<< HEAD:src/ui/Controller.java
 	
 	/**
 	 */
@@ -133,12 +126,6 @@ public class PrimaryStageController {
 	
 	/**
 	 */
-=======
-
-	private boolean onPause;
-
-
->>>>>>> 96fcfca7b6edf05ab6eb84022f8ea11bd885c367:src/ui/PrimaryStageController.java
 	@FXML
 	public void initialize() {
 		try {
@@ -238,14 +225,10 @@ public class PrimaryStageController {
 		refreshLivesCounter();
 		startThreads();
 	}
-<<<<<<< HEAD:src/ui/Controller.java
 	
 	/**
 	 * @param event
 	 */
-=======
-
->>>>>>> 96fcfca7b6edf05ab6eb84022f8ea11bd885c367:src/ui/PrimaryStageController.java
 	@FXML
 	public void changeDirection(KeyEvent event) {
 		String key = event.getCode().getName().toLowerCase();

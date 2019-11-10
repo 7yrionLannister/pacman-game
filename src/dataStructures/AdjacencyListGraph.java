@@ -618,10 +618,10 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 		}
 		return kruskal;
 	}
-	/**
-	 * @param src
-	 * @param distance 
-	 * @return 
+	/**This method allows you to obtain the vertex as from a source vertex and a determinate distance.
+	 * @param src is the source vertex. 
+	 * @param distance is the distance from the source vertex to the vertex that we need to obtain.
+	 * @return E is an E object that represents the found vertex.
 	 */
 	@Override
 	public E getVertexAtGivenDistance(E src, int distance) {

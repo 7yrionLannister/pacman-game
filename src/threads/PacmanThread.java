@@ -12,13 +12,28 @@ import ui.PrimaryStageController;
 
 
 public class PacmanThread extends Thread {
+	/**
+	 */
 	public final static String MOVEMENTS = "resources/sprites/pacman/movements/";
+	/**
+	 */
 	private PrimaryStageController controller;
+	/**
+	 */
 	private ImageView pacmanImage;
+	/**
+	 */
 	private Game game;
+	/**
+	 */
 	private Pacman pacman;
+	/**
+	 */
 	private long rate = 0;
 	
+	/**
+	 * @param c
+	 */
 	public PacmanThread(PrimaryStageController c) {
 		this.controller = c;
 		pacmanImage = c.getPacman();
@@ -27,7 +42,8 @@ public class PacmanThread extends Thread {
 		PrimaryStageController.MOVEMENT_SPRITE = 0;
 		setDaemon(true);
 	}
-
+	/**
+	 */
 	@Override
 	public void run() {
 		while(true) {
@@ -104,7 +120,8 @@ public class PacmanThread extends Thread {
 			}
 		}
 	}
-
+	/**
+	 */
 	private void die() {
 		controller.setOnPause(true);
 		controller.getDeath().play();

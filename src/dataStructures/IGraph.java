@@ -140,14 +140,14 @@ public interface IGraph<E> {
 	 * @param dst is the vertex which dst can access.
 	 */
 	int getEdgeWeight(E src, E dst);
-	/**
-	 * @return
+	/**It allows to get all the actual graph vertices in a ArrayList. 
+	 * @return An ArrayList of E type with all the actual graph vertices.
 	 */
 	ArrayList<E> getVertices();
-	/**
-	 * @param src
-	 * @param distance
-	 * @return
+	/**This method allows you to obtain the vertex as from a source vertex and a determinate distance.
+	 * @param src is the source vertex. 
+	 * @param distance is the distance from the source vertex to the vertex that we need to obtain.
+	 * @return E is an E object that represents the found vertex.
 	 */
 	E getVertexAtGivenDistance(E src, int distance);
 }

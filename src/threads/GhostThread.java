@@ -7,17 +7,29 @@ import ui.PrimaryStageController;
 
 
 public class GhostThread extends Thread {
+	
+	/**
+	 */
 	private PrimaryStageController controller;
+	/**
+	 */
 	private Game game;
+	/**
+	 */
 	private Ghost ghost;
-
+	
+	/**
+	 * @param c
+	 * @param name
+	 */
 	public GhostThread(PrimaryStageController c, String name) {
 		this.controller = c;
 		game = c.getGame();
 		ghost = game.getGhost(name);
 		setDaemon(true);
 	}
-
+	/**
+	 */
 	@Override
 	public void run() {
 		while(true) {
