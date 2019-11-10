@@ -10,7 +10,6 @@ import model.Level;
 import model.Pacman;
 import ui.PrimaryStageController;
 
-
 public class PacmanThread extends Thread {
 	/**
 	 */
