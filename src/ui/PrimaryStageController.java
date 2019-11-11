@@ -38,7 +38,8 @@ import threads.GhostThread;
 import threads.PacmanThread;
 
 public class PrimaryStageController {
-
+	/**
+	 */
 	public static long MOVEMENT_COUNTER;
 	/**
 	 */
@@ -122,8 +123,8 @@ public class PrimaryStageController {
 	/**
 	 */
 	private boolean onPause;
-
-	/**
+	
+	/**This initializes all the characters and the maze. 
 	 */
 	@FXML
 	public void initialize() {

@@ -13,22 +13,19 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import model.Player;
 
 public class LeaderboardController {
+	
+	/**It represents the file where the register of the previous matches are saved.
+	 */
 	public final static String LEADER_BOARD_PATH = "resources"+File.separator+"leaderboard.pac";
 	
-    @FXML
-    private TableView<Player> lb;
+    @FXML private TableView<Player> lb;
+    @FXML private TableColumn<Player, String> rank;
+    @FXML private TableColumn<Player, Integer> stage;
+    @FXML private TableColumn<Player, Integer> score;
+    @FXML private TableColumn<Player, String> name;
     
-    @FXML
-    private TableColumn<Player, String> rank;
-    @FXML
-    private TableColumn<Player, Integer> stage;
-
-    @FXML
-    private TableColumn<Player, Integer> score;
-
-    @FXML
-    private TableColumn<Player, String> name;
-    
+    /**This initializes all the columns in the table view.
+     */
 	@FXML
 	public void initialize() {
     	rank.setCellValueFactory(new PropertyValueFactory<Player, String>("rank"));
