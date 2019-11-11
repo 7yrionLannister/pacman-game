@@ -22,6 +22,8 @@ public class Pacman extends Character {
 	 */
 	public Pacman(Coordinate position, double posX, double posY) {
 		super(position, posX, posY);
+		setDirection(Direction.LEFT);
+		requestedDirection = Direction.LEFT;
 		lives = new SimpleIntegerProperty(3);
 	}
 	/**Allows to obtain a Direction that represents the direction that Pacman wants to access in the maze.

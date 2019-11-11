@@ -144,13 +144,28 @@ public class PrimaryStageController {
 		pinky.relocate(game.getPinky().getPosX(), game.getPinky().getPosY());
 		inky.relocate(game.getInky().getPosX(), game.getInky().getPosY());
 
+		initAudios();
+		setListenersAndBindings();
+		
+		onPause = true;
+		refreshLivesCounter();
+		for(Node node: bonusFruitsContainer.getChildren()) {
+			node.setVisible(false);
+		}
+		cherry.setVisible(true);
+		startThreads();
+	}
+
+	private void initAudios() {
 		intro = new AudioClip(new File("resources/audio/intro.mp3").toURI().toString());
 		eatDot = new AudioClip(new File("resources/audio/eat_dot.mp3").toURI().toString());
 		eatFruit = new AudioClip(new File("resources/audio/eat_fruit.mp3").toURI().toString());
 		eatGhost = new AudioClip(new File("resources/audio/eat_ghost.mp3").toURI().toString());
 		extraLive = new AudioClip(new File("resources/audio/extrapac.mp3").toURI().toString());
 		death = new AudioClip(new File("resources/audio/pacman_death.mp3").toURI().toString());
+	}
 
+	private void setListenersAndBindings() {
 		game.getFood().forEach(new BiConsumer<Coordinate, Food>() {
 			@Override
 			public void accept(Coordinate t, Food u) {
@@ -190,7 +205,7 @@ public class PrimaryStageController {
 				}
 			}
 		});
-
+	
 		ChangeListener<Boolean> eatGhostListener = (obs, oldval, newval) -> {if(newval) {
 			eatGhost.play();
 		}
@@ -199,7 +214,7 @@ public class PrimaryStageController {
 		game.getInky().isGoingHome().addListener(eatGhostListener);
 		game.getPinky().isGoingHome().addListener(eatGhostListener);
 		game.getClyde().isGoingHome().addListener(eatGhostListener);
-
+	
 		if(!game.isRunningLinux()) {
 			blackSquare1.relocate(blackSquare1.getLayoutX()+5, blackSquare1.getLayoutY());
 			blackSquare2.relocate(blackSquare2.getLayoutX()+5, blackSquare2.getLayoutY());
@@ -208,13 +223,6 @@ public class PrimaryStageController {
 			extraLive.play();
 		}
 		}) ;
-		onPause = true;
-		refreshLivesCounter();
-		for(Node node: bonusFruitsContainer.getChildren()) {
-			node.setVisible(false);
-		}
-		cherry.setVisible(true);
-		startThreads();
 	}
 
 	/**
@@ -261,6 +269,7 @@ public class PrimaryStageController {
 			Scene s = new Scene(root);
 			Stage st = new Stage();
 			st.setScene(s);
+			st.getIcons().add(new Image(new File("resources/sprites/pacman/movements/1.png").toURI().toString()));
 			st.setResizable(false);
 			Window w = pacman.getParent().getScene().getWindow();
 			st.setX(w.getX()+495);
@@ -289,8 +298,8 @@ public class PrimaryStageController {
 		gameOverImage.setVisible(false);
 		if(!onPause) {
 			onPause = true;
+			readyImage.setVisible(true);
 			if(game.getCurrentLevel().getDotsLeft() == game.getInitialNumberOfDots()) { //no dots eaten in the stage
-				readyImage.setVisible(true);
 				bonusImage.setImage(new Image(new File(game.getCurrentLevel().getBonus()).toURI().toString()));
 				if(game.getCurrentLevel().getStage() == 1) { //plays intro sound in the first stage
 					intro.play();
@@ -473,6 +482,7 @@ public class PrimaryStageController {
 				st.setResizable(false);
 				st.initOwner(pacman.getParent().getScene().getWindow());
 				st.initModality(Modality.WINDOW_MODAL);
+				st.getIcons().add(new Image(new File("resources/sprites/pacman/movements/1.png").toURI().toString()));
 				st.showAndWait();
 			} catch (IOException e1) {
 				e1.printStackTrace();

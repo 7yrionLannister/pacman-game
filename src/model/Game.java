@@ -10,11 +10,12 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.function.BiConsumer;
 import dataStructures.AdjacencyListGraph;
+import dataStructures.AdjacencyMatrixGraph;
 import dataStructures.IGraph;
 import model.Ghost.State;
 
 public class Game {
-	
+
 	/**
 	 */
 	public final static String GRAPH_RESOURCE = "resources/map.txt";
@@ -30,7 +31,7 @@ public class Game {
 	/**
 	 */
 	private int initialNumberOfDots;
-	
+
 	/**
 	 */
 	private  Coordinate leftTileOfTheTunel;
@@ -40,7 +41,7 @@ public class Game {
 	/**
 	 */
 	private Coordinate bonusTile;
-	
+
 	/**
 	 */
 	private IGraph<Coordinate> map;
@@ -59,7 +60,7 @@ public class Game {
 	/**
 	 */
 	private boolean runningLinux;
-	
+
 	/**
 	 */
 	private Pacman pacman;
@@ -76,7 +77,7 @@ public class Game {
 	/**
 	 */
 	private Ghost clyde;
-	
+
 	/**
 	 */
 	private int score;
@@ -86,7 +87,7 @@ public class Game {
 	/**
 	 */
 	private int ghostsEaten;
-	
+
 	/**
 	 */
 	private Timer toggleModesTimer;
@@ -99,7 +100,7 @@ public class Game {
 	/**
 	 */
 	private Sequence fifthLevelAndAbove;
-	
+
 	/**Creates a game starting all the initial levels, characters, maze, coordinates with respect to a determinate sequence.  
 	 */
 	public Game() throws IOException {
@@ -116,7 +117,7 @@ public class Game {
 		toggleModesTimer = new Timer("toggle modes");
 		setCharactersToInitialTiles();
 	}
-	
+
 	/**
 	 */
 	private void initCharacters() {
@@ -140,7 +141,7 @@ public class Game {
 		clyde.setDirection(Direction.DOWN);
 		clyde.setTarget(coordinates.get(26));
 	}
-	
+
 	/**
 	 */
 	private void initLevels() {
@@ -259,15 +260,15 @@ public class Game {
 		levels.add(level);
 		//The other levels have the same parameters as level 21	
 	}
-	
+
 	/**
 	 */
 	private void initGraph() throws IOException {
 		FileReader fr = new FileReader(new File(GRAPH_RESOURCE));
 		BufferedReader br = new BufferedReader(fr);
 
-		map = new AdjacencyListGraph<Coordinate>(true);
-		//map = new AdjacencyMatrixGraph<>(102, true);
+		//map = new AdjacencyListGraph<>(true);
+		map = new AdjacencyMatrixGraph<>(103, true);
 		coordinates = new ArrayList<>();
 		food = new HashMap<>();
 		String line = br.readLine();
@@ -292,7 +293,7 @@ public class Game {
 		fr.close();
 		br.close();
 	}
-	
+
 	/**
 	 */
 	private void initCoordinates() {
@@ -333,10 +334,10 @@ public class Game {
 		rightTileOfTheTunel = coordinates.get(97);
 		bonusTile = coordinates.get(102);
 		food.put(bonusTile, new Food(Food.BONUS, false));	initialNumberOfDots--;
-		
+
 		getCurrentLevel().setDotsLeft(initialNumberOfDots);
 	}
-	
+
 	/**
 	 */
 	public void setCharactersToInitialTiles() {
@@ -380,7 +381,7 @@ public class Game {
 		searchGhostTarget(pinky);
 		searchGhostTarget(clyde);
 	}
-	
+
 	/**
 	 */
 	public void startSequence() {
@@ -396,7 +397,7 @@ public class Game {
 		toggleModesTimer.schedule(current.getToScatterTimerTask(), current.getToScatter3());
 		toggleModesTimer.schedule(current.getToChaseTimerTask(), current.getToChaseForEver());
 	}
-	
+
 	/**
 	 * @return
 	 */
@@ -412,7 +413,7 @@ public class Game {
 		}
 		return toReturn;
 	}
-	
+
 	/**
 	 */
 	public void restartMap() {
@@ -458,60 +459,31 @@ public class Game {
 
 		food.get(bonusTile).setType(Food.BONUS);
 		food.get(bonusTile).setNotEaten(false);
-		
+
 		getCurrentLevel().setDotsLeft(initialNumberOfDots);
 	}
-	
+
 	/**
 	 */
 	public void movePacman() {
 		move();
+		check180degreesRotation();
 		if(pacman.getPosY() == pacman.getPosition().getY() && pacman.getPosX() == pacman.getPosition().getX()) {
 			if(((pacman.getPosition().hasRightTile() && pacman.getRequestedDirection() == Direction.RIGHT) || (pacman.getPosition().hasLeftTile() && pacman.getRequestedDirection() == Direction.LEFT)) || ((pacman.getPosition().hasUpTile() && pacman.getRequestedDirection() == Direction.UP) || (pacman.getPosition().hasDownTile() && pacman.getRequestedDirection() == Direction.DOWN))) {
 				pacman.setDirection(pacman.getRequestedDirection());
 			}
-
-			switch(food.get(pacman.getPosition()).getType()) {
-			case Food.ENERGIZER:
-				blinky.setFrightened(true);
-				inky.setFrightened(true);
-				pinky.setFrightened(true);
-				clyde.setFrightened(true);
-
-				getCurrentLevel().setDotsLeft(getCurrentLevel().getDotsLeft()-1);
-				setScore(getScore() + POINTS_PER_ENERGIZER);
-				TimerTask task = new TimerTask() {
-					@Override
-					public void run() {
-						ghostsEaten = 0;
-						blinky.setFrightened(false);
-						inky.setFrightened(false);
-						pinky.setFrightened(false);
-						clyde.setFrightened(false);
-					}
-				};
-				Timer timer = new Timer("Timer");
-				frightenedCountdown = getCurrentLevel().getFrightTime();
-				timer.schedule(task, frightenedCountdown);
-				break;
-			case Food.PACDOT:
-				getCurrentLevel().setDotsLeft(getCurrentLevel().getDotsLeft()-1);
-				setScore(getScore() + POINTS_PER_DOT);
-				break;
-			case Food.BONUS:
-				if(food.get(pacman.getPosition()).getNotEaten().get()) {
-					setScore(getScore() + getCurrentLevel().getBonusScore());
-				}
-				break;
-			}
-
-			food.get(pacman.getPosition()).setType(Food.NOTHING); //pacman ate
-			if(getCurrentLevel().getDotsLeft() == initialNumberOfDots/2) { //bonus at half way
+			
+			eatContentOfTile();
+			
+			food.get(pacman.getPosition()).setType(Food.NOTHING); //Pacman ate
+			if(getCurrentLevel().getDotsLeft() == initialNumberOfDots/2) { //bonus at halfway
 				food.get(bonusTile).setNotEaten(true);
+			} else if(getCurrentLevel().getDotsLeft() == initialNumberOfDots/3) { //but it eventually disappears
+				food.get(bonusTile).setNotEaten(false);
 			}
 		}
 	}
-	
+
 	/**
 	 */
 	private void move() {
@@ -610,155 +582,89 @@ public class Game {
 			break;
 		}
 	}
-	
-	/**
-	 */
-	public void searchBlinkyTarget() {
-		switch(Ghost.state) {
-		case CHASE:
-			blinky.setTarget(pacman.getPosition());
-			break;
-		case SCATTER:
-			Level lvl = getCurrentLevel();
-			if(lvl.getDotsLeft() <= lvl.getCruiseElroyDotsLeft1()) { //Aggressive even when his brothers are in scatter mode but (TODO) he waits for Clyde to reach its scatter tile before pursuing Pacman in the first scatter period
-				blinky.setTarget(pacman.getPosition());
-			} else if(blinky.getTarget().equals(coordinates.get(70))) {
-				blinky.setTarget(coordinates.get(79));
-			} else if(blinky.getTarget().equals(coordinates.get(79))) {
-				blinky.setTarget(coordinates.get(89));
-			} else {
-				blinky.setTarget(coordinates.get(70));
-			}
-		}
-	}
-	
-	/**
-	 */
-	public void searchInkyTarget() {
-		switch(Ghost.state) {
-		case CHASE:
-			ArrayList<Coordinate> adj = map.getAdjacent(pacman.getPosition());
-			adj = map.getAdjacent(adj.get((int)(Math.random()*adj.size())));
-			adj = map.getAdjacent(adj.get((int)(Math.random()*adj.size())));
-			adj = map.getAdjacent(adj.get((int)(Math.random()*adj.size())));
-			adj = map.getAdjacent(adj.get((int)(Math.random()*adj.size())));
-			inky.setTarget(adj.get((int)(Math.random()*adj.size())));
-			break;
-		case SCATTER:
-			if(inky.getTarget().equals(coordinates.get(56))) {
-				inky.setTarget(coordinates.get(77));
-			} else if(inky.getTarget().equals(coordinates.get(77))) {
-				inky.setTarget(coordinates.get(86));
-			} else {
-				inky.setTarget(coordinates.get(56));
-			}
-			break;
-		}
-	}
-	
-	/**
-	 */
-	public void searchPinkyTarget() {
-		switch(Ghost.state) {
-		case CHASE:
-			ArrayList<Coordinate> adj = map.getAdjacent(pacman.getPosition());
-			adj = map.getAdjacent(adj.get((int)(Math.random()*adj.size())));
-			adj = map.getAdjacent(adj.get((int)(Math.random()*adj.size())));
-			adj = map.getAdjacent(adj.get((int)(Math.random()*adj.size())));
-			adj = map.getAdjacent(adj.get((int)(Math.random()*adj.size())));
-			pinky.setTarget(adj.get((int)(Math.random()*adj.size())));
-			break;
-		case SCATTER:
-			if(pinky.getTarget().equals(coordinates.get(9))) {
-				pinky.setTarget(coordinates.get(2));
-			} else if(pinky.getTarget().equals(coordinates.get(2))){
-				pinky.setTarget(coordinates.get(19));
-			} else {
-				pinky.setTarget(coordinates.get(9));
-			}
-			break;
-		}
-	}
-	
-	/**
-	 */
-	public void searchClydeTarget() {
-		switch(Ghost.state) {
-		case CHASE:
-			if(map.getDistance(clyde.getPosition(), pacman.getPosition()) <= 3) {
-				if(clyde.getTarget().equals(coordinates.get(46))) {
-					clyde.setTarget(coordinates.get(26));
-				} else if(clyde.getTarget().equals(coordinates.get(26))) {
-					clyde.setTarget(coordinates.get(16));
-				} else {
-					clyde.setTarget(coordinates.get(46));
+
+	private void check180degreesRotation() {
+		if(((pacman.getRequestedDirection() == Direction.RIGHT && pacman.getDirection() == Direction.LEFT) || (pacman.getRequestedDirection() == Direction.LEFT && pacman.getDirection() == Direction.RIGHT)) || ((pacman.getRequestedDirection() == Direction.UP && pacman.getDirection() == Direction.DOWN) || (pacman.getRequestedDirection() == Direction.DOWN && pacman.getDirection() == Direction.UP))) {  
+			pacman.setDirection(pacman.getRequestedDirection());
+			Coordinate newpos = pacman.getPosition();
+			ArrayList<Coordinate> adj = map.getAdjacent(newpos);
+			switch(pacman.getDirection()) {
+			case DOWN:
+				for(Coordinate c : adj) {
+					if(c.getY() > newpos.getY()) {
+						newpos = c;
+					}
 				}
-			} else {
-				clyde.setTarget(pacman.getPosition());
+				break;
+			case LEFT:
+				for(Coordinate c : adj) {
+					if(c.getX() < newpos.getX()) {
+						newpos = c;
+					}
+				}
+				break;
+			case RIGHT:
+				for(Coordinate c : adj) {
+					if(c.getX() > newpos.getX()) {
+						newpos = c;
+					}
+				}
+				break;
+			case UP:
+				for(Coordinate c : adj) {
+					if(c.getY() < newpos.getY()) {
+						newpos = c;
+					}
+				}
+				break;
 			}
+			pacman.setPosition(newpos);
+		}
+	}
+
+	private void eatContentOfTile() {
+		switch(food.get(pacman.getPosition()).getType()) {
+		case Food.ENERGIZER:
+			blinky.setFrightened(true);
+			inky.setFrightened(true);
+			pinky.setFrightened(true);
+			clyde.setFrightened(true);
+
+			getCurrentLevel().setDotsLeft(getCurrentLevel().getDotsLeft()-1);
+			setScore(getScore() + POINTS_PER_ENERGIZER);
+			TimerTask task = new TimerTask() {
+				@Override
+				public void run() {
+					ghostsEaten = 0;
+					blinky.setFrightened(false);
+					inky.setFrightened(false);
+					pinky.setFrightened(false);
+					clyde.setFrightened(false);
+				}
+			};
+			Timer timer = new Timer("Timer");
+			frightenedCountdown = getCurrentLevel().getFrightTime();
+			timer.schedule(task, frightenedCountdown);
 			break;
-		case SCATTER:
-			if(clyde.getTarget().equals(coordinates.get(46))) {
-				clyde.setTarget(coordinates.get(26));
-			} else if(clyde.getTarget().equals(coordinates.get(26))) {
-				clyde.setTarget(coordinates.get(16));
-			} else {
-				clyde.setTarget(coordinates.get(46));
+		case Food.PACDOT:
+			getCurrentLevel().setDotsLeft(getCurrentLevel().getDotsLeft()-1);
+			setScore(getScore() + POINTS_PER_DOT);
+			break;
+		case Food.BONUS:
+			if(food.get(pacman.getPosition()).getNotEaten().get()) {
+				setScore(getScore() + getCurrentLevel().getBonusScore());
 			}
 			break;
 		}
 	}
-	
+
 	/**
 	 * @param ghost
 	 */
 	public void moveGhost(Ghost ghost) {
-		int difX = (int)Math.abs(ghost.getPosX() - pacman.getPosX());
-		int difY = (int)Math.abs(ghost.getPosY() - pacman.getPosY());
-		if(difX <= 2 && difY <= 2) {
-			if(ghost.isFrightened()) {
-				ghostsEaten++;
-				if(ghostsEaten == 1) {
-					setScore(score + Level.ONE_GHOST_SCORE);
-				} else if(ghostsEaten == 2) {
-					setScore(score + Level.TWO_GHOSTS_SCORE);
-				} else if(ghostsEaten == 3) {
-					setScore(score + Level.THREE_GHOSTS_SCORE);
-				} else {
-					setScore(score + Level.FOUR_GHOSTS_SCORE);
-				}
-				ghost.setFrightened(false);
-				ghost.setGoingHome(true);
-				searchGhostTarget(ghost);
-			} else if(!ghost.isGoingHome().get()){
-				//TODO pacman dies
-				pacman.setLives(pacman.getLives().get()-1);
-				blinky.setPosition(coordinates.get(98));
-				pinky.setPosition(pinky.getHouse());
-				inky.setPosition(inky.getHouse());
-				clyde.setPosition(clyde.getHouse());
-				Ghost.state = State.SCATTER;
-				pacman.setDying(true);
-			}
-		}
-		if(!ghost.getPath().isEmpty()) {
-			Coordinate next = ghost.getPath().get(0);
-			if(ghost.getPosX() == next.getX() && ghost.getPosY() == next.getY()) {
-				ghost.setPosition(ghost.getPath().remove(0));
-				determineDirection(ghost);
-				if(Ghost.state == State.CHASE) {
-					searchGhostTarget(ghost);
-				}
-			} else if((ghost.getPosition().equals(leftTileOfTheTunel) && ghost.getPath().get(0).equals(rightTileOfTheTunel))
-					|| (ghost.getPosition().equals(rightTileOfTheTunel) && ghost.getPath().get(0).equals(leftTileOfTheTunel))) {
-				ghost.setPosition(ghost.getPath().remove(0));
-				determineDirection(ghost);
-				ghost.setPosX(ghost.getPosition().getX());
-				ghost.setPosY(ghost.getPosition().getY());
-			}
-		} else {
-			searchGhostTarget(ghost);
-		}
+		checkCollisionWithPacman(ghost);
+		setNewRouteIfNecessary(ghost);
+		
 		switch(ghost.getDirection()) {
 		case DOWN:
 			ghost.setPosY(ghost.getPosY()+1);
@@ -790,7 +696,7 @@ public class Game {
 			break;
 		}
 	}
-	
+
 	/**
 	 * @param ghost
 	 */
@@ -805,7 +711,7 @@ public class Game {
 		} else {
 			searchClydeTarget();
 		}
-
+	
 		if(ghost.isFrightened()) {
 			ghost.setTarget(coordinates.get((int)(Math.random()*(coordinates.size()-3))));
 		} else if(ghost.isGoingHome().get()) {
@@ -817,7 +723,105 @@ public class Game {
 		ghost.getPath().remove(0);
 		determineDirection(ghost);
 	}
-	
+
+	/**
+	 */
+	private void searchBlinkyTarget() {
+		switch(Ghost.state) {
+		case CHASE:
+			blinky.setTarget(pacman.getPosition());
+			break;
+		case SCATTER:
+			Level lvl = getCurrentLevel();
+			if(lvl.getDotsLeft() <= lvl.getCruiseElroyDotsLeft1()) { //Aggressive even when his brothers are in scatter mode but (TODO) he waits for Clyde to reach its scatter tile before pursuing Pacman in the first scatter period
+				blinky.setTarget(pacman.getPosition());
+			} else if(blinky.getTarget().equals(coordinates.get(70))) {
+				blinky.setTarget(coordinates.get(79));
+			} else if(blinky.getTarget().equals(coordinates.get(79))) {
+				blinky.setTarget(coordinates.get(89));
+			} else {
+				blinky.setTarget(coordinates.get(70));
+			}
+		}
+	}
+
+	/**
+	 */
+	private void searchInkyTarget() {
+		switch(Ghost.state) {
+		case CHASE:
+			ArrayList<Coordinate> adj = map.getAdjacent(pacman.getPosition());
+			adj = map.getAdjacent(adj.get((int)(Math.random()*adj.size())));
+			adj = map.getAdjacent(adj.get((int)(Math.random()*adj.size())));
+			adj = map.getAdjacent(adj.get((int)(Math.random()*adj.size())));
+			adj = map.getAdjacent(adj.get((int)(Math.random()*adj.size())));
+			inky.setTarget(adj.get((int)(Math.random()*adj.size())));
+			break;
+		case SCATTER:
+			if(inky.getTarget().equals(coordinates.get(56))) {
+				inky.setTarget(coordinates.get(77));
+			} else if(inky.getTarget().equals(coordinates.get(77))) {
+				inky.setTarget(coordinates.get(86));
+			} else {
+				inky.setTarget(coordinates.get(56));
+			}
+			break;
+		}
+	}
+
+	/**
+	 */
+	private void searchPinkyTarget() {
+		switch(Ghost.state) {
+		case CHASE:
+			ArrayList<Coordinate> adj = map.getAdjacent(pacman.getPosition());
+			adj = map.getAdjacent(adj.get((int)(Math.random()*adj.size())));
+			adj = map.getAdjacent(adj.get((int)(Math.random()*adj.size())));
+			adj = map.getAdjacent(adj.get((int)(Math.random()*adj.size())));
+			adj = map.getAdjacent(adj.get((int)(Math.random()*adj.size())));
+			pinky.setTarget(adj.get((int)(Math.random()*adj.size())));
+			break;
+		case SCATTER:
+			if(pinky.getTarget().equals(coordinates.get(9))) {
+				pinky.setTarget(coordinates.get(2));
+			} else if(pinky.getTarget().equals(coordinates.get(2))){
+				pinky.setTarget(coordinates.get(19));
+			} else {
+				pinky.setTarget(coordinates.get(9));
+			}
+			break;
+		}
+	}
+
+	/**
+	 */
+	private void searchClydeTarget() {
+		switch(Ghost.state) {
+		case CHASE:
+			if(map.getDistance(clyde.getPosition(), pacman.getPosition()) <= 3) {
+				if(clyde.getTarget().equals(coordinates.get(46))) {
+					clyde.setTarget(coordinates.get(26));
+				} else if(clyde.getTarget().equals(coordinates.get(26))) {
+					clyde.setTarget(coordinates.get(16));
+				} else {
+					clyde.setTarget(coordinates.get(46));
+				}
+			} else {
+				clyde.setTarget(pacman.getPosition());
+			}
+			break;
+		case SCATTER:
+			if(clyde.getTarget().equals(coordinates.get(46))) {
+				clyde.setTarget(coordinates.get(26));
+			} else if(clyde.getTarget().equals(coordinates.get(26))) {
+				clyde.setTarget(coordinates.get(16));
+			} else {
+				clyde.setTarget(coordinates.get(46));
+			}
+			break;
+		}
+	}
+
 	/**
 	 * @param ghost
 	 */
@@ -839,13 +843,65 @@ public class Game {
 		}
 	}
 	
+	private void checkCollisionWithPacman(Ghost ghost) {
+		int difX = (int)Math.abs(ghost.getPosX() - pacman.getPosX());
+		int difY = (int)Math.abs(ghost.getPosY() - pacman.getPosY());
+		if(difX <= 2 && difY <= 2) {
+			if(ghost.isFrightened()) {
+				ghostsEaten++;
+				if(ghostsEaten == 1) {
+					setScore(score + Level.ONE_GHOST_SCORE);
+				} else if(ghostsEaten == 2) {
+					setScore(score + Level.TWO_GHOSTS_SCORE);
+				} else if(ghostsEaten == 3) {
+					setScore(score + Level.THREE_GHOSTS_SCORE);
+				} else {
+					setScore(score + Level.FOUR_GHOSTS_SCORE);
+					ghostsEaten = 0;
+				}
+				ghost.setFrightened(false);
+				ghost.setGoingHome(true);
+				searchGhostTarget(ghost);
+			} else if(!ghost.isGoingHome().get()){
+				pacman.setLives(pacman.getLives().get()-1);
+				blinky.setPosition(coordinates.get(98));
+				pinky.setPosition(pinky.getHouse());
+				inky.setPosition(inky.getHouse());
+				clyde.setPosition(clyde.getHouse());
+				Ghost.state = State.SCATTER;
+				pacman.setDying(true);
+			}
+		}
+	}
+	
+	private void setNewRouteIfNecessary(Ghost ghost) {
+		if(!ghost.getPath().isEmpty()) {
+			Coordinate next = ghost.getPath().get(0);
+			if(ghost.getPosX() == next.getX() && ghost.getPosY() == next.getY()) {
+				ghost.setPosition(ghost.getPath().remove(0));
+				determineDirection(ghost);
+				if(Ghost.state == State.CHASE) {
+					searchGhostTarget(ghost);
+				}
+			} else if((ghost.getPosition().equals(leftTileOfTheTunel) && ghost.getPath().get(0).equals(rightTileOfTheTunel))
+					|| (ghost.getPosition().equals(rightTileOfTheTunel) && ghost.getPath().get(0).equals(leftTileOfTheTunel))) {
+				ghost.setPosition(ghost.getPath().remove(0));
+				determineDirection(ghost);
+				ghost.setPosX(ghost.getPosition().getX());
+				ghost.setPosY(ghost.getPosition().getY());
+			}
+		} else {
+			searchGhostTarget(ghost);
+		}
+	}
+
 	/**
 	 */
 	public boolean isEatingDots() {
 		byte type = food.get(pacman.getPosition()).getType();
 		return type == Food.PACDOT || type == Food.ENERGIZER;
 	}
-	
+
 	/**
 	 * @param ghost
 	 * @return
@@ -860,35 +916,35 @@ public class Game {
 		tunnel |= pos.equals(coordinates.get(91));
 		return tunnel;
 	}
-	
+
 	/**
 	 * @return
 	 */
 	public IGraph<Coordinate> getMap() {
 		return map;
 	}
-	
+
 	/**
 	 * @param map
 	 */
 	public void setMap(IGraph<Coordinate> map) {
 		this.map = map;
 	}
-	
+
 	/**
 	 * @return
 	 */
 	public ArrayList<Level> getLevels() {
 		return levels;
 	}
-	
+
 	/**
 	 * @param levels
 	 */
 	public void setLevels(ArrayList<Level> levels) {
 		this.levels = levels;
 	}
-	
+
 	/**
 	 * @return
 	 */
@@ -899,14 +955,14 @@ public class Game {
 			return levels.get(levels.size()-1);
 		}
 	}
-	
+
 	/**
 	 * @return
 	 */
 	public int getCurrentStage() {
 		return currentStage;
 	}
-	
+
 	/**
 	 * @param stage
 	 */
@@ -915,84 +971,84 @@ public class Game {
 		Level c = getCurrentLevel();
 		c.setDotsLeft(initialNumberOfDots);
 	}
-	
+
 	/**
 	 * @return
 	 */
 	public Ghost getInky() {
 		return inky;
 	}
-	
+
 	/**
 	 * @return
 	 */
 	public Ghost getPinky() {
 		return pinky;
 	}
-	
+
 	/**
 	 * @return
 	 */
 	public Ghost getBlinky() {
 		return blinky;
 	}
-	
+
 	/**
 	 * @return
 	 */
 	public Ghost getClyde() {
 		return clyde;
 	}
-	
+
 	/**
 	 * @return
 	 */
 	public Pacman getPacman() {
 		return pacman;
 	}
-	
+
 	/**
 	 * @return
 	 */
 	public ArrayList<Coordinate> getCoordinates() {
 		return coordinates;
 	}
-	
+
 	/**
 	 * @return
 	 */
 	public HashMap<Coordinate, Food> getFood() {
 		return food;
 	}
-	
+
 	/**
 	 * @return
 	 */
 	public Coordinate getLeftTileOfTheTunel() {
 		return leftTileOfTheTunel;
 	}
-	
+
 	/**
 	 * @return
 	 */
 	public Coordinate getRightTileOfTheTunel() {
 		return rightTileOfTheTunel;
 	}
-	
+
 	/**
 	 * @return
 	 */
 	public Coordinate getBonusTile() {
 		return bonusTile;
 	}
-	
+
 	/**
 	 * @return
 	 */
 	public int getScore() {
 		return score;
 	}
-	
+
 	/**
 	 * @param score
 	 */

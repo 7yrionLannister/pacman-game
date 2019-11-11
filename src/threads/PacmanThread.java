@@ -49,70 +49,9 @@ public class PacmanThread extends Thread {
 	public void run() {
 		while(true) {
 			if(!controller.isOnPause()) {
-				PrimaryStageController.MOVEMENT_COUNTER++;
-				if((PrimaryStageController.MOVEMENT_COUNTER*PrimaryStageController.MOVEMENT_SPRITE) % 2 == 0) {
-					pacmanImage.setImage(new Image(new File(MOVEMENTS+PrimaryStageController.MOVEMENT_SPRITE+".png").toURI().toString()));
-				}
-				if(PrimaryStageController.MOVEMENT_COUNTER % 3 == 0) {
-					PrimaryStageController.MOVEMENT_SPRITE++;
-					if(PrimaryStageController.MOVEMENT_SPRITE > 3) {
-						PrimaryStageController.MOVEMENT_SPRITE = 0;
-					}
-				}
-				if(pacman.isDying()) {
-					die();
-				}
-				game.movePacman();
-				Platform.runLater(new Runnable() {
-					@Override
-					public void run() {
-						switch(pacman.getDirection()) {
-						case DOWN:
-							pacmanImage.setRotate(90);
-							break;
-						case LEFT:
-							pacmanImage.setRotate(180);
-							break;
-						case RIGHT:
-							pacmanImage.setRotate(0);
-							break;
-						case UP:
-							pacmanImage.setRotate(270);
-							break;
-						}
-						Level level = game.getCurrentLevel();
-						if(level.isFrightened()) {
-							if(!game.atLeastAFrightenedGhost()) {
-								//TODO sonido de alarma fantasmas asustados
-							}
-							if(game.isEatingDots()) {
-								rate = level.getPacmanWithEnergizerEatingDotsSpeed();
-							} else {
-								rate = level.getPacmanWithEnergizerSpeed();
-							}
-						}  else if(game.isEatingDots()){
-							rate = level.getPacmanEatingDotsSpeed();
-						} else {
-							rate = level.getPacmanSpeed();
-						}
-						controller.getScoreLabel().setText(game.getScore()+"");
-						pacmanImage.relocate(pacman.getPosX(), pacman.getPosY());
-						Ghost ghost = game.getBlinky();
-						controller.getBlinky().relocate(ghost.getPosX(), ghost.getPosY());
-						controller.refreshGhostImage(ghost);
-						ghost = game.getInky();
-						controller.getInky().relocate(ghost.getPosX(), ghost.getPosY());
-						controller.refreshGhostImage(ghost);
-						ghost = game.getPinky();
-						controller.getPinky().relocate(ghost.getPosX(), ghost.getPosY());
-						controller.refreshGhostImage(ghost);
-						ghost = game.getClyde();
-						controller.getClyde().relocate(ghost.getPosX(), ghost.getPosY());
-						controller.refreshGhostImage(ghost);
-
-						controller.refreshLivesCounter();
-					}
-				});
+				move();
+				refreshGUI();
+				determineRate();
 			}
 			try {
 				sleep(rate);
@@ -122,6 +61,23 @@ public class PacmanThread extends Thread {
 		}
 	}
 	
+	private void move() {
+		PrimaryStageController.MOVEMENT_COUNTER++;
+		if((PrimaryStageController.MOVEMENT_COUNTER*PrimaryStageController.MOVEMENT_SPRITE) % 2 == 0) {
+			pacmanImage.setImage(new Image(new File(MOVEMENTS+PrimaryStageController.MOVEMENT_SPRITE+".png").toURI().toString()));
+		}
+		if(PrimaryStageController.MOVEMENT_COUNTER % 3 == 0) {
+			PrimaryStageController.MOVEMENT_SPRITE++;
+			if(PrimaryStageController.MOVEMENT_SPRITE > 3) {
+				PrimaryStageController.MOVEMENT_SPRITE = 0;
+			}
+		}
+		if(pacman.isDying()) {
+			die();
+		}
+		game.movePacman();
+	}
+
 	/**This allows to pause all the game and disappears all the ghosts when Pacman is dying. 
 	 */
 	private void die() {
@@ -152,5 +108,62 @@ public class PacmanThread extends Thread {
 			Platform.runLater(() -> controller.openPlayerRegister());
 		}
 		game.getPacman().setDying(false);
+	}
+
+	private void refreshGUI() {
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				switch(pacman.getDirection()) {
+				case DOWN:
+					pacmanImage.setRotate(90);
+					break;
+				case LEFT:
+					pacmanImage.setRotate(180);
+					break;
+				case RIGHT:
+					pacmanImage.setRotate(0);
+					break;
+				case UP:
+					pacmanImage.setRotate(270);
+					break;
+				}
+				
+				controller.getScoreLabel().setText(game.getScore()+"");
+				pacmanImage.relocate(pacman.getPosX(), pacman.getPosY());
+				Ghost ghost = game.getBlinky();
+				controller.getBlinky().relocate(ghost.getPosX(), ghost.getPosY());
+				controller.refreshGhostImage(ghost);
+				ghost = game.getInky();
+				controller.getInky().relocate(ghost.getPosX(), ghost.getPosY());
+				controller.refreshGhostImage(ghost);
+				ghost = game.getPinky();
+				controller.getPinky().relocate(ghost.getPosX(), ghost.getPosY());
+				controller.refreshGhostImage(ghost);
+				ghost = game.getClyde();
+				controller.getClyde().relocate(ghost.getPosX(), ghost.getPosY());
+				controller.refreshGhostImage(ghost);
+	
+				controller.refreshLivesCounter();
+			}
+		});
+	}
+
+	private void determineRate() {
+		Level level = game.getCurrentLevel();
+		if(level.isFrightened()) {
+			if(!game.atLeastAFrightenedGhost()) {
+				//TODO sonido de alarma fantasmas asustados
+			}
+			if(game.isEatingDots()) {
+				rate = level.getPacmanWithEnergizerEatingDotsSpeed();
+			} else {
+				rate = level.getPacmanWithEnergizerSpeed();
+			}
+		}  else if(game.isEatingDots()){
+			rate = level.getPacmanEatingDotsSpeed();
+		} else {
+			rate = level.getPacmanSpeed();
+		}
 	}
 }
