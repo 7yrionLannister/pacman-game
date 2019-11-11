@@ -12,6 +12,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.Stage;
 import model.Player;
 
 
@@ -37,7 +38,7 @@ public class NameRegisterController {
 			//c:
 		}
 
-		lb.add(new Player("", score, stage, name.getText()));
+		lb.add(new Player("", score, stage, name.getText().toUpperCase()));
 		try {
 			Collections.sort(lb);
 			if(lb.size() > 10) {
@@ -65,6 +66,8 @@ public class NameRegisterController {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		Stage stage = (Stage)name.getScene().getWindow();
+		stage.close();
 	}
 
 	@FXML

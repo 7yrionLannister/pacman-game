@@ -2,6 +2,7 @@ package threads;
 
 import java.io.File;
 import javafx.application.Platform;
+import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import model.Game;
@@ -29,7 +30,7 @@ public class PacmanThread extends Thread {
 	/**
 	 */
 	private long rate = 0;
-	
+
 	/**
 	 * @param c
 	 */
@@ -107,7 +108,7 @@ public class PacmanThread extends Thread {
 						ghost = game.getClyde();
 						controller.getClyde().relocate(ghost.getPosX(), ghost.getPosY());
 						controller.refreshGhostImage(ghost);
-						
+
 						controller.refreshLivesCounter();
 					}
 				});
@@ -139,16 +140,14 @@ public class PacmanThread extends Thread {
 				e.printStackTrace();
 			}
 		}
-		if(pacman.getLives() > 0) {
+		if(pacman.getLives().get() > 0) {
 			controller.setGUItoInitialState();
 			controller.startPlayPauseButtonPressed(null);
 		} else {
 			Game.POINTS_EXTRA_LIVE = 5000;
 			controller.getGameOverImage().setVisible(true);
 			controller.setOnPause(true);
-			if(true) { //TODO aqui se muestra la pantalla de inscripcion si se hizo un puntaje alto
-				Platform.runLater(() -> controller.openPlayerRegister());
-			}
+			Platform.runLater(() -> controller.openPlayerRegister());
 		}
 		game.getPacman().setDying(false);
 	}

@@ -1,5 +1,7 @@
 package model;
 
+import javafx.beans.property.SimpleIntegerProperty;
+
 
 public class Pacman extends Character {
 	
@@ -11,7 +13,7 @@ public class Pacman extends Character {
 	private boolean dying;
 	/**
 	 */
-	private int lives;
+	private SimpleIntegerProperty lives;
 	
 	/**
 	 * @param position
@@ -20,7 +22,7 @@ public class Pacman extends Character {
 	 */
 	public Pacman(Coordinate position, double posX, double posY) {
 		super(position, posX, posY);
-		lives = 3;
+		lives = new SimpleIntegerProperty(3);
 	}
 	/**
 	 * @return
@@ -49,13 +51,13 @@ public class Pacman extends Character {
 	/**
 	 * @return
 	 */
-	public int getLives() {
+	public SimpleIntegerProperty getLives() {
 		return lives;
 	}
 	/**
 	 * @param lives
 	 */
 	public void setLives(int lives) {
-		this.lives = lives;
+		this.lives.set(lives);
 	}
 }

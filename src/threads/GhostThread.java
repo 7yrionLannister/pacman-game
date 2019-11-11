@@ -44,10 +44,8 @@ public class GhostThread extends Thread {
 					} else if(game.isInTheTunnel(ghost)) {
 						rate = level.getGhostsTunelSpeed();
 					}  else if(level.getDotsLeft() <= level.getCruiseElroyDotsLeft2()){
-						System.out.println("elroy 2");
 						rate = level.getCruiseElroySpeed2();
 					} else if(level.getDotsLeft() <= level.getCruiseElroyDotsLeft1()){
-						System.out.println("elroy 1");
 						rate = level.getCruiseElroySpeed1();
 					} else {
 						rate = level.getGhostsSpeed();

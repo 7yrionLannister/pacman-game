@@ -9,7 +9,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.function.BiConsumer;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -32,13 +31,14 @@ import model.Coordinate;
 import model.Direction;
 import model.Game;
 import model.Ghost;
+import model.Level;
 import model.Player;
 import model.Food;
 import threads.GhostThread;
 import threads.PacmanThread;
-	
+
 public class PrimaryStageController {
-	
+
 	public static long MOVEMENT_COUNTER;
 	/**
 	 */
@@ -79,11 +79,11 @@ public class PrimaryStageController {
 	@FXML private ImageView cherry;
 	@FXML private Rectangle blackSquare2;
 	@FXML private Rectangle blackSquare1;
-	
+
 	/**
 	 */
 	private Game game;
-	
+
 	/**
 	 */
 	private PacmanThread pacmanThread;
@@ -118,11 +118,11 @@ public class PrimaryStageController {
 	/**
 	 */
 	private AudioClip death;
-	
+
 	/**
 	 */
 	private boolean onPause;
-	
+
 	/**
 	 */
 	@FXML
@@ -160,33 +160,21 @@ public class PrimaryStageController {
 				}
 				food.relocate(t.getX(), t.getY());
 				food.visibleProperty().bind(game.getFood().get(t).getNotEaten());
-				ChangeListener<Boolean> eatDotsListener = new ChangeListener<Boolean>() {
-					@Override
-					public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue,
-							Boolean newValue) {
-						if(!newValue) {
-							eatDot.play();
-							if(game.getCurrentLevel().getDotsLeft() == 0) {
-								onPause = true;
-								game.restartMap();
-								game.setCurrentStage(game.getCurrentStage() + 1);
-								setGUItoInitialState();
-								startPlayPauseButtonPressed(null);
-							}
-						}
+				ChangeListener<Boolean> eatDotsListener = (obs, oldval, newval) -> {if(!newval) {
+					eatDot.play();
+					if(game.getCurrentLevel().getDotsLeft() == 0) {
+						onPause = true;
+						game.restartMap();
+						game.setCurrentStage(game.getCurrentStage() + 1);
+						setGUItoInitialState();
+						startPlayPauseButtonPressed(null);
 					}
-				};
+				}};
 				switch(u.getType()) {
 				case Food.BONUS:
-					u.getNotEaten().addListener(new ChangeListener<Boolean>() {
-						@Override
-						public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue,
-								Boolean newValue) {
-							if(!newValue) {
-								eatFruit.play();
-							}
-						}
-					});
+					u.getNotEaten().addListener((obs, oldvalue, newvalue) -> {if(!newvalue) {
+						eatFruit.play();
+					}});
 					break;
 				case Food.ENERGIZER:
 					food.setImage(ENERGIZER_IMAGE);
@@ -202,14 +190,9 @@ public class PrimaryStageController {
 			}
 		});
 
-		ChangeListener<Boolean> eatGhostListener = new ChangeListener<Boolean>() {
-			@Override
-			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue,
-					Boolean newValue) {
-				if(newValue) {
-					eatGhost.play();
-				}
-			}
+		ChangeListener<Boolean> eatGhostListener = (obs, oldval, newval) -> {if(newval) {
+			eatGhost.play();
+		}
 		};
 		game.getBlinky().isGoingHome().addListener(eatGhostListener);
 		game.getInky().isGoingHome().addListener(eatGhostListener);
@@ -220,11 +203,19 @@ public class PrimaryStageController {
 			blackSquare1.relocate(blackSquare1.getLayoutX()+5, blackSquare1.getLayoutY());
 			blackSquare2.relocate(blackSquare2.getLayoutX()+5, blackSquare2.getLayoutY());
 		}
+		game.getPacman().getLives().addListener((obs, oldval, newval) ->  {if(Integer.compare(newval.intValue(), oldval.intValue()) > 0) {
+			extraLive.play();
+		}
+		}) ;
 		onPause = true;
 		refreshLivesCounter();
+		for(Node node: bonusFruitsContainer.getChildren()) {
+			node.setVisible(false);
+		}
+		cherry.setVisible(true);
 		startThreads();
 	}
-	
+
 	/**
 	 * @param event
 	 */
@@ -258,7 +249,7 @@ public class PrimaryStageController {
 		System.out.println(game.getClyde().getPosition());
 		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 	}
-	
+
 	/**
 	 * @param event
 	 */
@@ -278,15 +269,16 @@ public class PrimaryStageController {
 			e1.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * @param event
 	 */
 	@FXML
-	public void newGameButtonPressed(ActionEvent event) {
+	public void informationButtonPressed(ActionEvent event) {
 		System.out.println("hola mundo");
-		Game.POINTS_EXTRA_LIVE = 5000;
+		//TODO mostrar ventana con informacion e instrucciones
 	}
+
 	/**
 	 * @param event
 	 */
@@ -319,7 +311,7 @@ public class PrimaryStageController {
 			timer.schedule(task, delay);
 		}
 	}
-	
+
 	/**
 	 */
 	private void startThreads() {
@@ -335,10 +327,11 @@ public class PrimaryStageController {
 		pinkyThread.start();
 		clydeThread.start();
 	}
-	 /**
-	  * 
-	  * @param ghost
-	  */
+
+	/**
+	 * 
+	 * @param ghost
+	 */
 	public void refreshGhostImage(Ghost ghost) {
 		if(PrimaryStageController.MOVEMENT_COUNTER%5 == 0) {
 			ImageView ghostImage = getGhostImage(ghost.getName());
@@ -373,6 +366,7 @@ public class PrimaryStageController {
 			}
 		}
 	}
+
 	/**
 	 */
 	public void setGUItoInitialState() {
@@ -395,7 +389,32 @@ public class PrimaryStageController {
 		};
 		Timer timer = new Timer("Timer");
 		timer.schedule(task, 3000);
+		
+		String bonus = game.getCurrentLevel().getBonus();
+		cherry.setVisible(true);
+		if(Level.STRAWBERRY.equals(bonus) ) {
+			strawberry.setVisible(true);
+		}
+		if(Level.PEACH.equals(bonus)) {
+			peach.setVisible(true);
+		}
+		if(Level.APPLE.equals(bonus)) {
+			apple.setVisible(true);
+		}
+		if(Level.MELON.equals(bonus)) {
+			melon.setVisible(true);
+		}
+		if(Level.GALAXIAN.equals(bonus)) {
+			galaxian.setVisible(true);
+		}
+		if(Level.BELL.equals(bonus)) {
+			bell.setVisible(true);
+		}
+		if(Level.KEYS.equals(bonus)) {
+			key.setVisible(true);
+		}
 	}
+
 	/**
 	 * @param name
 	 * @return
@@ -411,17 +430,19 @@ public class PrimaryStageController {
 			return clyde;
 		}
 	}
+
 	/**
 	 */
 	public void refreshLivesCounter() {
 		for(Node node : livesContainer.getChildren()) {
 			node.setVisible(false);
 		}
-		int lives = game.getPacman().getLives();
+		int lives = game.getPacman().getLives().get();
 		for(int i = 0; i < lives; i++) {
 			livesContainer.getChildren().get(i).setVisible(true);
 		}
 	}
+
 	/**
 	 */
 	public void openPlayerRegister() {
@@ -456,171 +477,204 @@ public class PrimaryStageController {
 				e1.printStackTrace();
 			}
 		}
-		
+
 		game.getPacman().setLives(3);
 		game.setCurrentStage(0);
 		game.restartMap();
 		game.setScore(0);
 		scoreLabel.setText("0");
 		onPause = true;
+		
+		for(Node node : bonusFruitsContainer.getChildren()) {
+			node.setVisible(false);
+		}
+		cherry.setVisible(true);
+		
 		setGUItoInitialState();
 	}
+
 	/**
 	 * @return
 	 */
 	public FlowPane getLivesContainer() {
 		return livesContainer;
 	}
+
 	/**
 	 * @return
 	 */
 	public FlowPane getBonusFruitsContainer() {
 		return bonusFruitsContainer;
 	}
+
 	/**
 	 * @return
 	 */
 	public ImageView getInky() {
 		return inky;
 	}
+
 	/**
 	 * @return
 	 */
 	public ImageView getPinky() {
 		return pinky;
 	}
+
 	/**
 	 * @return
 	 */
 	public ImageView getClyde() {
 		return clyde;
 	}
+
 	/**
 	 * @return
 	 */
 	public ImageView getBlinky() {
 		return blinky;
 	}
+
 	/**
 	 * @return
 	 */
 	public ImageView getPacman() {
 		return pacman;
 	}
+
 	/**
 	 * @return
 	 */
 	public ImageView getReadyImage() {
 		return readyImage;
 	}
+
 	/**
 	 * @return
 	 */
 	public ImageView getGameOverImage() {
 		return gameOverImage;
 	}
+
 	/**
 	 * @return
 	 */
 	public ImageView getBonusImage() {
 		return bonusImage;
 	}
+
 	/**
 	 * @return
 	 */
 	public ImageView getKey() {
 		return key;
 	}
+
 	/**
 	 * @return
 	 */
 	public ImageView getBell() {
 		return bell;
 	}
+
 	/**
 	 * @return
 	 */
 	public ImageView getGalaxian() {
 		return galaxian;
 	}
+
 	/**
 	 * @return
 	 */
 	public ImageView getMelon() {
 		return melon;
 	}
+
 	/**
 	 * @return
 	 */
 	public ImageView getApple() {
 		return apple;
 	}
+
 	/**
 	 * @return
 	 */
 	public ImageView getPeach() {
 		return peach;
 	}
+
 	/**
 	 * @return
 	 */
 	public ImageView getStrawberry() {
 		return strawberry;
 	}
+
 	/**
 	 * @return
 	 */
 	public ImageView getCherry() {
 		return cherry;
 	}
+
 	/**
 	 * @return
 	 */
 	public Game getGame() {
 		return game;
 	}
+
 	/**
 	 * @return
 	 */
 	public boolean isOnPause() {
 		return onPause;
 	}
+
 	/**
 	 * @param onPause
 	 */
 	public void setOnPause(boolean onPause) {
 		this.onPause = onPause;
 	}
+
 	/**
 	 * @return
 	 */
 	public Label getScoreLabel() {
 		return scoreLabel;
 	}
+
 	/**
 	 * @return
 	 */
 	public AudioClip getEatDot() {
 		return eatDot;
 	}
+
 	/**
 	 * @return
 	 */
 	public AudioClip getEatFruit() {
 		return eatFruit;
 	}
+
 	/**
 	 * @return
 	 */
 	public AudioClip getEatGhost() {
 		return eatGhost;
 	}
+
 	/**
 	 * @return
 	 */
 	public AudioClip getExtraLive() {
 		return extraLive;
 	}
+
 	/**
 	 * @return
 	 */

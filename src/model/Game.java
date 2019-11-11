@@ -397,6 +397,7 @@ public class Game {
 		toggleModesTimer.schedule(current.getToScatterTimerTask(), current.getToScatter3());
 		toggleModesTimer.schedule(current.getToChaseTimerTask(), current.getToChaseForEver());
 	}
+	
 	/**
 	 * @return
 	 */
@@ -412,6 +413,7 @@ public class Game {
 		}
 		return toReturn;
 	}
+	
 	/**
 	 */
 	public void restartMap() {
@@ -460,6 +462,7 @@ public class Game {
 		
 		getCurrentLevel().setDotsLeft(initialNumberOfDots);
 	}
+	
 	/**
 	 */
 	public void movePacman() {
@@ -509,6 +512,7 @@ public class Game {
 			}
 		}
 	}
+	
 	/**
 	 */
 	private void move() {
@@ -607,6 +611,7 @@ public class Game {
 			break;
 		}
 	}
+	
 	/**
 	 */
 	public void searchBlinkyTarget() {
@@ -627,6 +632,7 @@ public class Game {
 			}
 		}
 	}
+	
 	/**
 	 */
 	public void searchInkyTarget() {
@@ -650,6 +656,7 @@ public class Game {
 			break;
 		}
 	}
+	
 	/**
 	 */
 	public void searchPinkyTarget() {
@@ -673,6 +680,7 @@ public class Game {
 			break;
 		}
 	}
+	
 	/**
 	 */
 	public void searchClydeTarget() {
@@ -701,6 +709,7 @@ public class Game {
 			break;
 		}
 	}
+	
 	/**
 	 * @param ghost
 	 */
@@ -711,20 +720,20 @@ public class Game {
 			if(ghost.isFrightened()) {
 				ghostsEaten++;
 				if(ghostsEaten == 1) {
-					score += Level.ONE_GHOST_SCORE;
+					setScore(score + Level.ONE_GHOST_SCORE);
 				} else if(ghostsEaten == 2) {
-					score += Level.TWO_GHOSTS_SCORE;
+					setScore(score + Level.TWO_GHOSTS_SCORE);
 				} else if(ghostsEaten == 3) {
-					score += Level.THREE_GHOSTS_SCORE;
+					setScore(score + Level.THREE_GHOSTS_SCORE);
 				} else {
-					score += Level.FOUR_GHOSTS_SCORE;
+					setScore(score + Level.FOUR_GHOSTS_SCORE);
 				}
 				ghost.setFrightened(false);
 				ghost.setGoingHome(true);
 				searchGhostTarget(ghost);
 			} else if(!ghost.isGoingHome().get()){
 				//TODO pacman dies
-				pacman.setLives(pacman.getLives()-1);
+				pacman.setLives(pacman.getLives().get()-1);
 				blinky.setPosition(coordinates.get(98));
 				pinky.setPosition(pinky.getHouse());
 				inky.setPosition(inky.getHouse());
@@ -782,6 +791,7 @@ public class Game {
 			break;
 		}
 	}
+	
 	/**
 	 * @param ghost
 	 */
@@ -808,6 +818,7 @@ public class Game {
 		ghost.getPath().remove(0);
 		determineDirection(ghost);
 	}
+	
 	/**
 	 * @param ghost
 	 */
@@ -828,12 +839,14 @@ public class Game {
 			} 
 		}
 	}
+	
 	/**
 	 */
 	public boolean isEatingDots() {
 		byte type = food.get(pacman.getPosition()).getType();
 		return type == Food.PACDOT || type == Food.ENERGIZER;
 	}
+	
 	/**
 	 * @param ghost
 	 * @return
@@ -848,30 +861,35 @@ public class Game {
 		tunnel |= pos.equals(coordinates.get(91));
 		return tunnel;
 	}
+	
 	/**
 	 * @return
 	 */
 	public IGraph<Coordinate> getMap() {
 		return map;
 	}
+	
 	/**
 	 * @param map
 	 */
 	public void setMap(IGraph<Coordinate> map) {
 		this.map = map;
 	}
+	
 	/**
 	 * @return
 	 */
 	public ArrayList<Level> getLevels() {
 		return levels;
 	}
+	
 	/**
 	 * @param levels
 	 */
 	public void setLevels(ArrayList<Level> levels) {
 		this.levels = levels;
 	}
+	
 	/**
 	 * @return
 	 */
@@ -882,12 +900,14 @@ public class Game {
 			return levels.get(levels.size()-1);
 		}
 	}
+	
 	/**
 	 * @return
 	 */
 	public int getCurrentStage() {
 		return currentStage;
 	}
+	
 	/**
 	 * @param stage
 	 */
@@ -896,79 +916,91 @@ public class Game {
 		Level c = getCurrentLevel();
 		c.setDotsLeft(initialNumberOfDots);
 	}
+	
 	/**
 	 * @return
 	 */
 	public Ghost getInky() {
 		return inky;
 	}
+	
 	/**
 	 * @return
 	 */
 	public Ghost getPinky() {
 		return pinky;
 	}
+	
 	/**
 	 * @return
 	 */
 	public Ghost getBlinky() {
 		return blinky;
 	}
+	
 	/**
 	 * @return
 	 */
 	public Ghost getClyde() {
 		return clyde;
 	}
+	
 	/**
 	 * @return
 	 */
 	public Pacman getPacman() {
 		return pacman;
 	}
+	
 	/**
 	 * @return
 	 */
 	public ArrayList<Coordinate> getCoordinates() {
 		return coordinates;
 	}
+	
 	/**
 	 * @return
 	 */
 	public HashMap<Coordinate, Food> getFood() {
 		return food;
 	}
+	
 	/**
 	 * @return
 	 */
 	public Coordinate getLeftTileOfTheTunel() {
 		return leftTileOfTheTunel;
 	}
+	
 	/**
 	 * @return
 	 */
 	public Coordinate getRightTileOfTheTunel() {
 		return rightTileOfTheTunel;
 	}
+	
 	/**
 	 * @return
 	 */
 	public Coordinate getBonusTile() {
 		return bonusTile;
 	}
+	
 	/**
 	 * @return
 	 */
 	public int getScore() {
 		return score;
 	}
+	
 	/**
 	 * @param score
 	 */
 	public void setScore(int score) {
 		this.score = score;
-		if(score >= POINTS_EXTRA_LIVE && pacman.getLives() < 5) {
-			pacman.setLives(pacman.getLives()+1);
+		if(score >= POINTS_EXTRA_LIVE && pacman.getLives().get() < 5) {
+			pacman.setLives(pacman.getLives().get()+1);
 			POINTS_EXTRA_LIVE += 5000;
 		}
 	}
