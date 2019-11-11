@@ -76,7 +76,7 @@ public class Coordinate {
 	/**This compares if a object that arrives as parameter is the actual coordinate.
 	 * @param another is a Object that is going to be compared. 
 	 * @return a boolean that represents if another is the actual coordinate or not.
-	 * @throws if another is not a Coordinate.
+	 * @throws ClassCastException if another is not a Coordinate.
 	 */
 	@Override
 	public boolean equals(Object another) {
