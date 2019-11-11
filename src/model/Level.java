@@ -1,55 +1,55 @@
 package model;
 
 public class Level {
-	//bonus fruits
-	/**
+
+	/**It represents a bonus fruit for the game.
 	 */
 	public final static String CHERRIES = "resources/sprites/food/bonus/cherry.png";
-	/**
+	/**It represents a bonus fruit for the game.
 	 */
 	public final static String STRAWBERRY = "resources/sprites/food/bonus/strawberry.png";
-	/**
+	/**It represents a bonus fruit for the game.
 	 */
 	public final static String PEACH = "resources/sprites/food/bonus/peach.png";
-	/**
+	/**It represents a bonus fruit for the game.
 	 */
 	public final static String APPLE = "resources/sprites/food/bonus/apple.png";
-	/**
+	/**It represents a bonus fruit for the game.
 	 */
 	public final static String MELON = "resources/sprites/food/bonus/melon.png";
-	/**
+	/**It represents a bonus object for the game.
 	 */
 	public final static String GALAXIAN = "resources/sprites/food/bonus/galaxian.png";
-	/**
+	/**It represents a bonus object for the game.
 	 */
 	public final static String BELL = "resources/sprites/food/bonus/bell.png";
-	/**
+	/**It represents a bonus object for the game.
 	 */
 	public final static String KEYS = "resources/sprites/food/bonus/keys.png";
 	
-	/**
+	/**It represents the score when Pacman eats one ghost.
 	 */
 	public final static int ONE_GHOST_SCORE = 200;
-	/**
+	/**It represents the score when Pacman eats two ghosts consecutively.
 	 */
 	public final static int TWO_GHOSTS_SCORE = 400;
-	/**
+	/**It represents the score when Pacman eats three ghosts consecutively.
 	 */
 	public final static int THREE_GHOSTS_SCORE = 800;
-	/**
+	/**It represents the score when Pacman eats four ghosts consecutively.
 	 */
 	public final static int FOUR_GHOSTS_SCORE = 1600;
 	
-	/**
+	/**It represents the actual stage. 
 	 */
 	private int stage;
-	/**
+	/**It represents the bonus points.
 	 */
 	private String bonus;
-	/**
+	/**It represents the actual Pacman speed in the maze. 
 	 */
 	private int pacmanSpeed;
-	/**
+	/**It represents the actual Pacman speed in the maze when it is eating pacdocts. 
 	 */
 	private int pacmanEatingDotsSpeed;
 	/**
