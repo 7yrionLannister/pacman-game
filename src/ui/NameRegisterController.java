@@ -17,13 +17,17 @@ import model.Player;
 
 public class NameRegisterController {
 
-	@FXML
-	private TextField name;
-
+	@FXML private TextField name;
+	/**It represents the score of the player when this has died.
+	 */
 	private int score;
-
+	/**It represents the stage where the player died.
+	 */
 	private int stage;
-
+	
+	/**This method registers a new Player when this has died in the game.
+	 * @param event is an ActionEvent related with the pressing of a button. 
+	 */
 	@FXML
 	public void register(ActionEvent event) {
 		ArrayList<Player> lb = new ArrayList<>();
@@ -66,7 +70,9 @@ public class NameRegisterController {
 			e.printStackTrace();
 		}
 	}
-
+	/**This method checks that the name of the player do not exceed the four characters. 
+	 * @param event an KeyEvent related with the String introduced inside the associated text field.
+	 */
 	@FXML
 	public void checkFourLetters(KeyEvent event) {
 		char input = event.getCharacter().charAt(0);
@@ -75,11 +81,15 @@ public class NameRegisterController {
 			event.consume();
 		}
 	}
-
+	/**It allows to set an Integer that represents the score of the player in the game.
+	 * @param score is an Integer that represents the score of the player in the game.
+	 */
 	public void setScore(int score) {
 		this.score = score;
 	}
-
+	/**It allows to set an Integer that represents the stage where the player died.
+	 * @param stage is an Integer that represents the stage where the player died.
+	 */
 	public void setStage(int stage) {
 		this.stage = stage;
 	}

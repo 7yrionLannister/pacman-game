@@ -11,27 +11,27 @@ import model.Pacman;
 import ui.PrimaryStageController;
 
 public class PacmanThread extends Thread {
-	/**
+	/**Its the Pacman movements route.
 	 */
 	public final static String MOVEMENTS = "resources/sprites/pacman/movements/";
-	/**
+	/**It represents a controller where the game is contained.
 	 */
 	private PrimaryStageController controller;
-	/**
+	/**Its the image view of Pacman when the game is displayed. 
 	 */
 	private ImageView pacmanImage;
-	/**
+	/**It represents the actual game.
 	 */
 	private Game game;
-	/**
+	/**It represents Pacman.
 	 */
 	private Pacman pacman;
-	/**
+	/**A long variable to set sleep times when is needed.
 	 */
 	private long rate = 0;
 	
-	/**
-	 * @param c
+	/**Creates a thread for Pacman as from a primary controller where the game is contained.
+	 * @param c is a controller where the game is contained.
 	 */
 	public PacmanThread(PrimaryStageController c) {
 		this.controller = c;
@@ -41,7 +41,7 @@ public class PacmanThread extends Thread {
 		PrimaryStageController.MOVEMENT_SPRITE = 0;
 		setDaemon(true);
 	}
-	/**
+	/**This allows to move Pacman when the game starts.
 	 */
 	@Override
 	public void run() {
@@ -119,7 +119,7 @@ public class PacmanThread extends Thread {
 			}
 		}
 	}
-	/**
+	/**This allows to pause all the game and disappears all the ghosts when Pacman is dying. 
 	 */
 	private void die() {
 		controller.setOnPause(true);

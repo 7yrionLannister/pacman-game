@@ -13,7 +13,6 @@ import dataStructures.AdjacencyListGraph;
 import dataStructures.IGraph;
 import model.Ghost.State;
 
-
 public class Game {
 	
 	/**
