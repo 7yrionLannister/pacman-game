@@ -857,7 +857,6 @@ public class Game {
 					setScore(score + Level.THREE_GHOSTS_SCORE);
 				} else {
 					setScore(score + Level.FOUR_GHOSTS_SCORE);
-					ghostsEaten = 0;
 				}
 				ghost.setFrightened(false);
 				ghost.setGoingHome(true);

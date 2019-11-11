@@ -269,6 +269,7 @@ public class PrimaryStageController {
 			Scene s = new Scene(root);
 			Stage st = new Stage();
 			st.setScene(s);
+			st.setTitle("Leaderboard");
 			st.getIcons().add(new Image(new File("resources/sprites/pacman/movements/1.png").toURI().toString()));
 			st.setResizable(false);
 			Window w = pacman.getParent().getScene().getWindow();
