@@ -57,9 +57,6 @@ public class Game {
 	/**
 	 */
 	private HashMap<Coordinate, Food> food;
-	/**
-	 */
-	private boolean runningLinux;
 
 	/**
 	 */
@@ -104,8 +101,6 @@ public class Game {
 	/**Creates a game starting all the initial levels, characters, maze, coordinates with respect to a determinate sequence.  
 	 */
 	public Game() throws IOException {
-		runningLinux = System.getProperty("os.name").equals("Linux");
-
 		firstLevelSequence = new Sequence(7000, 20000, 7000, 20000, 5000, 20000, 5000);
 		levelsTwoToFourSequence = new Sequence(7000, 20000, 7000, 20000, 5000, 240000, 6000);
 		fifthLevelAndAbove = new Sequence(5000, 20000, 5000, 20000, 5000, 300000, 4000);
@@ -275,10 +270,12 @@ public class Game {
 		while(!line.equalsIgnoreCase("edges:")) {
 			String[] coord = line.split(",");
 			double xCoord = Double.parseDouble(coord[0]);
-			if(!runningLinux) { 
+			double yCoord = Double.parseDouble(coord[1]);
+			if(System.getProperty("os.name").toLowerCase().contains("windows")) { 
 				xCoord += 5;
+				yCoord += 5;
 			}
-			Coordinate toAdd = new Coordinate(xCoord, Double.parseDouble(coord[1]), Boolean.parseBoolean(coord[2]), Boolean.parseBoolean(coord[3]), Boolean.parseBoolean(coord[4]), Boolean.parseBoolean(coord[5]));
+			Coordinate toAdd = new Coordinate(xCoord, yCoord, Boolean.parseBoolean(coord[2]), Boolean.parseBoolean(coord[3]), Boolean.parseBoolean(coord[4]), Boolean.parseBoolean(coord[5]));
 			coordinates.add(toAdd);
 			map.insertVertex(toAdd);
 			line = br.readLine();
@@ -1058,12 +1055,14 @@ public class Game {
 			POINTS_EXTRA_LIVE += 5000;
 		}
 	}
+	
 	/**
 	 * @return
 	 */
 	public boolean atLeastAFrightenedGhost() {
 		return blinky.isFrightened() || inky.isFrightened() || pinky.isFrightened() || clyde.isFrightened();
 	}
+	
 	/**
 	 * @param name
 	 * @return
@@ -1080,42 +1079,42 @@ public class Game {
 			return clyde;
 		}
 	}
+	
 	/**
 	 * @return
 	 */
 	public long getFrightenedCountdown() {
 		return frightenedCountdown;
 	}
+	
 	/**
 	 * @param timeForWarning
 	 */
 	public void setFrightenedCountdown(long timeForWarning) {
 		this.frightenedCountdown = timeForWarning;
 	}
+	
 	/**
 	 * @return
 	 */
 	public int getGhostsEaten() {
 		return ghostsEaten;
 	}
+	
 	/**
 	 * @param ghostsEaten
 	 */
 	public void setGhostsEaten(int ghostsEaten) {
 		this.ghostsEaten = ghostsEaten;
 	}
-	/**
-	 * @return
-	 */
-	public boolean isRunningLinux() {
-		return runningLinux;
-	}
+	
 	/**
 	 * @return
 	 */
 	public int getInitialNumberOfDots() {
 		return initialNumberOfDots;
 	}
+	
 	/**
 	 * @return
 	 */

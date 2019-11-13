@@ -215,9 +215,11 @@ public class PrimaryStageController {
 		game.getPinky().isGoingHome().addListener(eatGhostListener);
 		game.getClyde().isGoingHome().addListener(eatGhostListener);
 	
-		if(!game.isRunningLinux()) {
-			blackSquare1.relocate(blackSquare1.getLayoutX()+5, blackSquare1.getLayoutY());
-			blackSquare2.relocate(blackSquare2.getLayoutX()+5, blackSquare2.getLayoutY());
+		if(System.getProperty("os.name").toLowerCase().contains("windows")) {
+			blackSquare1.relocate(blackSquare1.getLayoutX()+5, blackSquare1.getLayoutY()+5);
+			blackSquare2.relocate(blackSquare2.getLayoutX()+5, blackSquare2.getLayoutY()+5);
+			readyImage.relocate(readyImage.getLayoutX()+5, readyImage.getLayoutY()+5);
+			gameOverImage.relocate(gameOverImage.getLayoutX()+5, gameOverImage.getLayoutY()+5);
 		}
 		game.getPacman().getLives().addListener((obs, oldval, newval) ->  {if(Integer.compare(newval.intValue(), oldval.intValue()) > 0) {
 			extraLive.play();
@@ -270,8 +272,10 @@ public class PrimaryStageController {
 			Stage st = new Stage();
 			st.setScene(s);
 			st.setTitle("Leaderboard");
+			if(System.getProperty("os.name").toLowerCase().contains("windows")) {
+				st.setWidth(st.getWidth()-5);
+			}
 			st.getIcons().add(new Image(new File("resources/sprites/pacman/movements/1.png").toURI().toString()));
-			st.setResizable(false);
 			Window w = pacman.getParent().getScene().getWindow();
 			st.setX(w.getX()+495);
 			st.setY(w.getY());
@@ -286,8 +290,17 @@ public class PrimaryStageController {
 	 */
 	@FXML
 	public void informationButtonPressed(ActionEvent event) {
-		System.out.println("hola mundo");
-		//TODO mostrar ventana con informacion e instrucciones
+		try {
+			Parent root = FXMLLoader.load(getClass().getResource("info.fxml"));
+			Scene s = new Scene(root);
+			Stage st = new Stage();
+			st.setScene(s);
+			st.setResizable(false);
+			st.getIcons().add(new Image(new File("resources/sprites/pacman/movements/1.png").toURI().toString()));
+			st.show();
+		} catch (IOException e) {
+			// c:
+		}
 	}
 
 	/**

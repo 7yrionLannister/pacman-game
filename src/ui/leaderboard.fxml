@@ -8,9 +8,9 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-<BorderPane maxHeight="375.0" stylesheets="@pg.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.LeaderboardController">
+<BorderPane maxHeight="375.0" stylesheets="@pg.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.LeaderboardController">
    <center>
-      <TableView fx:id="lb" cache="true" editable="true" stylesheets="@pg.css" BorderPane.alignment="CENTER">
+      <TableView fx:id="lb" cache="true" editable="true" maxWidth="1.7976931348623157E308" stylesheets="@pg.css" BorderPane.alignment="CENTER">
         <columns>
           <TableColumn fx:id="rank" maxWidth="-1.0" minWidth="70.0" prefWidth="-1.0" sortable="false" text="RANK" />
           <TableColumn fx:id="stage" maxWidth="-1.0" minWidth="75.0" prefWidth="-1.0" sortable="false" text="STAGE" />

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+
+
+<BorderPane stylesheets="@pg.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <padding>
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+   </padding>
+   <center>
+      <VBox spacing="6.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label prefWidth="445.0" text="This project is a Pac-man game that uses a graph as a data structure in order to find the shortest paths between ghosts and Pac-man. It is presented as a final project in the course of algorithms and data structures in the second half of 2019. " wrapText="true" />
+            <Label prefHeight="102.0" prefWidth="442.0" text="The objective of the game is to accumulate as many points as possible by eating dots, power-pellets(energizers), fruits, and blue ghosts.When all of the dots in a stage are eaten, that stage is completed, and the player will advance to the next.The four ghosts roam the maze and chase Pac-Man. If any of the ghosts touches Pac-Man, a life is lost. When all lives have been lost, the game is over." wrapText="true" />
+            <Label text="You can change Pac-man direction using either WASD, IJKL or the arrow keys." />
+         </children>
+      </VBox>
+   </center>
+</BorderPane>
