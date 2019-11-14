@@ -9,6 +9,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.function.BiConsumer;
 import javafx.beans.value.ChangeListener;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -292,6 +293,15 @@ public class PrimaryStageController {
 	@FXML
 	public void startPlayPauseButtonPressed(ActionEvent event) {
 		onPause = !onPause;
+		try {
+    		FileInputStream fis = new FileInputStream(LeaderboardController.LEADER_BOARD_PATH);
+			ObjectInputStream ois = new ObjectInputStream(fis);
+			ArrayList<Player> lb = (ArrayList<Player>)ois.readObject();
+			highScoreLabel.setText(lb.get(0).getScore()+"");
+			fis.close();
+			ois.close();
+		} catch (IOException | ClassNotFoundException e) {
+		}
 		gameOverImage.setVisible(false);
 		if(!onPause) {
 			onPause = true;

@@ -39,7 +39,6 @@ public class LeaderboardController {
 			fis.close();
 			ois.close();
 		} catch (IOException | ClassNotFoundException e) {
-			e.printStackTrace();
 		}
 	}
 }

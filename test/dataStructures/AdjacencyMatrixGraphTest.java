@@ -10,8 +10,8 @@ import dataStructures.Vertex.Color;
 
 public class AdjacencyMatrixGraphTest {
 	private AdjacencyMatrixGraph<Integer> graph;
-	private ArrayList<Pair> edges;
-	private ArrayList<Pair> removedEdges;
+	private ArrayList<Edge<Integer>> edges;
+	private ArrayList<Edge<Integer>> removedEdges;
 
 
 	private void setupStageDirected() {
@@ -53,55 +53,55 @@ public class AdjacencyMatrixGraphTest {
 		int src = 1;
 		int dst = 2;
 		int weight = 4;
-		edges.add(new Pair(src, dst, weight));
+		edges.add(new Edge<Integer>(src, dst, weight));
 		graph.link(src, dst, weight);
 
 		src = 2;
 		dst = 1;
 		weight = 3;
-		edges.add(new Pair(src, dst, weight));
+		edges.add(new Edge<Integer>(src, dst, weight));
 		graph.link(src, dst, weight);
 
 		src = 2;
 		dst = 3;
 		weight = 9;
-		edges.add(new Pair(src, dst, weight));
+		edges.add(new Edge<Integer>(src, dst, weight));
 		graph.link(src, dst, weight);
 
 		src = 2;
 		dst = 7;
 		weight = 5;
-		edges.add(new Pair(src, dst, weight));
+		edges.add(new Edge<Integer>(src, dst, weight));
 		graph.link(src, dst, weight);
 
 		src = 2;
 		dst = 8;
 		weight = 5;
-		edges.add(new Pair(src, dst, weight));
+		edges.add(new Edge<Integer>(src, dst, weight));
 		graph.link(src, dst, weight);
 
 		src = 8;
 		dst = 3;
 		weight = 10;
-		edges.add(new Pair(src, dst, weight));
+		edges.add(new Edge<Integer>(src, dst, weight));
 		graph.link(src, dst, weight);
 
 		src = 8;
 		dst = 5;
 		weight = 7;
-		edges.add(new Pair(src, dst, weight));
+		edges.add(new Edge<Integer>(src, dst, weight));
 		graph.link(src, dst, weight);
 
 		src = 5;
 		dst = 8;
 		weight = 2;
-		edges.add(new Pair(src, dst, weight));
+		edges.add(new Edge<Integer>(src, dst, weight));
 		graph.link(src, dst, weight);
 
 		src = 6;
 		dst = 1;
 		weight = 8;
-		edges.add(new Pair(src, dst, weight));
+		edges.add(new Edge<Integer>(src, dst, weight));
 		graph.link(src, dst, weight);
 
 		verifyGraphContainsAllEdgesItShould();
@@ -117,57 +117,57 @@ public class AdjacencyMatrixGraphTest {
 		int dst = 6;
 		int weight = 1;
 		edges = new ArrayList<>();
-		edges.add(new Pair(src, dst, weight));
-		edges.add(new Pair(src, dst, weight));
+		edges.add(new Edge<Integer>(src, dst, weight));
+		edges.add(new Edge<Integer>(src, dst, weight));
 		graph.link(src, dst, weight);
 
 		src = 6;
 		dst = 7;
 		weight = 2;
-		edges.add(new Pair(src, dst, weight));
-		edges.add(new Pair(src, dst, weight));
+		edges.add(new Edge<Integer>(src, dst, weight));
+		edges.add(new Edge<Integer>(src, dst, weight));
 		graph.link(src, dst, weight);
 
 		src = 7;
 		dst = 2;
 		weight = 9;
-		edges.add(new Pair(src, dst, weight));
-		edges.add(new Pair(src, dst, weight));
+		edges.add(new Edge<Integer>(src, dst, weight));
+		edges.add(new Edge<Integer>(src, dst, weight));
 		graph.link(src, dst, weight);
 
 		src = 7;
 		dst = 8;
 		weight = 6;
-		edges.add(new Pair(src, dst, weight));
-		edges.add(new Pair(src, dst, weight));
+		edges.add(new Edge<Integer>(src, dst, weight));
+		edges.add(new Edge<Integer>(src, dst, weight));
 		graph.link(src, dst, weight);
 
 		src = 7;
 		dst = 5;
 		weight = 8;
-		edges.add(new Pair(src, dst, weight));
-		edges.add(new Pair(src, dst, weight));
+		edges.add(new Edge<Integer>(src, dst, weight));
+		edges.add(new Edge<Integer>(src, dst, weight));
 		graph.link(src, dst, weight);
 
 		src = 8;
 		dst = 3;
 		weight = 10;
-		edges.add(new Pair(src, dst, weight));
-		edges.add(new Pair(src, dst, weight));
+		edges.add(new Edge<Integer>(src, dst, weight));
+		edges.add(new Edge<Integer>(src, dst, weight));
 		graph.link(src, dst, weight);
 
 		src = 8;
 		dst = 4;
 		weight = 5;
-		edges.add(new Pair(src, dst, weight));
-		edges.add(new Pair(src, dst, weight));
+		edges.add(new Edge<Integer>(src, dst, weight));
+		edges.add(new Edge<Integer>(src, dst, weight));
 		graph.link(src, dst, weight);
 
 		src = 3;
 		dst = 4;
 		weight = 4;
-		edges.add(new Pair(src, dst, weight));
-		edges.add(new Pair(src, dst, weight));
+		edges.add(new Edge<Integer>(src, dst, weight));
+		edges.add(new Edge<Integer>(src, dst, weight));
 		graph.link(src, dst, weight);
 
 		verifyGraphContainsAllEdgesItShould();
@@ -361,10 +361,10 @@ public class AdjacencyMatrixGraphTest {
 		assertFalse(graph.containsVertex(8), "The vertex should have been deleted");
 		assertTrue(orderBeforeDeletion == graph.getOrder()+1, "The order after insertion should be a unit less");
 		removedEdges = new ArrayList<>();
-		removedEdges.add(new Pair(2, 8, Integer.MAX_VALUE));
-		removedEdges.add(new Pair(8, 3, Integer.MAX_VALUE));
-		removedEdges.add(new Pair(8, 5, Integer.MAX_VALUE));
-		removedEdges.add(new Pair(5, 8, Integer.MAX_VALUE));
+		removedEdges.add(new Edge<Integer>(2, 8, Integer.MAX_VALUE));
+		removedEdges.add(new Edge<Integer>(8, 3, Integer.MAX_VALUE));
+		removedEdges.add(new Edge<Integer>(8, 5, Integer.MAX_VALUE));
+		removedEdges.add(new Edge<Integer>(5, 8, Integer.MAX_VALUE));
 		edges.removeAll(removedEdges);
 		verifyGraphContainsAllEdgesItShould();
 	}
@@ -548,24 +548,9 @@ public class AdjacencyMatrixGraphTest {
 	}
 
 	private void verifyGraphContainsAllEdgesItShould() {
-		for (Pair p : edges) {
-			assertTrue(graph.containsEdge(p.i, p.j), "A missing edge was found");
-			assertTrue(graph.getEdgeWeight(p.i, p.j) == p.weight, "The edge was found but it does not have the correct weight");
-		}
-	}
-
-	static class Pair {
-		int i,j,weight;
-		public Pair(int i, int j, int weight) {
-			this.i = i;
-			this.j = j;
-			this.weight = weight;
-		}
-
-		@Override
-		public boolean equals(Object another) {
-			Pair a = (Pair)another; //throws exception if another is not a Pair
-			return a.i == i && a.j == j;
+		for (Edge<Integer> p : edges) {
+			assertTrue(graph.containsEdge(p.getSrc(), p.getDst()), "A missing edge was found");
+			assertTrue(graph.getEdgeWeight(p.getSrc(), p.getDst()) == p.getWeight(), "The edge was found but it does not have the correct weight");
 		}
 	}
 }
