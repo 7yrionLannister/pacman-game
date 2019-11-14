@@ -27,7 +27,7 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 	private Vertex<E> lastSrc;
 	/**It represents how many time DFS process lasts. 
 	 */
-	private static int DFStime;
+	private int DFStime;
 	/**It represents a modified Adjacency List in order to perform FloydWarshall correctly.
 	 */
 	private AdjacencyMatrixGraph<E> graphForWarshall; 	

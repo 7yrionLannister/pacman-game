@@ -248,23 +248,6 @@ public class PrimaryStageController {
 	 * @param event
 	 */
 	@FXML
-	public void printMapCoordinates(MouseEvent event) {
-		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-		System.out.println("blinky image: "+blinky.getLayoutX()+","+blinky.getLayoutY()+" ~ blinky: "+game.getBlinky().getPosX()+","+game.getBlinky().getPosY());
-		System.out.println(game.getBlinky().getPosition());
-		System.out.println("inky image: "+inky.getLayoutX()+","+inky.getLayoutY()+" ~ inky: "+game.getInky().getPosX()+","+game.getInky().getPosY());
-		System.out.println(game.getInky().getPosition());
-		System.out.println("pinky image: "+pinky.getLayoutX()+","+pinky.getLayoutY()+" ~ pinky: "+game.getPinky().getPosX()+","+game.getPinky().getPosY());
-		System.out.println(game.getPinky().getPosition());
-		System.out.println("clyde image: "+clyde.getLayoutX()+","+clyde.getLayoutY()+" ~ clyde: "+game.getClyde().getPosX()+","+game.getClyde().getPosY());
-		System.out.println(game.getClyde().getPosition());
-		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-	}
-
-	/**
-	 * @param event
-	 */
-	@FXML
 	public void highScoresButtonPressed(ActionEvent event) {
 		try {
 			Parent root = FXMLLoader.load(getClass().getResource("leaderboard.fxml"));
@@ -314,7 +297,7 @@ public class PrimaryStageController {
 			onPause = true;
 			readyImage.setVisible(true);
 			if(game.getCurrentLevel().getDotsLeft() == game.getInitialNumberOfDots()) { //no dots eaten in the stage
-				bonusImage.setImage(new Image(new File(game.getCurrentLevel().getBonus()).toURI().toString()));
+				bonusImage.setImage(new Image(new File("resources/sprites/food/bonus/"+game.getCurrentLevel().getBonus()+".png").toURI().toString()));
 				if(game.getCurrentLevel().getStage() == 1) { //plays intro sound in the first stage
 					intro.play();
 				}

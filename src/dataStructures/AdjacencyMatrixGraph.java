@@ -30,7 +30,7 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 	private int freeRow;
 	/**It represents how many time DFS process lasts.
 	 */
-	private static int DFStime;
+	private int DFStime;
 	/**It is a matrix of integers that represents the minimum distance of all pairs of vertices. 
 	 */
 	private int[][] allPairsminimumDistances;
