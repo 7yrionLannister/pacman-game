@@ -36,7 +36,6 @@ public class LeaderboardController {
     		FileInputStream fis = new FileInputStream(LEADER_BOARD_PATH);
 			ObjectInputStream ois = new ObjectInputStream(fis);
 			lb.setItems(FXCollections.observableArrayList(((ArrayList<Player>)ois.readObject())));
-			System.out.println(lb.getItems().size());
 			fis.close();
 			ois.close();
 		} catch (IOException | ClassNotFoundException e) {

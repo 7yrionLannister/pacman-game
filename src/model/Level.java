@@ -4,28 +4,28 @@ public class Level {
 
 	/**It represents a bonus fruit for the game.
 	 */
-	public final static String CHERRIES = "resources/sprites/food/bonus/cherry.png";
+	public final static String CHERRIES = "cherry";
 	/**It represents a bonus fruit for the game.
 	 */
-	public final static String STRAWBERRY = "resources/sprites/food/bonus/strawberry.png";
+	public final static String STRAWBERRY = "strawberry";
 	/**It represents a bonus fruit for the game.
 	 */
-	public final static String PEACH = "resources/sprites/food/bonus/peach.png";
+	public final static String PEACH = "peach";
 	/**It represents a bonus fruit for the game.
 	 */
-	public final static String APPLE = "resources/sprites/food/bonus/apple.png";
+	public final static String APPLE = "apple";
 	/**It represents a bonus fruit for the game.
 	 */
-	public final static String MELON = "resources/sprites/food/bonus/melon.png";
+	public final static String MELON = "melon";
 	/**It represents a bonus object for the game.
 	 */
-	public final static String GALAXIAN = "resources/sprites/food/bonus/galaxian.png";
+	public final static String GALAXIAN = "galaxian";
 	/**It represents a bonus object for the game.
 	 */
-	public final static String BELL = "resources/sprites/food/bonus/bell.png";
+	public final static String BELL = "bell";
 	/**It represents a bonus object for the game.
 	 */
-	public final static String KEYS = "resources/sprites/food/bonus/keys.png";
+	public final static String KEYS = "keys";
 	
 	/**It represents the score when Pacman eats one ghost.
 	 */

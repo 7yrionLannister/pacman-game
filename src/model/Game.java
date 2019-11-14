@@ -469,9 +469,9 @@ public class Game {
 			if(((pacman.getPosition().hasRightTile() && pacman.getRequestedDirection() == Direction.RIGHT) || (pacman.getPosition().hasLeftTile() && pacman.getRequestedDirection() == Direction.LEFT)) || ((pacman.getPosition().hasUpTile() && pacman.getRequestedDirection() == Direction.UP) || (pacman.getPosition().hasDownTile() && pacman.getRequestedDirection() == Direction.DOWN))) {
 				pacman.setDirection(pacman.getRequestedDirection());
 			}
-			
+
 			eatContentOfTile();
-			
+
 			food.get(pacman.getPosition()).setType(Food.NOTHING); //Pacman ate
 			if(getCurrentLevel().getDotsLeft() == initialNumberOfDots/2) { //bonus at halfway
 				food.get(bonusTile).setNotEaten(true);
@@ -661,7 +661,7 @@ public class Game {
 	public void moveGhost(Ghost ghost) {
 		checkCollisionWithPacman(ghost);
 		setNewRouteIfNecessary(ghost);
-		
+
 		switch(ghost.getDirection()) {
 		case DOWN:
 			ghost.setPosY(ghost.getPosY()+1);
@@ -708,15 +708,18 @@ public class Game {
 		} else {
 			searchClydeTarget();
 		}
-	
+
 		if(ghost.isFrightened()) {
 			ghost.setTarget(coordinates.get((int)(Math.random()*(coordinates.size()-3))));
 		} else if(ghost.isGoingHome().get()) {
 			ghost.setTarget(ghost.getHouse());
-			ghost.setPosX(ghost.getPosition().getX());
-			ghost.setPosY(ghost.getPosition().getY());
 		}
-		ghost.setPath(map.getPath(ghost.getPosition(), ghost.getTarget()));
+		if(ghost.isFrightened()) {
+			map.BFS(ghost.getPosition());
+			ghost.setPath(map.getSingleSourcePath(ghost.getTarget()));
+		} else { //uses BFS when frightened because ghosts are not influenced by the weight of the edges in that state
+			ghost.setPath(map.getPath(ghost.getPosition(), ghost.getTarget()));
+		}
 		ghost.getPath().remove(0);
 		determineDirection(ghost);
 	}
@@ -839,7 +842,7 @@ public class Game {
 			} 
 		}
 	}
-	
+
 	private void checkCollisionWithPacman(Ghost ghost) {
 		int difX = (int)Math.abs(ghost.getPosX() - pacman.getPosX());
 		int difY = (int)Math.abs(ghost.getPosY() - pacman.getPosY());
@@ -869,14 +872,14 @@ public class Game {
 			}
 		}
 	}
-	
+
 	private void setNewRouteIfNecessary(Ghost ghost) {
 		if(!ghost.getPath().isEmpty()) {
 			Coordinate next = ghost.getPath().get(0);
 			if(ghost.getPosX() == next.getX() && ghost.getPosY() == next.getY()) {
 				ghost.setPosition(ghost.getPath().remove(0));
 				determineDirection(ghost);
-				if(Ghost.state == State.CHASE) {
+				if(Ghost.state == State.CHASE && !ghost.isFrightened() && !ghost.isGoingHome().get()) {
 					searchGhostTarget(ghost);
 				}
 			} else if((ghost.getPosition().equals(leftTileOfTheTunel) && ghost.getPath().get(0).equals(rightTileOfTheTunel))
@@ -1055,14 +1058,14 @@ public class Game {
 			POINTS_EXTRA_LIVE += 5000;
 		}
 	}
-	
+
 	/**
 	 * @return
 	 */
 	public boolean atLeastAFrightenedGhost() {
 		return blinky.isFrightened() || inky.isFrightened() || pinky.isFrightened() || clyde.isFrightened();
 	}
-	
+
 	/**
 	 * @param name
 	 * @return
@@ -1079,42 +1082,42 @@ public class Game {
 			return clyde;
 		}
 	}
-	
+
 	/**
 	 * @return
 	 */
 	public long getFrightenedCountdown() {
 		return frightenedCountdown;
 	}
-	
+
 	/**
 	 * @param timeForWarning
 	 */
 	public void setFrightenedCountdown(long timeForWarning) {
 		this.frightenedCountdown = timeForWarning;
 	}
-	
+
 	/**
 	 * @return
 	 */
 	public int getGhostsEaten() {
 		return ghostsEaten;
 	}
-	
+
 	/**
 	 * @param ghostsEaten
 	 */
 	public void setGhostsEaten(int ghostsEaten) {
 		this.ghostsEaten = ghostsEaten;
 	}
-	
+
 	/**
 	 * @return
 	 */
 	public int getInitialNumberOfDots() {
 		return initialNumberOfDots;
 	}
-	
+
 	/**
 	 * @return
 	 */
