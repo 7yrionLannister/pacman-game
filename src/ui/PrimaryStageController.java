@@ -176,7 +176,7 @@ public class PrimaryStageController {
 					map.getChildren().add(food);
 				}
 				food.relocate(t.getX(), t.getY());
-				food.visibleProperty().bind(game.getFood().get(t).getNotEaten());
+				food.visibleProperty().bind(u.getNotEaten());
 				ChangeListener<Boolean> eatDotsListener = (obs, oldval, newval) -> {if(!newval) {
 					eatDot.play();
 					if(game.getCurrentLevel().getDotsLeft() == 0) {
