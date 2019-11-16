@@ -111,9 +111,7 @@ public class PacmanThread extends Thread {
 	}
 
 	private void refreshGUI() {
-		Platform.runLater(new Runnable() {
-			@Override
-			public void run() {
+		Platform.runLater(() -> {{
 				switch(pacman.getDirection()) {
 				case DOWN:
 					pacmanImage.setRotate(90);

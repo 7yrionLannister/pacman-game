@@ -73,7 +73,7 @@
    <right>
       <VBox spacing="10.0" style="-fx-background-color: black;" BorderPane.alignment="CENTER">
          <children>
-            <Button mnemonicParsing="false" onAction="#startPlayPauseButtonPressed" text="Start" textFill="WHITE" />
+            <Button fx:id="startPlayPauseButton" mnemonicParsing="false" onAction="#startPlayPauseButtonPressed" text="Start" textFill="WHITE" />
             <Button mnemonicParsing="false" onAction="#informationButtonPressed" text="Information" textFill="WHITE" />
             <Button mnemonicParsing="false" onAction="#highScoresButtonPressed" text="High scores" textFill="WHITE" />
          </children>

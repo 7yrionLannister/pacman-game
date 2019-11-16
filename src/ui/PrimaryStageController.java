@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.function.BiConsumer;
+
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -16,6 +18,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -58,6 +61,7 @@ public class PrimaryStageController {
 	 */
 	public final static String CAUGHT = "resources/sprites/pacman/caught/";
 
+	@FXML private Button startPlayPauseButton;
 	@FXML private Label highScoreLabel;
 	@FXML private Label scoreLabel;
 	@FXML private AnchorPane map;
@@ -124,7 +128,7 @@ public class PrimaryStageController {
 	/**
 	 */
 	private boolean onPause;
-	
+
 	/**This initializes all the characters and the maze. 
 	 */
 	@FXML
@@ -147,7 +151,7 @@ public class PrimaryStageController {
 
 		initAudios();
 		setListenersAndBindings();
-		
+
 		onPause = true;
 		refreshLivesCounter();
 		for(Node node: bonusFruitsContainer.getChildren()) {
@@ -206,7 +210,7 @@ public class PrimaryStageController {
 				}
 			}
 		});
-	
+
 		ChangeListener<Boolean> eatGhostListener = (obs, oldval, newval) -> {if(newval) {
 			eatGhost.play();
 		}
@@ -215,7 +219,7 @@ public class PrimaryStageController {
 		game.getInky().isGoingHome().addListener(eatGhostListener);
 		game.getPinky().isGoingHome().addListener(eatGhostListener);
 		game.getClyde().isGoingHome().addListener(eatGhostListener);
-	
+
 		if(System.getProperty("os.name").toLowerCase().contains("windows")) {
 			blackSquare1.relocate(blackSquare1.getLayoutX()+5, blackSquare1.getLayoutY()+5);
 			blackSquare2.relocate(blackSquare2.getLayoutX()+5, blackSquare2.getLayoutY()+5);
@@ -292,9 +296,9 @@ public class PrimaryStageController {
 	 */
 	@FXML
 	public void startPlayPauseButtonPressed(ActionEvent event) {
-		onPause = !onPause;
+		setOnPause(!onPause);
 		try {
-    		FileInputStream fis = new FileInputStream(LeaderboardController.LEADER_BOARD_PATH);
+			FileInputStream fis = new FileInputStream(LeaderboardController.LEADER_BOARD_PATH);
 			ObjectInputStream ois = new ObjectInputStream(fis);
 			ArrayList<Player> lb = (ArrayList<Player>)ois.readObject();
 			highScoreLabel.setText(lb.get(0).getScore()+"");
@@ -406,7 +410,7 @@ public class PrimaryStageController {
 		};
 		Timer timer = new Timer("Timer");
 		timer.schedule(task, 3000);
-		
+
 		String bonus = game.getCurrentLevel().getBonus();
 		cherry.setVisible(true);
 		if(Level.STRAWBERRY.equals(bonus) ) {
@@ -502,12 +506,12 @@ public class PrimaryStageController {
 		game.setScore(0);
 		scoreLabel.setText("0");
 		onPause = true;
-		
+
 		for(Node node : bonusFruitsContainer.getChildren()) {
 			node.setVisible(false);
 		}
 		cherry.setVisible(true);
-		
+
 		setGUItoInitialState();
 	}
 
@@ -656,6 +660,12 @@ public class PrimaryStageController {
 	 */
 	public void setOnPause(boolean onPause) {
 		this.onPause = onPause;
+		Platform.runLater(() -> {if(onPause) {
+			startPlayPauseButton.setText("Start");
+		} else {
+			startPlayPauseButton.setText("Pause");
+		}
+		});
 	}
 
 	/**
