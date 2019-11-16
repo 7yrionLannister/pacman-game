@@ -57,7 +57,6 @@ public class Game {
 	/**
 	 */
 	private HashMap<Coordinate, Food> food;
-
 	/**
 	 */
 	private Pacman pacman;

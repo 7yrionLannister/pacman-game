@@ -52,10 +52,10 @@ public class Level {
 	/**It represents the actual Pacman speed in the maze when it is eating pacdocts. 
 	 */
 	private int pacmanEatingDotsSpeed;
-	/**
+	/**It represents the ghosts speed in the game in a determinate stage.
 	 */
 	private int ghostsSpeed;
-	/**
+	/**It represents the ghosts speed when it is trying to pass along the tunnel.					
 	 */
 	private int ghostsTunelSpeed;
 	/**
@@ -70,26 +70,26 @@ public class Level {
 	/**
 	 */
 	private int cruiseElroySpeed2;
-	/**
+	/**It represents Pacman speed when he eats an energizer.
 	 */
 	private int pacmanWithEnergizerSpeed;
-	/**
+	/**It represents Pacman speed when he eats an energizer and besides dots.
 	 */
 	private int pacmanWithEnergizerEatingDotsSpeed;
-	/**
+	/**It represents the ghosts speed when they are frightened by the energizer eating. 
 	 */
 	private int frightGhostsSpeed;
-	/**
+	/**It represents the period during which the ghosts are frightened.
 	 */
 	private int frightTime; 
-	/**
+	/**It represents if the one ghost is frightened or not.
 	 */
 	private boolean frightened;
-	/**
+	/**It represents the remaining left dots in the maze.
 	 */
 	private int dotsLeft;
 
-	/**
+	/**Creates a level with a determinate stage, characters and time lapses.
 	 * @param stage
 	 * @param bonus
 	 * @param pacmanSpeed
