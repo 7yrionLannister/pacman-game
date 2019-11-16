@@ -93,15 +93,13 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 	public void link(E src, E dst, int weight) {
 		insertVertex(src); //Inserts src if not currently in the graph
 		insertVertex(dst); //Inserts dst if not currently in the graph
-		Vertex<E> s = vertices.get(src);
-		Vertex<E> d = vertices.get(dst);
-		Edge<E> newedge1 = new Edge<>(s.getElement(), d.getElement(), weight);
+		Edge<E> newedge1 = new Edge<>(src, dst, weight);
 
 		ArrayList<Edge<E>> sEdges = adjacencyLists.get(src);
 		sEdges.remove(newedge1); //if the edge already exists remove it
 		sEdges.add(newedge1);
 		if(!isDirected) { //Add the additional edge if this graph is undirected
-			Edge<E> newedge2 = new Edge<>(d.getElement(), s.getElement(), weight);
+			Edge<E> newedge2 = new Edge<>(dst, src, weight);
 
 			ArrayList<Edge<E>> dEdges = adjacencyLists.get(dst);
 			dEdges.remove(newedge2); //if the edge already exists remove it

@@ -325,8 +325,11 @@ public class AdjacencyMatrixGraphTest {
 		linkVerticesInUndirectedGraphTest();
 		graph.DFS();
 
+		System.out.println("MATRIX");
 		for(int i = 0; i < 8; i++) {
+			//TODO comprobar por estructura de parentesis
 			assertTrue(graph.getVertexColor(i+1) == Color.BLACK && graph.getDFSDiscoveredTime(i+1) > 0 && graph.getDFSFinishedTime(i+1) > 0);
+			System.out.println((i+1) + " ~~~ " + graph.getDFSDiscoveredTime(i+1) + " , " + graph.getDFSFinishedTime(i+1));
 		}
 	}
 
