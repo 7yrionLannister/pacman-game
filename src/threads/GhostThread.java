@@ -16,7 +16,8 @@ public class GhostThread extends Thread {
 	/**It represents the ghost that will be controlled by this thread.
 	 */
 	private Ghost ghost;
-	
+	/**A long variable to set sleep times when is needed.
+	 */
 	private long rate = 0;
 
 	/**Creates a thread for moving the ghost as from a game controller and the ghost name.
@@ -47,7 +48,8 @@ public class GhostThread extends Thread {
 
 		}
 	}
-
+	/**This determines how fast the ghost has to move when is frightened.
+	 */
 	private void determineRate() {
 		Level level = game.getCurrentLevel();
 		if(ghost.equals(game.getBlinky())) {
@@ -76,7 +78,8 @@ public class GhostThread extends Thread {
 			rate = 6;
 		}
 	}
-
+	/**This moves the ghost along the maze.
+	 */
 	private void move() {
 		boolean move = false;
 		int ini = game.getInitialNumberOfDots();

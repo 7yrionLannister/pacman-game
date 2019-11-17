@@ -60,7 +60,8 @@ public class PacmanThread extends Thread {
 			}
 		}
 	}
-	
+	/**This moves Pacman along the maze as from the system input.
+	 */
 	private void move() {
 		PrimaryStageController.MOVEMENT_COUNTER++;
 		if((PrimaryStageController.MOVEMENT_COUNTER*PrimaryStageController.MOVEMENT_SPRITE) % 2 == 0) {
@@ -109,7 +110,8 @@ public class PacmanThread extends Thread {
 		}
 		game.getPacman().setDying(false);
 	}
-
+	/**This makes that the gui get refresh when the player presses a determinate key at system input.
+	 */
 	private void refreshGUI() {
 		Platform.runLater(() -> {{
 				switch(pacman.getDirection()) {
@@ -146,7 +148,8 @@ public class PacmanThread extends Thread {
 			}
 		});
 	}
-
+	/**This makes Pacman faster when is eating dots or has eaten an energizer.
+	 */
 	private void determineRate() {
 		Level level = game.getCurrentLevel();
 		if(level.isFrightened()) {

@@ -160,7 +160,8 @@ public class PrimaryStageController {
 		cherry.setVisible(true);
 		startThreads();
 	}
-
+	/**
+	 */
 	private void initAudios() {
 		intro = new AudioClip(new File("resources/audio/intro.mp3").toURI().toString());
 		eatDot = new AudioClip(new File("resources/audio/eat_dot.mp3").toURI().toString());
@@ -169,7 +170,8 @@ public class PrimaryStageController {
 		extraLive = new AudioClip(new File("resources/audio/extrapac.mp3").toURI().toString());
 		death = new AudioClip(new File("resources/audio/pacman_death.mp3").toURI().toString());
 	}
-
+	/**
+	 */
 	private void setListenersAndBindings() {
 		game.getFood().forEach(new BiConsumer<Coordinate, Food>() {
 			@Override

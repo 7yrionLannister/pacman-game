@@ -578,7 +578,8 @@ public class Game {
 			break;
 		}
 	}
-
+	/**
+	 */
 	private void check180degreesRotation() {
 		if(((pacman.getRequestedDirection() == Direction.RIGHT && pacman.getDirection() == Direction.LEFT) || (pacman.getRequestedDirection() == Direction.LEFT && pacman.getDirection() == Direction.RIGHT)) || ((pacman.getRequestedDirection() == Direction.UP && pacman.getDirection() == Direction.DOWN) || (pacman.getRequestedDirection() == Direction.DOWN && pacman.getDirection() == Direction.UP))) {  
 			pacman.setDirection(pacman.getRequestedDirection());
@@ -617,7 +618,8 @@ public class Game {
 			pacman.setPosition(newpos);
 		}
 	}
-
+	/**
+	 */
 	private void eatContentOfTile() {
 		switch(food.get(pacman.getPosition()).getType()) {
 		case Food.ENERGIZER:
@@ -841,7 +843,9 @@ public class Game {
 			} 
 		}
 	}
-
+	/**
+	 * @param ghost
+	 */
 	private void checkCollisionWithPacman(Ghost ghost) {
 		int difX = (int)Math.abs(ghost.getPosX() - pacman.getPosX());
 		int difY = (int)Math.abs(ghost.getPosY() - pacman.getPosY());
@@ -871,7 +875,9 @@ public class Game {
 			}
 		}
 	}
-
+	/**
+	 * @param ghost
+	 */
 	private void setNewRouteIfNecessary(Ghost ghost) {
 		if(!ghost.getPath().isEmpty()) {
 			Coordinate next = ghost.getPath().get(0);
