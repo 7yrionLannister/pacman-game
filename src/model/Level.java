@@ -90,20 +90,20 @@ public class Level {
 	private int dotsLeft;
 
 	/**Creates a level with a determinate stage, characters and time lapses.
-	 * @param stage
-	 * @param bonus
-	 * @param pacmanSpeed
-	 * @param pacmanEatingDotsSpeed
-	 * @param ghostsSpeed
-	 * @param ghostsTunelSpeed
-	 * @param cruiseElroyDotsLeft1
-	 * @param cruiseElroySpeed1
-	 * @param cruiseElroyDotsLeft2
-	 * @param cruiseElroySpeed2
-	 * @param pacmanWithEnergizerSpeed
-	 * @param pacmanWithEnergizerEatingDotsSpeed
-	 * @param frightGhostsSpeed
-	 * @param frightTime
+	 * @param stage is an integer that
+	 * @param bonus is an integer that
+	 * @param pacmanSpeed is an integer that
+	 * @param pacmanEatingDotsSpeed is an integer that
+	 * @param ghostsSpeed is an integer that
+	 * @param ghostsTunelSpeed is an integer that
+	 * @param cruiseElroyDotsLeft1 is an integer that
+	 * @param cruiseElroySpeed1 is an integer that
+	 * @param cruiseElroyDotsLeft2 is an integer that
+	 * @param cruiseElroySpeed2 is an integer that
+	 * @param pacmanWithEnergizerSpeed is an integer that
+	 * @param pacmanWithEnergizerEatingDotsSpeed is an integer that
+	 * @param frightGhostsSpeed is an integer that
+	 * @param frightTime is an integer that
 	 */
 	public Level(int stage, String bonus, int pacmanSpeed, int pacmanEatingDotsSpeed, int ghostsSpeed,
 			int ghostsTunelSpeed, int cruiseElroyDotsLeft1, int cruiseElroySpeed1, int cruiseElroyDotsLeft2,
@@ -125,8 +125,8 @@ public class Level {
 		this.frightTime = frightTime;
 		setFrightened(false);
 	}
-	/**
-	 * @return
+	/**Allows to obtain the bonus points as an integer.
+	 * @return An Integer that represents the bonus points.
 	 */
 	public int getBonusScore() {
 		int bs = 0;
