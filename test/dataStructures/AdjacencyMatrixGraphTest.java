@@ -3,6 +3,10 @@ package dataStructures;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.TreeMap;
+import java.util.function.BiConsumer;
+
 import org.junit.jupiter.api.Test;
 
 import dataStructures.Vertex.Color;
@@ -325,9 +329,32 @@ public class AdjacencyMatrixGraphTest {
 		linkVerticesInUndirectedGraphTest();
 		graph.DFS();
 
+		TreeMap<Integer, Integer> parenthesis = new TreeMap<>(); //We put the vertices in a treemap so that the keys
+                                                                 //will be the time stamps and the values will be the 
+                                                                 //vertices. As the treemap keeps the keys in order, 
+                                                                 //if DFS worked well, there will be a valid 
+                                                                 //parenthesis structure.
 		for(int i = 0; i < 8; i++) {
-			assertTrue(graph.getVertexColor(i+1) == Color.BLACK && graph.getDFSDiscoveredTime(i+1) > 0 && graph.getDFSFinishedTime(i+1) > 0);
+			assertTrue(graph.getVertexColor(i+1) == Color.BLACK);
+			parenthesis.put(graph.getDFSDiscoveredTime(i+1), i+1);
+			parenthesis.put(graph.getDFSFinishedTime(i+1), i+1);
 		}
+
+		Stack<Integer> stack = new Stack<>();
+		ArrayList<Integer> list = new ArrayList<>();
+		for(Integer i : parenthesis.values()) {
+			if(!list.contains(i)) {
+				stack.push(i);
+				list.add(i);
+			} else if(!stack.isEmpty()){
+				stack.pop();
+				list.remove(i);
+			} else {
+				stack.push(Integer.MAX_VALUE); //add an element to notice the parenthesis structure is not valid in the assert
+				break;
+			}
+		}
+		assertTrue(stack.isEmpty(), "DFS should result in a valid parenthesis structure of time-stamps");
 	}
 
 	@Test
@@ -426,11 +453,11 @@ public class AdjacencyMatrixGraphTest {
 	@Test
 	public void FloydWarshallTest() {
 		linkVerticesInDirectedGraphTest();
-		
+
 		int src = 6;
 		graph.Dijkstra(src);
 		graph.FloydWarshall();
-		
+
 		ArrayList<Integer> byDijkstra = graph.getSingleSourcePath(5);
 		ArrayList<Integer> byFW = graph.getPath(src, 5);
 		assertTrue(byDijkstra.get(0) == byFW.get(0), "Source is not the expected");
@@ -438,13 +465,13 @@ public class AdjacencyMatrixGraphTest {
 		assertTrue(byDijkstra.get(2) == byFW.get(2), "It is not the shortest path");
 		assertTrue(byDijkstra.get(3) == byFW.get(3), "It is not the shortest path");
 		assertTrue(byDijkstra.get(4) == byFW.get(4), "It is not the shortest path");
-		
+
 		byFW = graph.getPath(1, 5);
 		assertTrue(byDijkstra.get(1) == byFW.get(0), "It is not the shortest path");
 		assertTrue(byDijkstra.get(2) == byFW.get(1), "It is not the shortest path");
 		assertTrue(byDijkstra.get(3) == byFW.get(2), "It is not the shortest path");
 		assertTrue(byDijkstra.get(4) == byFW.get(3), "It is not the shortest path");
-		
+
 		byFW = graph.getPath(2, 5);
 		assertTrue(byDijkstra.get(2) == byFW.get(0), "It is not the shortest path");
 		assertTrue(byDijkstra.get(3) == byFW.get(1), "It is not the shortest path");
@@ -456,13 +483,13 @@ public class AdjacencyMatrixGraphTest {
 		assertTrue(byDijkstra.get(1) == byFW.get(1), "It is not the shortest path");
 		assertTrue(byDijkstra.get(2) == byFW.get(2), "It is not the shortest path");
 		assertTrue(byDijkstra.get(3) == byFW.get(3), "It is not the shortest path");
-		
+
 		byFW = graph.getPath(8, 4);
 		assertTrue(byFW.isEmpty(), "The path must be empty as 4 is unreachable from 8");
-		
+
 		linkVerticesInUndirectedGraphTest();
 		graph.FloydWarshall();
-		
+
 		src = 8;
 		graph.Dijkstra(src);
 		byDijkstra = graph.getSingleSourcePath(5);
@@ -520,7 +547,7 @@ public class AdjacencyMatrixGraphTest {
 		}
 		assertTrue(weight == 35, "It is not a minimum spanning tree");
 	}
-	
+
 	@Test
 	public void kruskalTest() {
 		linkVerticesInUndirectedGraphTest();
@@ -531,7 +558,7 @@ public class AdjacencyMatrixGraphTest {
 		}
 		assertTrue(weight == 35, "It is not a minimum spanning tree");
 	}
-	
+
 	private void vertexInsertionLoop() {
 		int vertexCount = 0;
 		for(int i = 0; i < 50; i++) {
