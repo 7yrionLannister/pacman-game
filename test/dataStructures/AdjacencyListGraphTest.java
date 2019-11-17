@@ -3,6 +3,9 @@ package dataStructures;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.TreeMap;
+
 import org.junit.jupiter.api.Test;
 
 import dataStructures.Vertex.Color;
@@ -315,12 +318,32 @@ public class AdjacencyListGraphTest {
 		linkVerticesInUndirectedGraphTest();
 		graph.DFS();
 
-		System.out.println("LIST");
+		TreeMap<Integer, Integer> parenthesis = new TreeMap<>(); //We put the vertices in a treemap so that the keys
+		                                                         //will be the time stamps and the values will be the 
+		                                                         //vertices. As the treemap keeps the keys in order, 
+		                                                         //if DFS worked well, there will be a valid 
+		                                                         //parenthesis structure.
 		for(int i = 0; i < 8; i++) {
-			//TODO comprobar por estructura de parentesis
-			assertTrue(graph.getVertexColor(i+1) == Color.BLACK && graph.getDFSDiscoveredTime(i+1) > 0 && graph.getDFSFinishedTime(i+1) > 0);
-			System.out.println((i+1) + " ~~~ " + graph.getDFSDiscoveredTime(i+1) + " , " + graph.getDFSFinishedTime(i+1));
-		}	
+			assertTrue(graph.getVertexColor(i+1) == Color.BLACK);
+			parenthesis.put(graph.getDFSDiscoveredTime(i+1), i+1);
+			parenthesis.put(graph.getDFSFinishedTime(i+1), i+1);
+		}
+
+		Stack<Integer> stack = new Stack<>();
+		ArrayList<Integer> list = new ArrayList<>();
+		for(Integer i : parenthesis.values()) {
+			if(!list.contains(i)) {
+				stack.push(i);
+				list.add(i);
+			} else if(!stack.isEmpty()){
+				stack.pop();
+				list.remove(i);
+			} else {
+				stack.push(Integer.MAX_VALUE); //add an element to notice the parenthesis structure is not valid in the assert
+				break;
+			}
+		}
+		assertTrue(stack.isEmpty(), "DFS should result in a valid parenthesis structure of time-stamps");
 	}
 
 	@Test
