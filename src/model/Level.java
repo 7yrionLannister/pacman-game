@@ -58,16 +58,16 @@ public class Level {
 	/**It represents the ghosts speed when it is trying to pass along the tunnel.					
 	 */
 	private int ghostsTunelSpeed;
-	/**
+	/**It represents the number of first dots remaining at left.
 	 */
 	private int cruiseElroyDotsLeft1;
-	/**
+	/**It represents the first speed associated with the first dots remaining at left.
 	 */
 	private int cruiseElroySpeed1;
-	/**
+	/**It represents the number of second dots remaining at left.
 	 */
 	private int cruiseElroyDotsLeft2;
-	/**
+	/**It represents the second speed associated with the second dots remaining at left.
 	 */
 	private int cruiseElroySpeed2;
 	/**It represents Pacman speed when he eats an energizer.
@@ -90,20 +90,20 @@ public class Level {
 	private int dotsLeft;
 
 	/**Creates a level with a determinate stage, characters and time lapses.
-	 * @param stage is an integer that
-	 * @param bonus is an integer that
-	 * @param pacmanSpeed is an integer that
-	 * @param pacmanEatingDotsSpeed is an integer that
-	 * @param ghostsSpeed is an integer that
-	 * @param ghostsTunelSpeed is an integer that
-	 * @param cruiseElroyDotsLeft1 is an integer that
-	 * @param cruiseElroySpeed1 is an integer that
-	 * @param cruiseElroyDotsLeft2 is an integer that
-	 * @param cruiseElroySpeed2 is an integer that
-	 * @param pacmanWithEnergizerSpeed is an integer that
-	 * @param pacmanWithEnergizerEatingDotsSpeed is an integer that
-	 * @param frightGhostsSpeed is an integer that
-	 * @param frightTime is an integer that
+	 * @param stage is an integer that represents the actual stage. 
+	 * @param bonus is an integer that represents the bonus points.
+	 * @param pacmanSpeed is an integer that represents the actual Pacman speed in the maze. 
+	 * @param pacmanEatingDotsSpeed is an integer that represents the actual Pacman speed in the maze when it is eating pacdocts. 
+	 * @param ghostsSpeed is an integer that represents the ghosts speed in the game in a determinate stage.
+	 * @param ghostsTunelSpeed is an integer that represents the ghosts speed when it is trying to pass along the tunnel.
+	 * @param cruiseElroyDotsLeft1 is an integer that represents the number of first dots remaining at left.
+	 * @param cruiseElroySpeed1 is an integer that represents the first speed associated with the first dots remaining at left.
+	 * @param cruiseElroyDotsLeft2 is an integer that represents the number of second dots remaining at left.
+	 * @param cruiseElroySpeed2 is an integer that represents the second speed associated with the second dots remaining at left.
+	 * @param pacmanWithEnergizerSpeed is an integer that represents Pacman speed when he eats an energizer.
+	 * @param pacmanWithEnergizerEatingDotsSpeed is an integer that represents Pacman speed when he eats an energizer and besides dots.
+	 * @param frightGhostsSpeed is an integer that represents the ghosts speed when they are frightened by the energizer eating. 
+	 * @param frightTime is an integer that represents the period during which the ghosts are frightened.
 	 */
 	public Level(int stage, String bonus, int pacmanSpeed, int pacmanEatingDotsSpeed, int ghostsSpeed,
 			int ghostsTunelSpeed, int cruiseElroyDotsLeft1, int cruiseElroySpeed1, int cruiseElroyDotsLeft2,
@@ -158,200 +158,200 @@ public class Level {
 		}
 		return bs;
 	}
-	/**
-	 * @return
+	/**Allows to obtain an integer that represents the actual stage. 
+	 * @return an integer that represents the actual stage. 
 	 */
 	public int getStage() {
 		return stage;
 	}
-	/**
-	 * @param stage
+	/**Allows to set an integer that represents the actual stage. 
+	 * @param stage is an integer that represents the actual stage. 
 	 */
 	public void setStage(int stage) {
 		this.stage = stage;
 	}
-	/**
-	 * @return
+	/**Allows to obtain a string that represents the bonus points.
+	 * @return a string that represents the bonus points.
 	 */
 	public String getBonus() {
 		return bonus;
 	}
-	/**
-	 * @param bonus
+	/**Allows to set a string that represents the bonus points.
+	 * @param bonus is a string that represents the bonus points.
 	 */
 	public void setBonus(String bonus) {
 		this.bonus = bonus;
 	}
-	/**
-	 * @return
+	/**Allows to obtain an integer that represents the actual Pacman speed in the maze. 
+	 * @return an integer that represents the actual Pacman speed in the maze.
 	 */
 	public int getPacmanSpeed() {
 		return pacmanSpeed;
 	}
-	/**
-	 * @param pacmanSpeed
+	/**Allows to set an integer that represents the actual Pacman speed in the maze.
+	 * @param pacmanSpeed is an integer that represents the actual Pacman speed in the maze.
 	 */
 	public void setPacmanSpeed(int pacmanSpeed) {
 		this.pacmanSpeed = pacmanSpeed;
 	}
-	/**
-	 * @return
+	/**Allows to obtain an integer that represents the actual Pacman speed in the maze when it is eating pacdocts. 
+	 * @return an integer that represents the actual Pacman speed in the maze when it is eating pacdocts.
 	 */
 	public int getPacmanEatingDotsSpeed() {
 		return pacmanEatingDotsSpeed;
 	}
-	/**
-	 * @param pacmanEatingDotsSpeed
+	/**Allows to set an integer that represents the actual Pacman speed in the maze when it is eating pacdocts. 
+	 * @param pacmanEatingDotsSpeed is an integer that represents the actual Pacman speed in the maze when it is eating pacdocts.
 	 */
 	public void setPacmanEatingDotsSpeed(int pacmanEatingDotsSpeed) {
 		this.pacmanEatingDotsSpeed = pacmanEatingDotsSpeed;
 	}
-	/**
-	 * @return
+	/**Allows to obtain an integer that represents the ghosts speed in the game in a determinate stage.
+	 * @return an integer that represents the ghosts speed in the game in a determinate stage.
 	 */
 	public int getGhostsSpeed() {
 		return ghostsSpeed;
 	}
-	/**
-	 * @param ghostsSpeed
+	/**Allows to set an integer that represents the ghosts speed in the game in a determinate stage.
+	 * @param ghostsSpeed is an integer that represents the ghosts speed in the game in a determinate stage.
 	 */
 	public void setGhostsSpeed(int ghostsSpeed) {
 		this.ghostsSpeed = ghostsSpeed;
 	}
-	/**
-	 * @return
+	/**Allows to obtain an integer that represents the ghosts speed when it is trying to pass along the tunnel.
+	 * @return an integer that represents the ghosts speed when it is trying to pass along the tunnel.
 	 */
 	public int getGhostsTunelSpeed() {
 		return ghostsTunelSpeed;
 	}
-	/**
-	 * @param ghostsTunelSpeed
+	/**Allows to set an integer that represents the ghosts speed when it is trying to pass along the tunnel.
+	 * @param ghostsTunelSpeed is an integer that represents the ghosts speed when it is trying to pass along the tunnel.
 	 */
 	public void setGhostsTunelSpeed(int ghostsTunelSpeed) {
 		this.ghostsTunelSpeed = ghostsTunelSpeed;
 	}
-	/**
-	 * @return
+	/**Allows to obtain an integer that represents the number of first dots remaining at left.
+	 * @return an integer that represents the number of first dots remaining at left.
 	 */
 	public int getCruiseElroyDotsLeft1() {
 		return cruiseElroyDotsLeft1;
 	}
-	/**
-	 * @param cruiseElroyDotsLeft1
+	/**Allows to set an integer that represents the number of first dots remaining at left.
+	 * @param cruiseElroyDotsLeft1 is an integer that represents the number of first dots remaining at left.
 	 */
 	public void setCruiseElroyDotsLeft1(int cruiseElroyDotsLeft1) {
 		this.cruiseElroyDotsLeft1 = cruiseElroyDotsLeft1;
 	}
-	/**
-	 * @return
+	/**Allows to obtain an integer that represents the first speed associated with the first dots remaining at left.
+	 * @return an integer that represents the first speed associated with the first dots remaining at left.
 	 */
 	public int getCruiseElroySpeed1() {
 		return cruiseElroySpeed1;
 	}
-	/**
-	 * @param cruiseElroySpeed1
+	/**Allows to set an integer that represents the first speed associated with the first dots remaining at left.
+	 * @param cruiseElroySpeed1 is an integer that represents the first speed associated with the first dots remaining at left.
 	 */
 	public void setCruiseElroySpeed1(int cruiseElroySpeed1) {
 		this.cruiseElroySpeed1 = cruiseElroySpeed1;
 	}
-	/**
-	 * @return
+	/**Allows to obtain an integer that represents the number of second dots remaining at left.
+	 * @return an integer that represents the number of second dots remaining at left.
 	 */
 	public int getCruiseElroyDotsLeft2() {
 		return cruiseElroyDotsLeft2;
 	}
-	/**
-	 * @param cruiseElroyDotsLeft2
+	/**Allows to set an integer that represents the number of second dots remaining at left.
+	 * @param cruiseElroyDotsLeft2 is an integer that represents the number of second dots remaining at left.
 	 */
 	public void setCruiseElroyDotsLeft2(int cruiseElroyDotsLeft2) {
 		this.cruiseElroyDotsLeft2 = cruiseElroyDotsLeft2;
 	}
-	/**
-	 * @return
+	/**Allows to obtain an integer that represents the second speed associated with the second dots remaining at left.
+	 * @return an integer that represents the second speed associated with the second dots remaining at left.
 	 */
 	public int getCruiseElroySpeed2() {
 		return cruiseElroySpeed2;
 	}
-	/**
-	 * @param cruiseElroySpeed2
+	/**Allows to set an integer that represents the second speed associated with the second dots remaining at left.
+	 * @param cruiseElroySpeed2 is an integer that represents the second speed associated with the second dots remaining at left.
 	 */
 	public void setCruiseElroySpeed2(int cruiseElroySpeed2) {
 		this.cruiseElroySpeed2 = cruiseElroySpeed2;
 	}
-	/**
-	 * @return
+	/**Allows to obtain an integer that represents Pacman speed when he eats an energizer.
+	 * @return an integer that represents Pacman speed when he eats an energizer.
 	 */
 	public int getPacmanWithEnergizerSpeed() {
 		return pacmanWithEnergizerSpeed;
 	}
-	/**
-	 * @param pacmanWithEnergizerSpeed
+	/**Allows to set an integer that represents Pacman speed when he eats an energizer.
+	 * @param pacmanWithEnergizerSpeed is an integer that represents Pacman speed when he eats an energizer.
 	 */
 	public void setPacmanWithEnergizerSpeed(int pacmanWithEnergizerSpeed) {
 		this.pacmanWithEnergizerSpeed = pacmanWithEnergizerSpeed;
 	}
-	/**
-	 * @return
+	/**Allows to obtain an integer that represents Pacman speed when he eats an energizer and besides dots.
+	 * @return an integer that represents Pacman speed when he eats an energizer and besides dots.
 	 */
 	public int getPacmanWithEnergizerEatingDotsSpeed() {
 		return pacmanWithEnergizerEatingDotsSpeed;
 	}
-	/**
-	 * @param pacmanWithEnergizerEatingDotsSpeed
+	/**Allows to set an integer that represents Pacman speed when he eats an energizer and besides dots.
+	 * @param pacmanWithEnergizerEatingDotsSpeed is an integer that represents Pacman speed when he eats an energizer and besides dots.
 	 */
 	public void setPacmanWithEnergizerEatingDotsSpeed(int pacmanWithEnergizerEatingDotsSpeed) {
 		this.pacmanWithEnergizerEatingDotsSpeed = pacmanWithEnergizerEatingDotsSpeed;
 	}
-	/**
-	 * @return
+	/**Allows to obtain an integer that represents the ghosts speed when they are frightened by the energizer eating.
+	 * @return an integer that represents the ghosts speed when they are frightened by the energizer eating.
 	 */
 	public int getFrightGhostsSpeed() {
 		return frightGhostsSpeed;
 	}
-	/**
-	 * @param frightGhostsSpeed
+	/**Allows to set an integer that represents the ghosts speed when they are frightened by the energizer eating.
+	 * @param frightGhostsSpeed is an integer that represents the ghosts speed when they are frightened by the energizer eating.
 	 */
 	public void setFrightGhostsSpeed(int frightGhostsSpeed) {
 		this.frightGhostsSpeed = frightGhostsSpeed;
 	}
-	/**
-	 * @return
+	/**Allows to obtain an integer that represents the period during which the ghosts are frightened.
+	 * @return an integer that represents the period during which the ghosts are frightened.
 	 */
 	public int getFrightTime() {
 		return frightTime;
 	}
-	/**
-	 * @param frightTime
+	/**Allows to set an integer that represents the period during which the ghosts are frightened.
+	 * @param frightTime is an integer that represents the period during which the ghosts are frightened.
 	 */
 	public void setFrightTime(int frightTime) {
 		this.frightTime = frightTime;
 	}
-	/**
-	 * @return
+	/**Allows to obtain a boolean that represents if the one ghost is frightened or not.
+	 * @return a boolean that represents if the one ghost is frightened or not.
 	 */
 	public boolean isFrightened() {
 		return frightened;
 	}
-	/**
-	 * @param frightened
+	/**Allows to set a boolean that represents if the one ghost is frightened or not.
+	 * @param frightened is a boolean that represents if the one ghost is frightened or not.
 	 */
 	public void setFrightened(boolean frightened) {
 		this.frightened = frightened;
 	}
-	/**
-	 * @return
+	/**Allows to obtain an integer that represents the remaining left dots in the maze.
+	 * @return an integer that represents the remaining left dots in the maze
 	 */
 	public int getDotsLeft() {
 		return dotsLeft;
 	}
-	/**
-	 * @param dotsLeft
+	/**Allows to set an integer that represents the remaining left dots in the maze.
+	 * @param dotsLeft is an integer that represents the remaining left dots in the maze
 	 */
 	public void setDotsLeft(int dotsLeft) {
 		this.dotsLeft = dotsLeft;
 	}
-	/**
-	 * @return
+	/**This clones the actual level to be used later.
+	 * @return a Level that represents the clone of the actual one.
 	 */
 	@Override
 	public Level clone() {
