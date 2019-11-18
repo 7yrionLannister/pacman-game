@@ -60,8 +60,8 @@ public class Edge<E> implements Comparable<Edge<E>>{
 	}
 	/***This method compares if another Adjacency List Edge of E type is equals to the actual Adjacency List Edge.
 	 * @return A boolean that indicates if another Adjacency List Edge of E type is equals to the actual Adjacency List Edge.
-	 * @param another An AdjacencyListEdge<E> that is going to be compared with the actual one.
-	 * @throws ClassCastException if another is not an AdjacencyListEdge<E>.
+	 * @param another An AdjacencyListEdge that is going to be compared with the actual one.
+	 * @throws ClassCastException if another is not an AdjacencyListEdge.
 	 */
 	@Override
 	public boolean equals(Object another) {

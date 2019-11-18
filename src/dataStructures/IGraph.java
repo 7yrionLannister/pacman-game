@@ -16,7 +16,7 @@ public interface IGraph<E> {
 	/**This deletes a vertex, defined with a E object that arrives as parameter, looking for the respective value inside the graph and verifies if 
 	 * the deletion process was done rightly. 
 	 * @return A boolean that indicates if the deletion process was done rightly.
-	 * @param sk is a vertex that is going to be erased from the graph. 
+	 * @param e is a vertex that is going to be erased from the graph. 
 	 */
 	boolean deleteVertex(E e);
 	/**This method links a source vertex with another vertex denoted as dst assigning it a weight to their respective connection where a edge is 
@@ -65,12 +65,12 @@ public interface IGraph<E> {
 	 */
 	void Dijkstra(E src) ;
 	/**This performs Prim which finds the minimum spanning tree edges of a graph when this is connected and there is a source vertex. 
-	 * @return An ArrayList<Edge<E>> which has all the edges of the minimum spanning tree.
+	 * @return An ArrayList which has all the edges of the minimum spanning tree.
 	 * @param src is a reference vertex to start Prim process.
 	 */
 	ArrayList<Edge<E>> primMinimumSpanningTree(E src);
 	/**This performs Kruskal which finds the minimum spanning tree edges of a graph regardless of this is connected or not.
-	 * @return An ArrayList<Edge<E>> which has all the edges of the minimum spanning tree.
+	 * @return An ArrayList which has all the edges of the minimum spanning tree.
 	 */
 	ArrayList<Edge<E>> kruskalMinimumSpannigTree();
 
@@ -80,7 +80,7 @@ public interface IGraph<E> {
 	/**This method returns an ArrayList of vertices that represents the single path for a specified vertex that arrive as parameter if and only if
 	 * bfs, dfs or dijkstra have been called before to determinate this path where if the ArrayList is empty is because there is no possible path
 	 * to reach that vertex.
-	 * @return An ArrayList<E> that represent a single path from vertex dst. 
+	 * @return An ArrayList that represent a single path from vertex dst. 
 	 * @param dst is a vertex that indicates from where the path have to be built.
 	 */
 	ArrayList<E> getSingleSourcePath(E dst);
@@ -90,7 +90,7 @@ public interface IGraph<E> {
 	 */
 	int getSingleSourceDistance(E dst);
 	/**It allows to obtain the path between two pair of vertices through an ArrayList of vertices.
-	 * @return An ArrayList<E> that represents the path between src and dst. 
+	 * @return An ArrayList that represents the path between src and dst. 
 	 * @param src is a vertex from which we can access to dst. 
 	 * @param dst is the vertex which dst can access.
 	 */
@@ -130,7 +130,7 @@ public interface IGraph<E> {
 	 */
 	boolean containsEdge(E src, E dst);
 	/**It allows to obtain all the adjacent vertices of a determinate source that arrives as parameter.
-	 * @return An ArrayList<E> that represents all the adjacent vertices of a determinate source that arrives as parameter.
+	 * @return An ArrayList that represents all the adjacent vertices of a determinate source that arrives as parameter.
 	 * @param key is a vertex which its adjacent vertices are going to be found.
 	 */
 	ArrayList<E> getAdjacent(E key);

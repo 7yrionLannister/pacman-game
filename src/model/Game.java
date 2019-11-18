@@ -98,6 +98,7 @@ public class Game {
 	private Sequence fifthLevelAndAbove;
 
 	/**Creates a game starting all the initial levels, characters, maze, coordinates with respect to a determinate sequence.  
+	 * @throws IOException for the needed files for the game.
 	 */
 	public Game() throws IOException {
 		firstLevelSequence = new Sequence(7000, 20000, 7000, 20000, 5000, 20000, 5000);
@@ -900,6 +901,7 @@ public class Game {
 	}
 
 	/**Allows to obtain a boolean that represents if Pacman is eating or not dots.
+	 * @return a boolean that represents if Pacman is eating or not dots.
 	 */
 	public boolean isEatingDots() {
 		byte type = food.get(pacman.getPosition()).getType();

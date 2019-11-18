@@ -1,8 +1,15 @@
 package dataStructures;
 
 public class Queue<E> implements IQueue<E> {
+	
+	/**It represents the node that always goes in the front of the queue.
+	 */
 	private Node<E> front;
+	/**It represents the node that always goes in the back of the queue.
+	 */
 	private Node<E> back;
+	/**It represents the queue size.
+	 */
 	private int size;
 
 	/**Creates an empty queue

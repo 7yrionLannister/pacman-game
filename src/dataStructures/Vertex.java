@@ -94,7 +94,7 @@ public class Vertex<E> implements Comparable<Vertex<E>> {
 	/**This method compares if another vertex of E type is equals to the actual vertex.
 	 * @return A boolean that indicates if the vertex another is equal to the actual one.
 	 * @param another is a vertex which is going to be compare with the actual one.
-	 * @throws ClassCastException if another is not a Vertex<E>.
+	 * @throws ClassCastException if another is not a Vertex.
 	 */
 	@Override
 	public boolean equals(Object another) {
@@ -110,13 +110,13 @@ public class Vertex<E> implements Comparable<Vertex<E>> {
 		return this.distance-other.distance;
 	}
 	/***It allows to get the actual vertex predecessor. 
-	 * @return A Vertex<E> that represents the actual vertex predecessor. 
+	 * @return A Vertex that represents the actual vertex predecessor. 
 	 */
 	public Vertex<E> getPredecessor() {
 		return predecessor;
 	}
 	/**It allows to set the actual vertex predecessor. 
-	 * @param predecessor is a Vertex<E> that represents the actual vertex predecessor.
+	 * @param predecessor is a Vertex that represents the actual vertex predecessor.
 	 */
 	public void setPredecessor(Vertex<E> predecessor) {
 		this.predecessor = predecessor;

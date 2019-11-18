@@ -28,7 +28,7 @@ public class Node<E> {
 		this.element = element;
 	}
 	/**This method allows to get the next node of E type.
-	 * @return Node<E> that represents the next node of the actual node. 
+	 * @return Node that represents the next node of the actual node. 
 	 */
 	public Node<E> getNextNode() {
 		return nextNode;

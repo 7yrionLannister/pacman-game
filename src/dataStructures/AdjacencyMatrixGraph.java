@@ -92,7 +92,7 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 	/**This deletes a vertex, defined with a E object that arrives as parameter, looking for the respective key inside the matrix and verifies if 
 	 * the deletion process was done rightly.
 	 * @return A boolean that indicates if the deletion process was done rightly.
-	 * @param sk is a vertex that is going to be erased from the matrix.
+	 * @param e is a vertex that is going to be erased from the matrix.
 	 */
 	@Override
 	public boolean deleteVertex(E e) {
@@ -225,7 +225,7 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 	/**This method returns an ArrayList of vertices that represents the single path for a specified vertex that arrive as parameter if and only if
 	 * bfs, dfs or dijkstra have been called before to determinate this path where if the ArrayList is empty is because there is no possible path
 	 * to reach that vertex.
-	 * @param src is a reference vertex to start DFS process.
+	 * @param dst is a reference vertex to start DFS process.
 	 */
 	//pre: bfs, dfs or dijkstra have been called
 	//it is only the shortest path in unweighted graphs, else is just a path
@@ -512,7 +512,7 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 	}
 
 	/**It allows to obtain the path between two pair of vertices through an ArrayList of vertices.
-	 * @return An ArrayList<E> that represents the path between src and dst. 
+	 * @return An ArrayList that represents the path between src and dst. 
 	 * @param src is a vertex from which we can access to dst. 
 	 * @param dst is the vertex which dst can access.
 	 * @throws NullPointerException if either src or dst are not elements of the graph
@@ -575,7 +575,7 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 	}
 
 	/**It allows to obtain all the adjacent vertices of a determinate source that arrives as parameter.
-	 * @return An ArrayList<E> that represents all the adjacent vertices of a determinate source that arrives as parameter.
+	 * @return An ArrayList that represents all the adjacent vertices of a determinate source that arrives as parameter.
 	 * @param key is a vertex which its adjacent vertices are going to be found.
 	 */
 	@Override
@@ -592,7 +592,7 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 	}
 
 	/**This performs Prim which finds the minimum spanning tree edges of a graph when this is connected and there is a source vertex. 
-	 * @return An ArrayList<Edge<E>> which has all the edges of the minimum spanning tree.
+	 * @return An ArrayList which has all the edges of the minimum spanning tree.
 	 * @param src is a reference vertex to start Prim process.
 	 */
 	@Override
@@ -637,7 +637,7 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 	}
 
 	/**This performs Kruskal which finds the minimum spanning tree edges of a graph regardless of this is connected or not.
-	 * @return An ArrayList<Edge<E>> which has all the edges of the minimum spanning tree.
+	 * @return An ArrayList which has all the edges of the minimum spanning tree.
 	 */
 	@Override
 	public ArrayList<Edge<E>> kruskalMinimumSpannigTree() {

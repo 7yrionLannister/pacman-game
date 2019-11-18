@@ -15,7 +15,7 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 	/**It represents a hash map from E objects to vertices of E type.
 	 */
 	private HashMap<E, Vertex<E>> vertices;
-	/**It represents a hash map from E objects to ArrayList of AdjacencyListEdge<E> type.
+	/**It represents a hash map from E objects to ArrayList of AdjacencyListEdge type.
 	 */
 	private HashMap<E, ArrayList<Edge<E>>> adjacencyLists;
 
@@ -201,7 +201,7 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 	 * bfs, dfs or dijkstra have been called before to determinate this path where if the ArrayList is empty is because there is no possible path
 	 * to reach that vertex.
 	 * @param dst is a vertex that indicates from where the path have to be built.
-	 * @return An ArrayList<E> that represent a single path from vertex dst. 
+	 * @return An ArrayList that represent a single path from vertex dst. 
 	 */
 	//pre: bfs, dfs or dijkstra have been called
 	//it is only the shortest path in unweighted graphs, else is just a path
@@ -221,9 +221,9 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 	}
 	
 	/**This method appoints a path between two vertices that arrive as parameters inside a ArrayList.
-	 * @param src A Vertex<E> that represents the source where dst is associated.
-	 * @param dst A Vertex<E> that represents the vertex which src is connected with.
-	 * @param path An ArrayList<E> that contains a path between src and dst.
+	 * @param src A Vertex that represents the source where dst is associated.
+	 * @param dst A Vertex that represents the vertex which src is connected with.
+	 * @param path An ArrayList that contains a path between src and dst.
 	 */
 	private void pathFill(Vertex<E> src, Vertex<E> dst, ArrayList<E> path) {
 		if(src == dst) {
@@ -262,7 +262,7 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 	
 	/**This performs the DFS visit process recursively as from a vertex that arrives as parameter where every reachable vertex from u is going
 	 * to be traversed. 
-	 * @param u is a Vertex<E> that represents the initial point of DFS visit process.
+	 * @param u is a Vertex that represents the initial point of DFS visit process.
 	 */
 	//recursive method for traversing every reachable vertex from u
 	private void DFSVisit(Vertex<E> u) {
@@ -477,7 +477,7 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 	/**It allows to obtain the path between two pair of vertices through an ArrayList of vertices.
 	 * @param src is a vertex from which we can access to dst. 
 	 * @param dst is the vertex which dst can access.
-	 * @return An ArrayList<E> that represents the path between src and dst. 
+	 * @return An ArrayList that represents the path between src and dst. 
 	 */
 	@Override
 	public ArrayList<E> getPath(E src, E dst) {
@@ -509,7 +509,7 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 	
 	/**It allows to obtain all the adjacent vertices of a determinate source that arrives as parameter.
 	 * @param key is a vertex which its adjacent vertices are going to be found. 
-	 * @return An ArrayList<E> that represents all the adjacent vertices of a determinate source that arrives as parameter.
+	 * @return An ArrayList that represents all the adjacent vertices of a determinate source that arrives as parameter.
 	 */
 	@Override
 	public ArrayList<E> getAdjacent(E key) {
@@ -546,7 +546,7 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 	
 	/**This performs Prim which finds the minimum spanning tree edges of a graph when this is connected and there is a source vertex.
 	 * @param src is a reference vertex to start Prim process. 
-	 * @return An ArrayList<Edge<E>> which has all the edges of the minimum spanning tree.
+	 * @return An ArrayList which has all the edges of the minimum spanning tree.
 	 */
 	@Override
 	public ArrayList<Edge<E>> primMinimumSpanningTree(E src) {
@@ -592,7 +592,7 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 	}
 	
 	/**This performs Kruskal which finds the minimum spanning tree edges of a graph regardless of this is connected or not.
-	 * @return An ArrayList<Edge<E>> which has all the edges of the minimum spanning tree.
+	 * @return An ArrayList which has all the edges of the minimum spanning tree.
 	 */
 	@Override
 	public ArrayList<Edge<E>> kruskalMinimumSpannigTree() {

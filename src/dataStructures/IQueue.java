@@ -18,6 +18,7 @@ public interface IQueue<E> {
 	void enqueue(E item);
 	
 	/**Removes and returns the front element of the queue
+	 * @return An E object.
 	 * @throws Exception if the queue is empty
 	 * */
 	E dequeue() throws Exception;
