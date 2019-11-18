@@ -16,84 +16,84 @@ import model.Ghost.State;
 
 public class Game {
 
-	/**
+	/**It represents the url of the graph resource.
 	 */
 	public final static String GRAPH_RESOURCE = "resources/map.txt";
-	/**
+	/**It represents the score given by eating a dot.
 	 */
 	public final static byte POINTS_PER_DOT = 30;
-	/**
+	/**It represents the score given by eating an energizer.
 	 */
 	public final static byte POINTS_PER_ENERGIZER = 70;
-	/**
+	/**It represents the score needed for getting a new live.
 	 */
 	public static int POINTS_EXTRA_LIVE = 5000;
-	/**
+	/**It represents the initial number of dots in the maze.
 	 */
 	private int initialNumberOfDots;
 
-	/**
+	/**It represents the coordinate of the left tunnel entrance.
 	 */
 	private  Coordinate leftTileOfTheTunel;
-	/**
+	/**It represents the coordinate of the right tunnel entrance.
 	 */
 	private  Coordinate rightTileOfTheTunel;
-	/**
+	/**It represents the coordinate of the bonus tile.
 	 */
 	private Coordinate bonusTile;
 
-	/**
+	/**It represents the map as a graph of coordinates.
 	 */
 	private IGraph<Coordinate> map;
-	/**
+	/**It represents all the levels as a ArrayList of them.
 	 */
 	private ArrayList<Level> levels;
-	/**
+	/**It represents the current stage.
 	 */
 	private int currentStage;
-	/**
+	/**It represents all the maze coordinates.
 	 */
 	private ArrayList<Coordinate> coordinates;
-	/**
+	/**It represents the food and its respective coordinate in the maze.
 	 */
 	private HashMap<Coordinate, Food> food;
-	/**
+	/**It represents the current Pacman. 
 	 */
 	private Pacman pacman;
 
-	/**
+	/**It represents the ghost inky.
 	 */
 	private Ghost inky;
-	/**
+	/**It represents the ghost pinky.
 	 */
 	private Ghost pinky;
-	/**
+	/**It represents the ghost blinky.
 	 */
 	private Ghost blinky;
-	/**
+	/**It represents the ghost clyde.
 	 */
 	private Ghost clyde;
 
-	/**
+	/**It represents the actual player score.
 	 */
 	private int score;
-	/**
+	/**It represents the time during the ghosts will be frightened.
 	 */
 	private long frightenedCountdown;
-	/**
+	/**It represents the number of ghosts eaten by Pacman.
 	 */
 	private int ghostsEaten;
 
-	/**
+	/**It represents the modes sequencer.
 	 */
 	private Timer toggleModesTimer;
-	/**
+	/**It represents the first level entrance sequence.
 	 */
 	private Sequence firstLevelSequence;
-	/**
+	/**It represents the second, third and fourth entrance sequence.
 	 */
 	private Sequence levelsTwoToFourSequence;
-	/**
+	/**It represents all the next entrance sequence.
 	 */
 	private Sequence fifthLevelAndAbove;
 
@@ -112,7 +112,7 @@ public class Game {
 		setCharactersToInitialTiles();
 	}
 
-	/**
+	/**This initializes the ghosts and Pacman.
 	 */
 	private void initCharacters() {
 		Coordinate tile = coordinates.get(45);
@@ -136,7 +136,7 @@ public class Game {
 		clyde.setTarget(coordinates.get(26));
 	}
 
-	/**
+	/**This initializes all twenty one levels avaible in the game.
 	 */
 	private void initLevels() {
 		levels = new ArrayList<>();
@@ -255,7 +255,7 @@ public class Game {
 		//The other levels have the same parameters as level 21	
 	}
 
-	/**
+	/**This initializes the map as a graph.
 	 */
 	private void initGraph() throws IOException {
 		FileReader fr = new FileReader(new File(GRAPH_RESOURCE));
@@ -290,7 +290,7 @@ public class Game {
 		br.close();
 	}
 
-	/**
+	/**This initializes all the initial coordinates for dots, energizers and fruits.
 	 */
 	private void initCoordinates() {
 		for(Coordinate coor : coordinates) {
@@ -334,7 +334,7 @@ public class Game {
 		getCurrentLevel().setDotsLeft(initialNumberOfDots);
 	}
 
-	/**
+	/**This initializes all the characters in their respective position inside the maze.
 	 */
 	public void setCharactersToInitialTiles() {
 		Ghost.state = State.SCATTER;
@@ -378,7 +378,7 @@ public class Game {
 		searchGhostTarget(clyde);
 	}
 
-	/**
+	/**This initializes all the sequences in the timer.
 	 */
 	public void startSequence() {
 		toggleModesTimer.cancel();
@@ -394,8 +394,8 @@ public class Game {
 		toggleModesTimer.schedule(current.getToChaseTimerTask(), current.getToChaseForEver());
 	}
 
-	/**
-	 * @return
+	/**Allows to obtain a sequence that represents the current one being executed.
+	 * @return a sequence that represents the current one being executed.
 	 */
 	private Sequence getCurrentSequence() {
 		Level currentLvl = getCurrentLevel();
@@ -410,7 +410,7 @@ public class Game {
 		return toReturn;
 	}
 
-	/**
+	/**This restarts the map when Pacman dies or when the player wins.s
 	 */
 	public void restartMap() {
 		food.forEach(new BiConsumer<Coordinate, Food>() {
@@ -459,7 +459,7 @@ public class Game {
 		getCurrentLevel().setDotsLeft(initialNumberOfDots);
 	}
 
-	/**
+	/**This moves Pacman as from the system input keys.
 	 */
 	public void movePacman() {
 		move();
@@ -480,7 +480,7 @@ public class Game {
 		}
 	}
 
-	/**
+	/**This allows to get the direction of the system input keys in order to move Pacman.
 	 */
 	private void move() {
 		switch(pacman.getDirection()) {
@@ -578,7 +578,7 @@ public class Game {
 			break;
 		}
 	}
-	/**
+	/**This checks if Pacman has a 180 degrees rotation in the current time.
 	 */
 	private void check180degreesRotation() {
 		if(((pacman.getRequestedDirection() == Direction.RIGHT && pacman.getDirection() == Direction.LEFT) || (pacman.getRequestedDirection() == Direction.LEFT && pacman.getDirection() == Direction.RIGHT)) || ((pacman.getRequestedDirection() == Direction.UP && pacman.getDirection() == Direction.DOWN) || (pacman.getRequestedDirection() == Direction.DOWN && pacman.getDirection() == Direction.UP))) {  
@@ -618,7 +618,7 @@ public class Game {
 			pacman.setPosition(newpos);
 		}
 	}
-	/**
+	/**This changes the ghosts state when Pacman has eaten an energizer, dot or a bonus object.
 	 */
 	private void eatContentOfTile() {
 		switch(food.get(pacman.getPosition()).getType()) {
@@ -656,8 +656,8 @@ public class Game {
 		}
 	}
 
-	/**
-	 * @param ghost
+	/**This moves a determinate ghost along the maze.
+	 * @param ghost is a ghost that could be any of the four ghosts created.
 	 */
 	public void moveGhost(Ghost ghost) {
 		checkCollisionWithPacman(ghost);
@@ -695,8 +695,8 @@ public class Game {
 		}
 	}
 
-	/**
-	 * @param ghost
+	/**This makes that a determinate ghost search its respective target either is frightened or not.
+	 * @param ghost is a ghost that could be any of the four ghosts created.
 	 */
 	public void searchGhostTarget(Ghost ghost) {
 		String name = ghost.getName();
@@ -725,7 +725,7 @@ public class Game {
 		determineDirection(ghost);
 	}
 
-	/**
+	/**This makes that blinky search its respective target either is mode chase or scatter.
 	 */
 	private void searchBlinkyTarget() {
 		switch(Ghost.state) {
@@ -746,7 +746,7 @@ public class Game {
 		}
 	}
 
-	/**
+	/**This makes that inky search its respective target either is mode chase or scatter.
 	 */
 	private void searchInkyTarget() {
 		switch(Ghost.state) {
@@ -770,7 +770,7 @@ public class Game {
 		}
 	}
 
-	/**
+	/**This makes that pinky search its respective target either is mode chase or scatter.
 	 */
 	private void searchPinkyTarget() {
 		switch(Ghost.state) {
@@ -794,7 +794,7 @@ public class Game {
 		}
 	}
 
-	/**
+	/**This makes that clyde search its respective target either is mode chase or scatter.
 	 */
 	private void searchClydeTarget() {
 		switch(Ghost.state) {
@@ -823,8 +823,8 @@ public class Game {
 		}
 	}
 
-	/**
-	 * @param ghost
+	/**This determines the direction of a specified ghost when is in the tunnel or outside of it.
+	 * @param ghost is a ghost that could be any of the four ghosts created.
 	 */
 	private void determineDirection(Ghost ghost) {
 		if(!ghost.getPath().isEmpty()) {
@@ -843,8 +843,8 @@ public class Game {
 			} 
 		}
 	}
-	/**
-	 * @param ghost
+	/**This checks if the actual ghost had a collision when Pacman when was frightened or not.
+	 * @param ghost is a ghost that could be any of the four ghosts created.
 	 */
 	private void checkCollisionWithPacman(Ghost ghost) {
 		int difX = (int)Math.abs(ghost.getPosX() - pacman.getPosX());
@@ -875,8 +875,8 @@ public class Game {
 			}
 		}
 	}
-	/**
-	 * @param ghost
+	/**This makes move the actual ghost in a different path when is necessary.
+	 * @param ghost is a ghost that could be any of the four ghosts created.
 	 */
 	private void setNewRouteIfNecessary(Ghost ghost) {
 		if(!ghost.getPath().isEmpty()) {
@@ -899,16 +899,16 @@ public class Game {
 		}
 	}
 
-	/**
+	/**Allows to obtain a boolean that represents if Pacman is eating or not dots.
 	 */
 	public boolean isEatingDots() {
 		byte type = food.get(pacman.getPosition()).getType();
 		return type == Food.PACDOT || type == Food.ENERGIZER;
 	}
 
-	/**
-	 * @param ghost
-	 * @return
+	/**Allows to obtain a boolean that represents if a determinate ghost ghost is in the tunnel or not.
+	 * @param ghost is a ghost that could be any of the four ghosts created.
+	 * @return a boolean that represents if a determinate ghost ghost is in the tunnel or not.
 	 */
 	public boolean isInTheTunnel(Ghost ghost) {
 		Coordinate pos = ghost.getPosition();
@@ -921,36 +921,36 @@ public class Game {
 		return tunnel;
 	}
 
-	/**
-	 * @return
+	/**Allows to obtain a graph that represents the map as a graph of coordinates.
+	 * @return a graph that represents the map as a graph of coordinates.
 	 */
 	public IGraph<Coordinate> getMap() {
 		return map;
 	}
 
-	/**
-	 * @param map
+	/**Allows to set a graph that represents the map as a graph of coordinates.
+	 * @param map is a graph that represents the map as a graph of coordinates.
 	 */
 	public void setMap(IGraph<Coordinate> map) {
 		this.map = map;
 	}
 
-	/**
-	 * @return
+	/**Allows to obtain an ArrayList that represents all the levels as a ArrayList of them.
+	 * @return an ArrayList that represents all the levels as a ArrayList of them.
 	 */
 	public ArrayList<Level> getLevels() {
 		return levels;
 	}
 
-	/**
-	 * @param levels
+	/**Allows to set an ArrayList that represents all the levels as a ArrayList of them.
+	 * @param levels is an ArrayList that represents all the levels as a ArrayList of them.
 	 */
 	public void setLevels(ArrayList<Level> levels) {
 		this.levels = levels;
 	}
 
-	/**
-	 * @return
+	/**Allows to obtain a level that represents the current level being played.
+	 * @return a level that represents the current level being played.
 	 */
 	public Level getCurrentLevel() {
 		if(currentStage < levels.size()) {
@@ -960,15 +960,15 @@ public class Game {
 		}
 	}
 
-	/**
-	 * @return
+	/**Allows to obtain an integer that represents the current stage.
+	 * @return an integer that represents the current stage.
 	 */
 	public int getCurrentStage() {
 		return currentStage;
 	}
 
-	/**
-	 * @param stage
+	/**Allows to set an integer that represents the current stage.
+	 * @param stage is an integer that represents the current stage.
 	 */
 	public void setCurrentStage(int stage) {
 		currentStage = stage;
@@ -976,85 +976,85 @@ public class Game {
 		c.setDotsLeft(initialNumberOfDots);
 	}
 
-	/**
-	 * @return
+	/**Allows to obtain a ghost that represents the ghost inky.
+	 * @return a ghost that represents the ghost inky.
 	 */
 	public Ghost getInky() {
 		return inky;
 	}
 
-	/**
-	 * @return
+	/**Allows to obtain a ghost that represents the ghost pinky.
+	 * @return a ghost that represents the ghost pinky.
 	 */
 	public Ghost getPinky() {
 		return pinky;
 	}
 
-	/**
-	 * @return
+	/**Allows to obtain a ghost that represents the ghost blinky.
+	 * @return a ghost that represents the ghost blinky.
 	 */
 	public Ghost getBlinky() {
 		return blinky;
 	}
 
-	/**
-	 * @return
+	/**Allows to obtain a ghost that represents the ghost clyde.
+	 * @return a ghost that represents the ghost clyde.
 	 */
 	public Ghost getClyde() {
 		return clyde;
 	}
 
-	/**
-	 * @return
+	/**Allows to obtain Pacman.
+	 * @return the actual Pacman.
 	 */
 	public Pacman getPacman() {
 		return pacman;
 	}
 
-	/**
-	 * @return
+	/**Allows to obtain an ArrayList that represents all the maze coordinates.
+	 * @return an ArrayList that represents all the maze coordinates.
 	 */
 	public ArrayList<Coordinate> getCoordinates() {
 		return coordinates;
 	}
 
-	/**
-	 * @return
+	/**Allows to obtain a hash table that represents the food and its respective coordinate in the maze.
+	 * @return a hash table that represents the food and its respective coordinate in the maze.
 	 */
 	public HashMap<Coordinate, Food> getFood() {
 		return food;
 	}
 
-	/**
-	 * @return
+	/**Allows to obtain a coordinate that represents the coordinate of the left tunnel entrance.
+	 * @return a coordinate that represents the coordinate of the left tunnel entrance.
 	 */
 	public Coordinate getLeftTileOfTheTunel() {
 		return leftTileOfTheTunel;
 	}
 
-	/**
-	 * @return
+	/**Allows to obtain a coordinate that represents the coordinate of the right tunnel entrance.
+	 * @return a coordinate that represents the coordinate of the right tunnel entrance.
 	 */
 	public Coordinate getRightTileOfTheTunel() {
 		return rightTileOfTheTunel;
 	}
 
-	/**
-	 * @return
+	/**Allows to obtain a coordinate that represents the coordinate of the bonus tile.
+	 * @return a coordinate that represents the coordinate of the bonus tile.
 	 */
 	public Coordinate getBonusTile() {
 		return bonusTile;
 	}
 
-	/**
-	 * @return
+	/**Allows to obtain an integer that represents the actual player score.
+	 * @return an integer that represents the actual player score.
 	 */
 	public int getScore() {
 		return score;
 	}
 
-	/**
-	 * @param score
+	/**Allows to set an integer that represents the actual player score.
+	 * @param score is an integer that represents the actual player score.
 	 */
 	public void setScore(int score) {
 		this.score = score;
@@ -1064,16 +1064,16 @@ public class Game {
 		}
 	}
 
-	/**
-	 * @return
+	/**Allows to obtain a boolean that represents if there is at least a frightened ghost.
+	 * @return a boolean that represents if there is at least a frightened ghost.
 	 */
 	public boolean atLeastAFrightenedGhost() {
 		return blinky.isFrightened() || inky.isFrightened() || pinky.isFrightened() || clyde.isFrightened();
 	}
 
-	/**
-	 * @param name
-	 * @return
+	/**Allows to obtain a ghost that is identified by its name.
+	 * @param name is a String that represents the ghost name.
+	 * @return any of the four ghosts. If name does not match anything, then return clyde.
 	 */
 	//if name does not match anything then return clyde
 	public Ghost getGhost(String name) {
@@ -1088,43 +1088,43 @@ public class Game {
 		}
 	}
 
-	/**
-	 * @return
+	/**Allows to get a long value that represents the time during the ghosts will be frightened.
+	 * @return a long value that represents the time during the ghosts will be frightened.
 	 */
 	public long getFrightenedCountdown() {
 		return frightenedCountdown;
 	}
 
-	/**
-	 * @param timeForWarning
-	 */
+	/**Allows to set a long value that represents the time during the ghosts will be frightened.
+	 * @param timeForWarning is a long value that represents the time during the ghosts will be frightened.
+	 */ 
 	public void setFrightenedCountdown(long timeForWarning) {
 		this.frightenedCountdown = timeForWarning;
 	}
 
-	/**
-	 * @return
+	/**Allows to obtain an integer that represents the number of ghosts eaten by Pacman.
+	 * @return an integer that represents the number of ghosts eaten by Pacman.
 	 */
 	public int getGhostsEaten() {
 		return ghostsEaten;
 	}
 
-	/**
-	 * @param ghostsEaten
+	/**Allows to set an integer that represents the number of ghosts eaten by Pacman.
+	 * @param ghostsEaten is an integer that represents the number of ghosts eaten by Pacman.
 	 */
 	public void setGhostsEaten(int ghostsEaten) {
 		this.ghostsEaten = ghostsEaten;
 	}
 
-	/**
-	 * @return
+	/**Allows to obtain an integer that represents the initial number of dots in the maze.
+	 * @return an integer that represents the initial number of dots in the maze.
 	 */
 	public int getInitialNumberOfDots() {
 		return initialNumberOfDots;
 	}
 
-	/**
-	 * @return
+	/**Allows to obtain a boolean that represents if all the ghosts are in their house or not.
+	 * @return a boolean that represents if all the ghosts are in their house or not.
 	 */
 	public boolean allGhostsInTheirHouse() {
 		return inky.isAtHome() && clyde.isAtHome() && pinky.isAtHome();
