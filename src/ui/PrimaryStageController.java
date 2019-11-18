@@ -42,22 +42,22 @@ import threads.GhostThread;
 import threads.PacmanThread;
 
 public class PrimaryStageController {
-	/**
+	/**It represents the number of movements made by Pacman.
 	 */
 	public static long MOVEMENT_COUNTER;
-	/**
+	/**It represents number of sprite movements.
 	 */
 	public static long MOVEMENT_SPRITE;
-	/**
+	/**It represents the url of the ghosts sprites.
 	 */
 	public final static String GHOSTS_SPRITES = "resources/sprites/ghosts/";
-	/**
+	/**It represents the image of a pacdot.
 	 */
 	public final static Image PACDOT_IMAGE = new Image(new File("resources/sprites/food/pacdot.png").toURI().toString());
-	/**
+	/**It represents the image of a energizer..
 	 */
 	public final static Image ENERGIZER_IMAGE = new Image(new File("resources/sprites/food/energizer.png").toURI().toString());
-	/**
+	/**It represents the url of a ghost caught.
 	 */
 	public final static String CAUGHT = "resources/sprites/pacman/caught/";
 
@@ -86,46 +86,46 @@ public class PrimaryStageController {
 	@FXML private Rectangle blackSquare2;
 	@FXML private Rectangle blackSquare1;
 
-	/**
+	/**It represents the actual game object.
 	 */
 	private Game game;
 
-	/**
+	/**It represents the thread for the actual Pacman.
 	 */
 	private PacmanThread pacmanThread;
-	/**
+	/**It represents the thread for the actual blinky ghost.
 	 */
 	private GhostThread blinkyThread;
-	/**
+	/**It represents the thread for the actual inky ghost.
 	 */
 	private GhostThread inkyThread;
-	/**
+	/**It represents the thread for the actual clyde ghost.
 	 */
 	private GhostThread clydeThread;
-	/**
+	/**It represents the thread for the actual pinky ghost.
 	 */
 	private GhostThread pinkyThread;
 
-	/**
+	/**It represents the sound of the intro.
 	 */
 	private AudioClip intro;
-	/**
+	/**It represents the sound of a eaten dot.
 	 */
 	private AudioClip eatDot;
-	/**
+	/**It represents the sound of a eaten fruit.
 	 */
 	private AudioClip eatFruit;
-	/**
+	/**It represents the sound of a eaten ghost.
 	 */
 	private AudioClip eatGhost;
-	/**
+	/**It represents the sound of a extra live.
 	 */
 	private AudioClip extraLive;
-	/**
+	/**It represents the sound of the Pacman death.
 	 */
 	private AudioClip death;
 
-	/**
+	/**It represents if the game is in pause or not.
 	 */
 	private boolean onPause;
 
@@ -160,7 +160,7 @@ public class PrimaryStageController {
 		cherry.setVisible(true);
 		startThreads();
 	}
-	/**
+	/**This initializes all the needed audio media.
 	 */
 	private void initAudios() {
 		intro = new AudioClip(new File("resources/audio/intro.mp3").toURI().toString());
@@ -170,7 +170,7 @@ public class PrimaryStageController {
 		extraLive = new AudioClip(new File("resources/audio/extrapac.mp3").toURI().toString());
 		death = new AudioClip(new File("resources/audio/pacman_death.mp3").toURI().toString());
 	}
-	/**
+	/**This initializes all the needed listeners and bindings.
 	 */
 	private void setListenersAndBindings() {
 		game.getFood().forEach(new BiConsumer<Coordinate, Food>() {
@@ -234,8 +234,8 @@ public class PrimaryStageController {
 		}) ;
 	}
 
-	/**
-	 * @param event
+	/**This changes the direction when a key is pressed in the system input.
+	 * @param event is a event related with the pressing of a determinate key in the system input.
 	 */
 	@FXML
 	public void changeDirection(KeyEvent event) {
@@ -251,8 +251,8 @@ public class PrimaryStageController {
 		}
 	}
 
-	/**
-	 * @param event
+	/**This shows the leaderboard.
+	 * @param event is an action even related with the pressing of the high score button.
 	 */
 	@FXML
 	public void highScoresButtonPressed(ActionEvent event) {
@@ -275,8 +275,8 @@ public class PrimaryStageController {
 		}
 	}
 
-	/**
-	 * @param event
+	/**This shows info about the game.
+	 * @param event is an action even related with the pressing of the info button.
 	 */
 	@FXML
 	public void informationButtonPressed(ActionEvent event) {
@@ -293,8 +293,8 @@ public class PrimaryStageController {
 		}
 	}
 
-	/**
-	 * @param event
+	/**This starts the game.
+	 * @param event is an action even related with the pressing of the play start button.
 	 */
 	@FXML
 	public void startPlayPauseButtonPressed(ActionEvent event) {
@@ -335,7 +335,7 @@ public class PrimaryStageController {
 		}
 	}
 
-	/**
+	/**This starts the Pacman and ghosts threads.
 	 */
 	private void startThreads() {
 		pacmanThread = new PacmanThread(this);
@@ -351,9 +351,8 @@ public class PrimaryStageController {
 		clydeThread.start();
 	}
 
-	/**
-	 * 
-	 * @param ghost
+	/**This refresh the image of a determinate ghost that depends of the direction of its movement.
+	 * @param ghost is a ghost that could be any of the four ghosts created.
 	 */
 	public void refreshGhostImage(Ghost ghost) {
 		if(PrimaryStageController.MOVEMENT_COUNTER%5 == 0) {
@@ -390,7 +389,7 @@ public class PrimaryStageController {
 		}
 	}
 
-	/**
+	/**This sets all the gui components in their initial state.
 	 */
 	public void setGUItoInitialState() {
 		pacman.setImage(new Image(new File(PacmanThread.MOVEMENTS+0+".png").toURI().toString()));
@@ -438,9 +437,9 @@ public class PrimaryStageController {
 		}
 	}
 
-	/**
-	 * @param name
-	 * @return
+	/**This allows to obtain the respective image of the specified ghost.
+	 * @param name is a string that represents the name of one of the four ghosts.
+	 * @return the respective image of the specified ghost.
 	 */
 	public ImageView getGhostImage(String name) {
 		if(name.equalsIgnoreCase(game.getBlinky().getName())) {
@@ -454,7 +453,7 @@ public class PrimaryStageController {
 		}
 	}
 
-	/**
+	/**This refresh the lives counter when Pacman gets or loss one.
 	 */
 	public void refreshLivesCounter() {
 		for(Node node : livesContainer.getChildren()) {
@@ -466,7 +465,7 @@ public class PrimaryStageController {
 		}
 	}
 
-	/**
+	/**This opens the players register saved in the system.
 	 */
 	public void openPlayerRegister() {
 		ArrayList<Player> lb = new ArrayList<>();
@@ -517,148 +516,148 @@ public class PrimaryStageController {
 		setGUItoInitialState();
 	}
 
-	/**
-	 * @return
+	/**Allows to get a FlowPane that represents the lives container.
+	 * @return a FlowPane that represents the lives container.
 	 */
 	public FlowPane getLivesContainer() {
 		return livesContainer;
 	}
 
-	/**
-	 * @return
+	/**Allows to get a FlowPane that represents the fruits container.
+	 * @return  FlowPane that represents the fruits container.
 	 */
 	public FlowPane getBonusFruitsContainer() {
 		return bonusFruitsContainer;
 	}
 
-	/**
-	 * @return
+	/**Allows to get an ImageView that represents inky ghost.
+	 * @return an ImageView that represents inky ghost.
 	 */
 	public ImageView getInky() {
 		return inky;
 	}
 
-	/**
-	 * @return
+	/**Allows to get an ImageView that represents pinky ghost.
+	 * @return an ImageView that represents pinky ghost.
 	 */
 	public ImageView getPinky() {
 		return pinky;
 	}
 
-	/**
-	 * @return
+	/**Allows to get an ImageView that represents clyde ghost.
+	 * @return an ImageView that represents clyde ghost.
 	 */
 	public ImageView getClyde() {
 		return clyde;
 	}
 
-	/**
-	 * @return
+	/**Allows to get an ImageView that represents blinky ghost.
+	 * @return an ImageView that represents blinky ghost.
 	 */
 	public ImageView getBlinky() {
 		return blinky;
 	}
 
-	/**
-	 * @return
+	/**Allows to get an ImageView that represents Pacman.
+	 * @return an ImageView that represents Pacman.
 	 */
 	public ImageView getPacman() {
 		return pacman;
 	}
 
-	/**
-	 * @return
+	/**Allows to get an ImageView that represents the get ready sign.
+	 * @return an ImageView that represents the get ready sign.
 	 */
 	public ImageView getReadyImage() {
 		return readyImage;
 	}
 
-	/**
-	 * @return
+	/**Allows to get an ImageView that represents the game over sign.
+	 * @return an ImageView that represents the game over sign.
 	 */
 	public ImageView getGameOverImage() {
 		return gameOverImage;
 	}
 
-	/**
-	 * @return
+	/**Allows to get an ImageView that represents the bonus sign.
+	 * @return an ImageView that represents the bonus sign.
 	 */
 	public ImageView getBonusImage() {
 		return bonusImage;
 	}
 
-	/**
-	 * @return
+	/**Allows to get an ImageView that represents the key sign.
+	 * @return an ImageView that represents the key sign.
 	 */
 	public ImageView getKey() {
 		return key;
 	}
 
-	/**
-	 * @return
+	/**Allows to get an ImageView that represents the bell sign.
+	 * @return an ImageView that represents the bell sign.
 	 */
 	public ImageView getBell() {
 		return bell;
 	}
 
-	/**
-	 * @return
+	/**Allows to get an ImageView that represents the galaxian sign.
+	 * @return an ImageView that represents the galaxian sign.
 	 */
 	public ImageView getGalaxian() {
 		return galaxian;
 	}
 
-	/**
-	 * @return
+	/**Allows to get an ImageView that represents the melon sign.
+	 * @return an ImageView that represents the melon sign.
 	 */
 	public ImageView getMelon() {
 		return melon;
 	}
 
-	/**
-	 * @return
+	/**Allows to get an ImageView that represents the apple sign.
+	 * @return an ImageView that represents the apple sign.
 	 */
 	public ImageView getApple() {
 		return apple;
 	}
 
-	/**
-	 * @return
+	/**Allows to get an ImageView that represents the peach sign.
+	 * @return an ImageView that represents the peach sign.
 	 */
 	public ImageView getPeach() {
 		return peach;
 	}
 
-	/**
-	 * @return
+	/**Allows to get an ImageView that represents the strawberry sign.
+	 * @return an ImageView that represents the strawberry sign.
 	 */
 	public ImageView getStrawberry() {
 		return strawberry;
 	}
 
-	/**
-	 * @return
+	/**Allows to get an ImageView that represents the cherry sign.
+	 * @return an ImageView that represents the cherry sign.
 	 */
 	public ImageView getCherry() {
 		return cherry;
 	}
 
-	/**
-	 * @return
+	/**Allows to get a game that represents the actual game.
+	 * @return a game that represents the actual game.
 	 */
 	public Game getGame() {
 		return game;
 	}
 
-	/**
-	 * @return
+	/**Allows to obtain a boolean that represents if the game is in pause or not.
+	 * @return a boolean that represents if the game is in pause or not.
 	 */
 	public boolean isOnPause() {
 		return onPause;
 	}
 
-	/**
-	 * @param onPause
+	/**Allows to set a boolean that represents if the game is in pause or not.
+	 * @param onPause is a boolean that represents if the game is in pause or not.
 	 */
 	public void setOnPause(boolean onPause) {
 		this.onPause = onPause;
@@ -670,43 +669,43 @@ public class PrimaryStageController {
 		});
 	}
 
-	/**
-	 * @return
+	/**Allows to get a label that represents the actual score in the game.
+	 * @return a label that represents the actual score in the game.
 	 */
 	public Label getScoreLabel() {
 		return scoreLabel;
 	}
 
-	/**
-	 * @return
+	/**Allows to get an AudioClip that represents the sound of a eaten dot.
+	 * @return an AudioClip that represents the sound of a eaten dot.
 	 */
 	public AudioClip getEatDot() {
 		return eatDot;
 	}
 
-	/**
-	 * @return
+	/**Allows to get an AudioClip that represents the sound of a eaten fruit.
+	 * @return an AudioClip that represents the sound of a eaten fruit.
 	 */
 	public AudioClip getEatFruit() {
 		return eatFruit;
 	}
 
-	/**
-	 * @return
+	/**Allows to get an AudioClip that represents the sound of a eaten ghost.
+	 * @return an AudioClip that represents the sound of a eaten ghost.
 	 */
 	public AudioClip getEatGhost() {
 		return eatGhost;
 	}
 
-	/**
-	 * @return
+	/**Allows to get an AudioClip that represents the sound of a extra live.
+	 * @return an AudioClip that represents the sound of a extra live.
 	 */
 	public AudioClip getExtraLive() {
 		return extraLive;
 	}
 
-	/**
-	 * @return
+	/**Allows to get an AudioClip that represents the sound of the Pacman death.
+	 * @return an AudioClip that represents the sound of the Pacman death.
 	 */
 	public AudioClip getDeath() {
 		return death;
