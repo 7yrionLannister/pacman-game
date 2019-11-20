@@ -393,16 +393,34 @@ public class AdjacencyListGraphTest {
 
 		ArrayList<Integer> shortestPath = graph.getSingleSourcePath(5);
 		assertTrue(shortestPath.get(0) == src && graph.getLastSrc() == src, "Source is not the expected");
+		assertTrue(graph.getSingleSourceDistance(src) == 0, "Wrong shortest distance");
+		assertNull(graph.getSingleSourcePredecessor(src), "Wrong predecessor");
 		assertTrue(shortestPath.get(1) == 1, "It is not the shortest path");
+		assertTrue(graph.getSingleSourceDistance(1) == 8, "Wrong shortest distance");
+		assertTrue(graph.getSingleSourcePredecessor(1) == src, "Wrong predecessor");
 		assertTrue(shortestPath.get(2) == 2, "It is not the shortest path");
+		assertTrue(graph.getSingleSourceDistance(2) == 12, "Wrong shortest distance");
+		assertTrue(graph.getSingleSourcePredecessor(2) == 1, "Wrong predecessor");
 		assertTrue(shortestPath.get(3) == 8, "It is not the shortest path");
+		assertTrue(graph.getSingleSourceDistance(8) == 17, "Wrong shortest distance");
+		assertTrue(graph.getSingleSourcePredecessor(8) == 2, "Wrong predecessor");
 		assertTrue(shortestPath.get(4) == 5, "It is not the shortest path");
+		assertTrue(graph.getSingleSourceDistance(5) == 24, "Wrong shortest distance");
+		assertTrue(graph.getSingleSourcePredecessor(5) == 8, "Wrong predecessor");
 
 		shortestPath = graph.getSingleSourcePath(3);
 		assertTrue(shortestPath.get(0) == src && graph.getLastSrc() == src, "Source is not the expected");
+		assertTrue(graph.getSingleSourceDistance(src) == 0, "Wrong shortest distance");
+		assertNull(graph.getSingleSourcePredecessor(src), "Wrong predecessor");
 		assertTrue(shortestPath.get(1) == 1, "It is not the shortest path");
+		assertTrue(graph.getSingleSourceDistance(1) == 8, "Wrong shortest distance");
+		assertTrue(graph.getSingleSourcePredecessor(1) == src, "Wrong predecessor");
 		assertTrue(shortestPath.get(2) == 2, "It is not the shortest path");
+		assertTrue(graph.getSingleSourceDistance(2) == 12, "Wrong shortest distance");
+		assertTrue(graph.getSingleSourcePredecessor(2) == 1, "Wrong predecessor");
 		assertTrue(shortestPath.get(3) == 3, "It is not the shortest path");
+		assertTrue(graph.getSingleSourceDistance(3) == 21, "Wrong shortest distance");
+		assertTrue(graph.getSingleSourcePredecessor(3) == 2, "Wrong predecessor");
 
 		linkVerticesInUndirectedGraphTest();
 
@@ -410,33 +428,69 @@ public class AdjacencyListGraphTest {
 		graph.Dijkstra(src);
 		shortestPath = graph.getSingleSourcePath(5);
 		assertTrue(shortestPath.get(0) == src && graph.getLastSrc() == src, "Source is not the expected");
+		assertTrue(graph.getSingleSourceDistance(src) == 0, "Wrong shortest distance");
+		assertNull(graph.getSingleSourcePredecessor(src), "Wrong predecessor");
 		assertTrue(shortestPath.get(1) == 7, "It is not the shortest path");
+		assertTrue(graph.getSingleSourceDistance(7) == 6, "Wrong shortest distance");
+		assertTrue(graph.getSingleSourcePredecessor(7) == src, "Wrong predecessor");
 		assertTrue(shortestPath.get(2) == 5, "It is not the shortest path");
+		assertTrue(graph.getSingleSourceDistance(5) == 14, "Wrong shortest distance");
+		assertTrue(graph.getSingleSourcePredecessor(5) == 7, "Wrong predecessor");
 
 		shortestPath = graph.getSingleSourcePath(1);
 		assertTrue(shortestPath.get(0) == src && graph.getLastSrc() == src, "Source is not the expected");
+		assertTrue(graph.getSingleSourceDistance(src) == 0, "Wrong shortest distance");
+		assertNull(graph.getSingleSourcePredecessor(src), "Wrong predecessor");
 		assertTrue(shortestPath.get(1) == 7, "It is not the shortest path");
+		assertTrue(graph.getSingleSourceDistance(7) == 6, "Wrong shortest distance");
+		assertTrue(graph.getSingleSourcePredecessor(7) == src, "Wrong predecessor");
 		assertTrue(shortestPath.get(2) == 6, "It is not the shortest path");
+		assertTrue(graph.getSingleSourceDistance(6) == 8, "Wrong shortest distance");
+		assertTrue(graph.getSingleSourcePredecessor(6) == 7, "Wrong predecessor");
 		assertTrue(shortestPath.get(3) == 1, "It is not the shortest path");
+		assertTrue(graph.getSingleSourceDistance(1) == 9, "Wrong shortest distance");
+		assertTrue(graph.getSingleSourcePredecessor(1) == 6, "Wrong predecessor");
 
 		src = 1;
 		graph.Dijkstra(src);
 		shortestPath = graph.getSingleSourcePath(4);
 		assertTrue(shortestPath.get(0) == src && graph.getLastSrc() == src, "Source is not the expected");
+		assertTrue(graph.getSingleSourceDistance(src) == 0, "Wrong shortest distance");
+		assertNull(graph.getSingleSourcePredecessor(src), "Wrong predecessor");
 		assertTrue(shortestPath.get(1) == 6, "It is not the shortest path");
+		assertTrue(graph.getSingleSourceDistance(6) == 1, "Wrong shortest distance");
+		assertTrue(graph.getSingleSourcePredecessor(6) == src, "Wrong predecessor");
 		assertTrue(shortestPath.get(2) == 7, "It is not the shortest path");
+		assertTrue(graph.getSingleSourceDistance(7) == 3, "Wrong shortest distance");
+		assertTrue(graph.getSingleSourcePredecessor(7) == 6, "Wrong predecessor");
 		assertTrue(shortestPath.get(3) == 8, "It is not the shortest path");
+		assertTrue(graph.getSingleSourceDistance(8) == 9, "Wrong shortest distance");
+		assertTrue(graph.getSingleSourcePredecessor(8) == 7, "Wrong predecessor");
 		assertTrue(shortestPath.get(4) == 4, "It is not the shortest path");
+		assertTrue(graph.getSingleSourceDistance(4) == 14, "Wrong shortest distance");
+		assertTrue(graph.getSingleSourcePredecessor(4) == 8, "Wrong predecessor");
 
 		src = 1;
 		graph.Dijkstra(src);
 		shortestPath = graph.getSingleSourcePath(3);
 		assertTrue(shortestPath.get(0) == src && graph.getLastSrc() == src, "Source is not the expected");
+		assertTrue(graph.getSingleSourceDistance(src) == 0, "Wrong shortest distance");
+		assertNull(graph.getSingleSourcePredecessor(src), "Wrong predecessor");
 		assertTrue(shortestPath.get(1) == 6, "It is not the shortest path");
+		assertTrue(graph.getSingleSourceDistance(6) == 1, "Wrong shortest distance");
+		assertTrue(graph.getSingleSourcePredecessor(6) == src, "Wrong predecessor");
 		assertTrue(shortestPath.get(2) == 7, "It is not the shortest path");
+		assertTrue(graph.getSingleSourceDistance(7) == 3, "Wrong shortest distance");
+		assertTrue(graph.getSingleSourcePredecessor(7) == 6, "Wrong predecessor");
 		assertTrue(shortestPath.get(3) == 8, "It is not the shortest path");
+		assertTrue(graph.getSingleSourceDistance(8) == 9, "Wrong shortest distance");
+		assertTrue(graph.getSingleSourcePredecessor(8) == 7, "Wrong predecessor");
 		assertTrue(shortestPath.get(4) == 4, "It is not the shortest path");
+		assertTrue(graph.getSingleSourceDistance(4) == 14, "Wrong shortest distance");
+		assertTrue(graph.getSingleSourcePredecessor(4) == 8, "Wrong predecessor");
 		assertTrue(shortestPath.get(5) == 3, "It is not the shortest path");
+		assertTrue(graph.getSingleSourceDistance(3) == 18, "Wrong shortest distance");
+		assertTrue(graph.getSingleSourcePredecessor(3) == 4, "Wrong predecessor");
 	}
 
 	@Test
