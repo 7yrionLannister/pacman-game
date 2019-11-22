@@ -12,6 +12,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.Player;
 
+
 public class LeaderboardController {
 	
 	/**It represents the file where the register of the previous matches are saved.

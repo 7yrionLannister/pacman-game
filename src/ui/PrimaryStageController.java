@@ -11,7 +11,6 @@ import java.util.function.BiConsumer;
 
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
-import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -23,7 +22,6 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.media.AudioClip;
@@ -40,6 +38,7 @@ import model.Player;
 import model.Food;
 import threads.GhostThread;
 import threads.PacmanThread;
+
 
 public class PrimaryStageController {
 	/**It represents the number of movements made by Pacman.

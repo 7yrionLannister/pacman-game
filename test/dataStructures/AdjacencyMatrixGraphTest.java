@@ -3,10 +3,7 @@ package dataStructures;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.TreeMap;
-import java.util.function.BiConsumer;
-
 import org.junit.jupiter.api.Test;
 
 import dataStructures.Vertex.Color;
