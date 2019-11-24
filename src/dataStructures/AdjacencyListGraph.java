@@ -352,7 +352,7 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 				for(Edge<E> ale : adjacencyLists.get(u.getElement())) {
 					Vertex<E> s = vertices.get(ale.getSrc());
 					Vertex<E> d = vertices.get(ale.getDst());
-					if(d.getDistance() > s.getDistance() + ale.getWeight()) {
+					if(d.getDistance() > (long)s.getDistance() + (long)ale.getWeight()) {
 						pq.remove(ale.getDst());
 						d.setDistance(s.getDistance() + ale.getWeight());
 						d.setPredecessor(s);

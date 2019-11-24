@@ -359,7 +359,7 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 				Vertex<E> u = pq.poll();
 				int uIndex = keyToIndex.get(u.getElement());
 				for(int i = 0; i < keyToIndex.size(); i++) {
-					if(edges[uIndex][i] != Integer.MAX_VALUE && vertices[i].getDistance() > vertices[uIndex].getDistance() + edges[uIndex][i]) { //edge exists && the current shortest path can be improved
+					if(edges[uIndex][i] != Integer.MAX_VALUE && vertices[i].getDistance() > (long)vertices[uIndex].getDistance() + (long)edges[uIndex][i]) { //edge exists && the current shortest path can be improved
 						pq.remove(vertices[i]);
 						vertices[i].setDistance(vertices[uIndex].getDistance() + edges[uIndex][i]);
 						vertices[i].setPredecessor(vertices[uIndex]);
