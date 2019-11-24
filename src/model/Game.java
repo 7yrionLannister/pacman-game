@@ -16,7 +16,7 @@ import model.Ghost.State;
 
 public class Game {
 
-	/**It represents the url of the graph resource.
+	/**It represents the path of the file that represents the map.
 	 */
 	public final static String GRAPH_RESOURCE = "resources/map.txt";
 	/**It represents the score given by eating a dot.
@@ -25,7 +25,7 @@ public class Game {
 	/**It represents the score given by eating an energizer.
 	 */
 	public final static byte POINTS_PER_ENERGIZER = 70;
-	/**It represents the score needed for getting a new live.
+	/**It represents the score needed for getting an extra live.
 	 */
 	public static int POINTS_EXTRA_LIVE = 5000;
 	/**It represents the initial number of dots in the maze.
@@ -45,19 +45,19 @@ public class Game {
 	/**It represents the map as a graph of coordinates.
 	 */
 	private IGraph<Coordinate> map;
-	/**It represents all the levels as a ArrayList of them.
+	/**It represents all the levels of the game.
 	 */
 	private ArrayList<Level> levels;
 	/**It represents the current stage.
 	 */
 	private int currentStage;
-	/**It represents all the maze coordinates.
+	/**It represents all the maze coordinates. It is used in addition to the IGraph because its easier to recognize vertices in there
 	 */
 	private ArrayList<Coordinate> coordinates;
-	/**It represents the food and its respective coordinate in the maze.
+	/**It represents the food contained in each tile of the maze.
 	 */
 	private HashMap<Coordinate, Food> food;
-	/**It represents the current Pacman. 
+	/**It represents the main character of the game. 
 	 */
 	private Pacman pacman;
 
@@ -80,7 +80,7 @@ public class Game {
 	/**It represents the time during the ghosts will be frightened.
 	 */
 	private long frightenedCountdown;
-	/**It represents the number of ghosts eaten by Pacman.
+	/**It represents the number of ghosts eaten by Pacman after eating the last energizer.
 	 */
 	private int ghostsEaten;
 
@@ -137,7 +137,7 @@ public class Game {
 		clyde.setTarget(coordinates.get(26));
 	}
 
-	/**This initializes all twenty one levels avaible in the game.
+	/**This initializes all twenty one levels available in the game. No more are needed as the later levels are equal to the 21th
 	 */
 	private void initLevels() {
 		levels = new ArrayList<>();
@@ -291,7 +291,7 @@ public class Game {
 		br.close();
 	}
 
-	/**This initializes all the initial coordinates for dots, energizers and fruits.
+	/**This method initializes all the coordinates that belong to the maze along with dots, energizers and fruits.
 	 */
 	private void initCoordinates() {
 		for(Coordinate coor : coordinates) {
@@ -335,7 +335,7 @@ public class Game {
 		getCurrentLevel().setDotsLeft(initialNumberOfDots);
 	}
 
-	/**This initializes all the characters in their respective position inside the maze.
+	/**This method positions all the characters at their initial coordinates after pacman dies or passes the level.
 	 */
 	public void setCharactersToInitialTiles() {
 		Ghost.state = State.SCATTER;
@@ -395,8 +395,8 @@ public class Game {
 		toggleModesTimer.schedule(current.getToChaseTimerTask(), current.getToChaseForEver());
 	}
 
-	/**Allows to obtain a sequence that represents the current one being executed.
-	 * @return a sequence that represents the current one being executed.
+	/**Allows to obtain a sequence that represents the one that is going to be executed.
+	 * @return The sequence to be executed.
 	 */
 	private Sequence getCurrentSequence() {
 		Level currentLvl = getCurrentLevel();
@@ -411,7 +411,7 @@ public class Game {
 		return toReturn;
 	}
 
-	/**This restarts the map when Pacman dies or when the player wins.s
+	/**This restarts the map when Pacman loses all his lives or when he passes the level
 	 */
 	public void restartMap() {
 		food.forEach(new BiConsumer<Coordinate, Food>() {
@@ -460,11 +460,13 @@ public class Game {
 		getCurrentLevel().setDotsLeft(initialNumberOfDots);
 	}
 
-	/**This moves Pacman as from the system input keys.
+	/**This method moves pacman pixel by pixel according to his direction and requested direction and performs turns if needed.
 	 */
 	public void movePacman() {
 		move();
-		check180degreesRotation();
+		if(!isInTheTunnel(pacman)) {
+			check180degreesRotation();
+		}
 		if(pacman.getPosY() == pacman.getPosition().getY() && pacman.getPosX() == pacman.getPosition().getX()) {
 			if(((pacman.getPosition().hasRightTile() && pacman.getRequestedDirection() == Direction.RIGHT) || (pacman.getPosition().hasLeftTile() && pacman.getRequestedDirection() == Direction.LEFT)) || ((pacman.getPosition().hasUpTile() && pacman.getRequestedDirection() == Direction.UP) || (pacman.getPosition().hasDownTile() && pacman.getRequestedDirection() == Direction.DOWN))) {
 				pacman.setDirection(pacman.getRequestedDirection());
@@ -481,7 +483,7 @@ public class Game {
 		}
 	}
 
-	/**This allows to get the direction of the system input keys in order to move Pacman.
+	/**This method moves pacman pixel by pixel according to his direction and requested direction and performs turns if needed.
 	 */
 	private void move() {
 		switch(pacman.getDirection()) {
@@ -579,7 +581,8 @@ public class Game {
 			break;
 		}
 	}
-	/**This checks if Pacman has a 180 degrees rotation in the current time.
+	
+	/**This method checks if pacman is being requested to turn 180 degrees and, in this case, it performs the turn by finding the appropriate tile to position pacman.
 	 */
 	private void check180degreesRotation() {
 		if(((pacman.getRequestedDirection() == Direction.RIGHT && pacman.getDirection() == Direction.LEFT) || (pacman.getRequestedDirection() == Direction.LEFT && pacman.getDirection() == Direction.RIGHT)) || ((pacman.getRequestedDirection() == Direction.UP && pacman.getDirection() == Direction.DOWN) || (pacman.getRequestedDirection() == Direction.DOWN && pacman.getDirection() == Direction.UP))) {  
@@ -619,7 +622,7 @@ public class Game {
 			pacman.setPosition(newpos);
 		}
 	}
-	/**This changes the ghosts state when Pacman has eaten an energizer, dot or a bonus object.
+	/**This method changes the ghosts state when Pacman has eaten an energizer. It also sums the score corresponding to a dot, bonus or energizer.
 	 */
 	private void eatContentOfTile() {
 		switch(food.get(pacman.getPosition()).getType()) {
@@ -657,7 +660,7 @@ public class Game {
 		}
 	}
 
-	/**This moves a determinate ghost along the maze.
+	/**This moves a determinate ghost along the maze pixel by pixel.
 	 * @param ghost is a ghost that could be any of the four ghosts created.
 	 */
 	public void moveGhost(Ghost ghost) {
@@ -696,7 +699,7 @@ public class Game {
 		}
 	}
 
-	/**This makes that a determinate ghost search its respective target either is frightened or not.
+	/**This method allows to search a target for a given ghost and set its path.
 	 * @param ghost is a ghost that could be any of the four ghosts created.
 	 */
 	public void searchGhostTarget(Ghost ghost) {
@@ -726,7 +729,7 @@ public class Game {
 		determineDirection(ghost);
 	}
 
-	/**This makes that blinky search its respective target either is mode chase or scatter.
+	/**This method finds blinky's target.
 	 */
 	private void searchBlinkyTarget() {
 		switch(Ghost.state) {
@@ -747,7 +750,7 @@ public class Game {
 		}
 	}
 
-	/**This makes that inky search its respective target either is mode chase or scatter.
+	/**This method finds inky's target.
 	 */
 	private void searchInkyTarget() {
 		switch(Ghost.state) {
@@ -771,7 +774,7 @@ public class Game {
 		}
 	}
 
-	/**This makes that pinky search its respective target either is mode chase or scatter.
+	/**This method finds pinky's target
 	 */
 	private void searchPinkyTarget() {
 		switch(Ghost.state) {
@@ -795,7 +798,7 @@ public class Game {
 		}
 	}
 
-	/**This makes that clyde search its respective target either is mode chase or scatter.
+	/**This method finds clyde's target
 	 */
 	private void searchClydeTarget() {
 		switch(Ghost.state) {
@@ -824,7 +827,7 @@ public class Game {
 		}
 	}
 
-	/**This determines the direction of a specified ghost when is in the tunnel or outside of it.
+	/**This method determines the direction of a specified ghost according to its current position and the next coordinate in its path.
 	 * @param ghost is a ghost that could be any of the four ghosts created.
 	 */
 	private void determineDirection(Ghost ghost) {
@@ -844,7 +847,7 @@ public class Game {
 			} 
 		}
 	}
-	/**This checks if the actual ghost had a collision when Pacman when was frightened or not.
+	/**This method checks if a ghost collided with pacman. If it is the case it performs the appropriate action if the ghost was frightened or not
 	 * @param ghost is a ghost that could be any of the four ghosts created.
 	 */
 	private void checkCollisionWithPacman(Ghost ghost) {
@@ -876,7 +879,7 @@ public class Game {
 			}
 		}
 	}
-	/**This makes move the actual ghost in a different path when is necessary.
+	/**This method sets a new target and path for a given ghost if it is necessary.
 	 * @param ghost is a ghost that could be any of the four ghosts created.
 	 */
 	private void setNewRouteIfNecessary(Ghost ghost) {
@@ -908,12 +911,12 @@ public class Game {
 		return type == Food.PACDOT || type == Food.ENERGIZER;
 	}
 
-	/**Allows to obtain a boolean that represents if a determinate ghost ghost is in the tunnel or not.
-	 * @param ghost is a ghost that could be any of the four ghosts created.
+	/**Allows to obtain a boolean that represents if a given character is in the tunnel or not.
+	 * @param character is a character of the game.
 	 * @return a boolean that represents if a determinate ghost ghost is in the tunnel or not.
 	 */
-	public boolean isInTheTunnel(Ghost ghost) {
-		Coordinate pos = ghost.getPosition();
+	public boolean isInTheTunnel(Character character) {
+		Coordinate pos = character.getPosition();
 		boolean tunnel =  pos.equals(coordinates.get(96));
 		tunnel |= pos.equals(coordinates.get(97));
 		tunnel |= pos.equals(coordinates.get(4));
