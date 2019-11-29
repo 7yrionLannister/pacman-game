@@ -130,7 +130,7 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 		int s = keyToIndex.get(src);
 		int d = keyToIndex.get(dst);
 		edges[s][d] = weight;
-		
+
 		if(!isDirected) { //Add the additional edge if this graph is undirected
 			edges[d][s] = weight;
 		}
@@ -253,8 +253,12 @@ public class AdjacencyMatrixGraph<E> implements IGraph<E> {
 		if(src == dst) {
 			path.add(src.getElement());
 		} else {
-			singleSourcePathFill(src, dst.getPredecessor(), path);
-			path.add(dst.getElement());
+			try {
+				singleSourcePathFill(src, dst.getPredecessor(), path);
+				path.add(dst.getElement());
+			} catch(NullPointerException npe) {
+				//c:
+			}
 		}
 	}
 
