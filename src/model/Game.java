@@ -658,6 +658,7 @@ public class Game {
 			}
 			break;
 		}
+		food.get(pacman.getPosition()).setNotEaten(false);
 	}
 
 	/**This moves a determinate ghost along the maze pixel by pixel.
