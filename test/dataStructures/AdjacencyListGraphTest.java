@@ -1,13 +1,12 @@
 package dataStructures;
 
-import static org.junit.jupiter.api.Assertions.*;
+import dataStructures.Vertex.Color;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.TreeMap;
 
-import org.junit.jupiter.api.Test;
-
-import dataStructures.Vertex.Color;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class AdjacencyListGraphTest {
