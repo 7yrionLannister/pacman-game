@@ -8,26 +8,25 @@ import dataStructures.Vertex.Color;
 public interface IGraph<E> {
 	
 	/**This inserts a vertex, defined with a E object that arrives as parameter, in a free space inside the graph and verifies if the insertion process 
-	 * was done rightly.
-	 * @return A boolean that indicates if the insertion process was done rightly.
+	 * was performed.
+	 * @return A boolean that indicates if the insertion process was done or the element already existed in the graph.
 	 * @param e is a vertex that is going to be inserted inside the graph. 
 	 */
 	boolean insertVertex(E e);
 	/**This deletes a vertex, defined with a E object that arrives as parameter, looking for the respective value inside the graph and verifies if 
-	 * the deletion process was done rightly. 
-	 * @return A boolean that indicates if the deletion process was done rightly.
+	 * the deletion process was performed. 
+	 * @return A boolean that indicates if the deletion process was done or the element to be deleted was not in the graph.
 	 * @param e is a vertex that is going to be erased from the graph. 
 	 */
 	boolean deleteVertex(E e);
-	/**This method links a source vertex with another vertex denoted as dst assigning it a weight to their respective connection where a edge is 
-	 * added if the graph is undirected.
+	/**This method links a source vertex with another vertex denoted as dst assigning it a weight to their respective connection or edge
 	 * @param src is an E object that represents the source vertex from the dst vertex is going to be linked. 
 	 * @param dst is an E object that represents the vertex which src is going to be linked with.
 	 * @param weight is an integer that represents the cost of arriving from src to dst
 	 */
 	void link(E src, E dst, int weight);
 	/**This method unlinks a source vertex with another vertex denoted as dst where the other edge is removed if the graph is undirected. 
-	 * @return A boolean that indicates if the unlinking process was done correctly.
+	 * @return A boolean that indicates if the unlinking process was done.
 	 * @param src is an E object that represents the source vertex from the dst vertex is going to be unlinked. 
 	 * @param dst is an E object that represents the vertex which src is going to be unlinked with.
 	 */
@@ -45,18 +44,15 @@ public interface IGraph<E> {
 	 * @return A boolean that indicates if the actual graph of vertices is empty or not.
 	 */
 	boolean isEmpty();
-	/**This performs BFS as from a source vertex where the vertices configuration is going to be fixed in order to BFS can be finished right.
-	 * @return A boolean that indicates if BSF was done correctly. 
+	/**This performs BFS from a source vertex.
+	 * @return A boolean that indicates if BSF was performed. 
 	 * @param src is a reference vertex to do BFS.
 	 */
 	boolean BFS(E src);
-	/**This performs DFS which is iterative and traverses every vertex independent if it is not reachable from certain vertices
-	 * where is needed a stack of recursive calls in DFSVisit method. Moreover, some vertices configuration have to fixed in 
-	 * order to complete DFS rightly.
+	/**This performs DFS starting from random sources every time until all vertices have been visited.
 	 */
 	void DFS();
-	/**This performs the DFS taking into account a source vertex that arrives as parameter where some vertices configuration have to fixed in 
-	 * order to complete DFS rightly.
+	/**This performs the DFS taking into account a source vertex, It means that only reachable vertices will be visited.
 	 * @param src is a reference vertex to start DFS process.
 	 */
 	void DFS(E src);
@@ -74,7 +70,7 @@ public interface IGraph<E> {
 	 */
 	ArrayList<Edge<E>> kruskalMinimumSpannigTree();
 
-	/**This performs FloydWarshall which find the shortest distance between every pair of vertices.
+	/**This performs FloydWarshall which find the shortest path and distance between every pair of vertices.
 	 */
 	void FloydWarshall() ;
 	/**This method returns an ArrayList of vertices that represents the single path for a specified vertex that arrive as parameter if and only if
@@ -89,7 +85,7 @@ public interface IGraph<E> {
 	 * @param dst is a vertex from where distance is going to be calculated. 
 	 */
 	int getSingleSourceDistance(E dst);
-	/**It allows to obtain the path between two pair of vertices through an ArrayList of vertices.
+	/**It allows to obtain the path between two pair of vertices through an list of vertices.
 	 * @return An ArrayList that represents the path between src and dst. 
 	 * @param src is a vertex from which we can access to dst. 
 	 * @param dst is the vertex which dst can access.

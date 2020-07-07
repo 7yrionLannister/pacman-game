@@ -2,24 +2,26 @@ package dataStructures;
 
 public class Vertex<E> implements Comparable<Vertex<E>> {
 	public static enum Color {WHITE, GRAY, BLACK}
-	/**It represents the object that is contained in the vertex nowadays.
+	/**It represents the object represented by the vertex.
 	 */
 	private E element;
-	/**It represents the vertex color in the search algorithms. 
+	/**It represents the vertex color (state) in the traversal algorithms. 
 	 */
 	private Color color;
-	/**It represents the associated predecessor vertex of the actual vertex. 
+	/**It represents the associated predecessor vertex in the tree formed by the traversal algorithm. 
 	 */
 	private Vertex<E> predecessor;
-	/**It represents the distance between two vertices.
-	 */
+	
 	//BFS and Dijkstra Attributes
-	private int distance;
-	/**It represents the state of a discovered vertex when DFS is applied. 
+	/**It represents the distance between the last origin vertex in a traversal algorithm and this vertex.
 	 */
+	private int distance;
+	
 	//DFS Attributes
+	/**It represents the total amount of iterations of DFS until the vertex is discovered. 
+	 */
 	private int discovered;
-	/**It represents the state of a finished vertex when DFS is applied.
+	/**It represents the total amount of iterations of DFS until the vertex is visited the second and last time. 
 	 */
 	private int finished;
 	
@@ -31,8 +33,8 @@ public class Vertex<E> implements Comparable<Vertex<E>> {
 		color = Color.WHITE;
 		setPredecessor(null);
 	}
-	/**It allows to get the actual vertex distance.
-	 * @return An Integer that represents the actual vertex distance.
+	/**It allows to get the distance from the last origin vertex.
+	 * @return An Integer that represents the distance from origin.
 	 */
 	public int getDistance() {
 		return distance;
@@ -67,26 +69,26 @@ public class Vertex<E> implements Comparable<Vertex<E>> {
 	public void setColor(Color color) {
 		this.color = color;
 	}
-	/**It allows to get an integer that represents if the actual vertex stage is finished when BFS is applied.
-	 * @return An Integer that represents if the actual vertex stage is finished when BFS is applied.
+	/**It allows to get an integer that represents the total amount of iterations of DFS until the vertex is visited the second and last time.
+	 * @return An Integer that represents the total amount of iterations of DFS until the vertex is visited the second and last time.
 	 */
 	public int getFinished() {
 		return finished;
 	}
-	/**It allows to set an integer that represents if the actual vertex stage is finished when BFS is applied.
-	 * @param finished is an integer that represents if the actual vertex stage is finished when BFS is applied.
+	/**It allows to set an integer that represents the total amount of iterations of DFS until the vertex is visited the second and last time.
+	 * @param finished is an integer that represents the total amount of iterations of DFS until the vertex is visited the second and last time.
 	 */
 	public void setFinished(int finished) {
 		this.finished = finished;
 	}
-	/**It allows to get an integer that represents if the actual vertex stage has been discovered when BFS is being applied.
-	 * @return An integer that represents if the actual vertex stage has been discovered when BFS is being applied.
+	/**It allows to get an integer that represents the total amount of iterations of DFS until the vertex is discovered.
+	 * @return An integer that represents the total amount of iterations of DFS until the vertex is discovered.
 	 */
 	public int getDiscovered() {
 		return discovered;
 	}
-	/**It allows to set an integer that represents if the actual vertex stage has been discovered when BFS is being applied.
-	 * @param discovered is an integer that represents if the actual vertex stage has been discovered when BFS is being applied.
+	/**It allows to set an integer that represents the total amount of iterations of DFS until the vertex is discovered.
+	 * @param discovered is an integer that represents the total amount of iterations of DFS until the vertex is discovered.
 	 */
 	public void setDiscovered(int discovered) {
 		this.discovered = discovered;
@@ -94,7 +96,7 @@ public class Vertex<E> implements Comparable<Vertex<E>> {
 	/**This method compares if another vertex of E type is equals to the actual vertex.
 	 * @return A boolean that indicates if the vertex another is equal to the actual one.
 	 * @param another is a vertex which is going to be compare with the actual one.
-	 * @throws ClassCastException if another is not a Vertex.
+	 * @throws ClassCastException if another is not a Vertex<E>.
 	 */
 	@Override
 	public boolean equals(Object another) {

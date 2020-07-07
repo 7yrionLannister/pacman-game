@@ -3,15 +3,13 @@ package dataStructures;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.PriorityQueue;
-import java.util.function.BiConsumer;
 
 import dataStructures.Vertex.Color;
 
 
 public class AdjacencyListGraph<E> implements IGraph<E>{
-	
+
 	/**It represents a hash map from E objects to vertices of E type.
 	 */
 	private HashMap<E, Vertex<E>> vertices;
@@ -31,7 +29,7 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 	/**It represents a modified Adjacency List in order to perform FloydWarshall correctly.
 	 */
 	private AdjacencyMatrixGraph<E> graphForWarshall; 	
-	
+
 	/**It creates a list as a array of edges of a graph either directed or undirected.
 	 * @param isDirected is a boolean that indicates if the Adjacency List is going to represent a directed graph or not.
 	 */
@@ -40,7 +38,7 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 		vertices = new HashMap<>();
 		adjacencyLists = new HashMap<>();
 	}
-	
+
 	/**This inserts a vertex, defined with a E object that arrives as parameter, in a free space and verifies if the insertion process 
 	 * was done rightly.
 	 * @param e is a vertex that is going to be inserted inside the list. 
@@ -48,14 +46,14 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 	 */
 	@Override
 	public boolean insertVertex(E e) {
-		if(!vertices.containsKey(e)) {
+		if(!containsVertex(e)) {
 			vertices.put(e, new Vertex<E>(e));
 			adjacencyLists.put(e, new ArrayList<>());
 			return true;
 		}
 		return false;
 	}
-	
+
 	/**This deletes a vertex, defined with a E object that arrives as parameter, looking for the respective key inside the list and verifies if 
 	 * the deletion process was done rightly. Moreover, the vertex associated edges are deleted too.
 	 * @param sk is a vertex that is going to be erased from the list. 
@@ -63,26 +61,23 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 	 */
 	@Override
 	public boolean deleteVertex(E sk) {
-		if(vertices.containsKey(sk)) {
+		if(containsVertex(sk)) {
 			vertices.remove(sk); //remove the vertex itself
-			vertices.forEach(new BiConsumer<E, Vertex<E>>() { //and remove all edges where it is dst
-				@Override
-				public void accept(E t, Vertex<E> u) {
-					ArrayList<Edge<E>> toremove = new ArrayList<>();
-					for(Edge<E> ale : adjacencyLists.get(t)) {
-						if(ale.getDst().equals(sk)) {
-							toremove.add(ale);
-						}
+			vertices.forEach((E t, Vertex<E> u) -> {
+				ArrayList<Edge<E>> toremove = new ArrayList<>();
+				for(Edge<E> ale : adjacencyLists.get(t)) {
+					if(ale.getDst().equals(sk)) {
+						toremove.add(ale);
 					}
-					adjacencyLists.get(t).removeAll(toremove);
 				}
+				adjacencyLists.get(t).removeAll(toremove);
 			});
 
 			return true;
 		}
 		return false;
 	}
-	
+
 	/**This method links a source vertex with another vertex denoted as dst assigning it a weight to their respective connection where a edge is 
 	 * added if the graph is undirected.
 	 * @param src is an E object that represents the source vertex from the dst vertex is going to be linked. 
@@ -106,7 +101,7 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 			dEdges.add(newedge2); 
 		}
 	}
-	
+
 	/**This method unlinks a source vertex with another vertex denoted as dst where the other edge is removed if the graph is undirected.
 	 * @param src is an E object that represents the source vertex from the dst vertex is going to be unlinked. 
 	 * @param dst is an E object that represents the vertex which src is going to be unlinked with. 
@@ -125,7 +120,7 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 		}
 		return false;
 	}
-	
+
 	/**It verifies if the actual vertices contains a key of E type that arrives as parameter.
 	 * @param key is vertex that is going to be searched inside the vertices list. 
 	 * @return A boolean that indicates if the actual vertices contains a key of E type that arrives as parameter.
@@ -134,7 +129,7 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 	public boolean containsVertex(E key) {
 		return vertices.containsKey(key);
 	}
-	
+
 	/**It allows to get the order as an integer that represents the actual vertices size.
 	 * @return An Integer that represents the actual vertices list size.
 	 */
@@ -142,7 +137,7 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 	public int getOrder() {
 		return vertices.size();
 	}
-	
+
 	/**It verifies if the actual list of vertices is empty or not.
 	 * @return A boolean that indicates if the actual list of vertices is empty or not.
 	 */
@@ -150,7 +145,7 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 	public boolean isEmpty() {
 		return vertices.isEmpty();
 	}
-	
+
 	/**This performs BFS as from a source vertex where the vertices configuration is going to be fixed in order to BFS can be finished right.
 	 * @param src is a reference vertex to do BFS.
 	 * @return A boolean that indicates if BSF was done correctly. 
@@ -158,16 +153,13 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 	//traverses all vertices reachable from src
 	@Override
 	public boolean BFS(E src) {
-		if(vertices.containsKey(src)) {
+		if(containsVertex(src)) {
 			Vertex<E> s = vertices.get(src);
 			lastSrc = s;
-			vertices.forEach(new BiConsumer<E, Vertex<E>>() { //Fix the vertices configuration to make BFS
-				@Override
-				public void accept(E e, Vertex<E> u) {
-					u.setColor(Color.WHITE);
-					u.setDistance(Integer.MAX_VALUE);
-					u.setPredecessor(null);
-				}
+			vertices.forEach((E e, Vertex<E> u) -> {
+				u.setColor(Color.WHITE);
+				u.setDistance(Integer.MAX_VALUE);
+				u.setPredecessor(null);
 			});
 			s.setColor(Color.GRAY);
 			s.setDistance(0);
@@ -196,17 +188,13 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 		}
 		return false;
 	}
-	
+
 	/**This method returns an ArrayList of vertices that represents the single path for a specified vertex that arrive as parameter if and only if
 	 * bfs, dfs or dijkstra have been called before to determinate this path where if the ArrayList is empty is because there is no possible path
 	 * to reach that vertex.
-	 * @param dst is a vertex that indicates from where the path have to be built.
-	 * @return An ArrayList that represent a single path from vertex dst. 
+	 * @param dst is a vertex that indicates the target or destiny vertex
+	 * @return An ArrayList that represent a single path from vertex the last source vertex (origin) to dst. 
 	 */
-	//pre: bfs, dfs or dijkstra have been called
-	//it is only the shortest path in unweighted graphs, else is just a path
-	//it is the least stops path
-	//returns empty arraylist if the dst vertex was not reachable from lastSrcInBST, or if dst == null
 	@Override
 	public ArrayList<E> getSingleSourcePath(E dst) {
 		Vertex<E> d = vertices.get(dst);
@@ -219,7 +207,7 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 
 		return path;
 	}
-	
+
 	/**This method appoints a path between two vertices that arrive as parameters inside a ArrayList.
 	 * @param src A Vertex that represents the source where dst is associated.
 	 * @param dst A Vertex that represents the vertex which src is connected with.
@@ -233,7 +221,7 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 			path.add(dst.getElement());
 		}
 	}
-	
+
 	/**This performs DFS which is recursive and traverses every vertex independent if it is not reachable from certain vertices
 	 *where is needed a stack of recursive calls in DFSVisit method. Moreover, some vertices configuration have to fixed in 
 	 * order to complete DFS rightly.
@@ -242,24 +230,18 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 	//it uses stack of recursive calls in dfsvisit method
 	@Override
 	public void DFS() {
-		vertices.forEach(new BiConsumer<E, Vertex<E>>() { //Fix the vertices configuration to make DFS
-			@Override
-			public void accept(E e, Vertex<E> u) {
-				u.setColor(Color.WHITE);
-				u.setPredecessor(null);
-			}
+		vertices.forEach((E e, Vertex<E> u) -> {
+			u.setColor(Color.WHITE);
+			u.setPredecessor(null);
 		});
 		DFStime = 0;
-		vertices.forEach(new BiConsumer<E, Vertex<E>>() {
-			@Override
-			public void accept(E e, Vertex<E> u) {
-				if(u.getColor() == Color.WHITE) {
-					DFSVisit(u);
-				}
+		vertices.forEach((E e, Vertex<E> u) -> {
+			if(u.getColor() == Color.WHITE) {
+				DFSVisit(u);
 			}
 		});
 	}
-	
+
 	/**This performs the DFS visit process recursively as from a vertex that arrives as parameter where every reachable vertex from u is going
 	 * to be traversed. 
 	 * @param u is a Vertex that represents the initial point of DFS visit process.
@@ -281,7 +263,7 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 		DFStime++;
 		u.setFinished(DFStime);
 	}
-	
+
 	/**This performs the DFS taking into account a source vertex that arrives as parameter where some vertices configuration have to fixed in 
 	 * order to complete DFS rightly.
 	 * @param src is a reference vertex to start DFS process. 
@@ -291,15 +273,12 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 	//it traverses the reachable vertices starting from src
 	@Override
 	public void DFS(E src) {
-		if(vertices.containsKey(src)) {
-			vertices.forEach(new BiConsumer<E, Vertex<E>>() { //Fix the vertices configuration to make DFS
-				@Override
-				public void accept(E e, Vertex<E> u) {
-					u.setDiscovered(0);
-					u.setFinished(0);
-					u.setColor(Color.WHITE);
-					u.setPredecessor(null);
-				}
+		if(containsVertex(src)) {
+			vertices.forEach((E e, Vertex<E> u) -> {
+				u.setDiscovered(0);
+				u.setFinished(0);
+				u.setColor(Color.WHITE);
+				u.setPredecessor(null);
 			});
 			DFStime = 1;
 			Vertex<E> s = vertices.get(src);
@@ -327,22 +306,19 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 			}
 		}
 	}
-	
+
 	/**This performs Dijkstra which finds the shortest path and distances from a vertex to all that can be reached from src. 
 	 * @param src is a reference vertex to start Dijkstra process.
 	 */
 	@Override
 	public void Dijkstra(E src) {
 		PriorityQueue<Vertex<E>> pq = new PriorityQueue<Vertex<E>>();
-		if(vertices.containsKey(src)) {
+		if(containsVertex(src)) {
 			lastSrc = vertices.get(src);
-			vertices.forEach(new BiConsumer<E, Vertex<E>>() { //Fix the vertices configuration to make Dijkstra
-				@Override
-				public void accept(E t, Vertex<E> u) {
-					u.setDistance(Integer.MAX_VALUE);
-					u.setPredecessor(null);
-					pq.offer(u);
-				}
+			vertices.forEach((E t, Vertex<E> u) -> {
+				u.setDistance(Integer.MAX_VALUE);
+				u.setPredecessor(null);
+				pq.offer(u);
 			});
 			pq.remove(lastSrc);
 			lastSrc.setDistance(0);
@@ -362,118 +338,109 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 			}
 		}
 	}
-	
+
 	/**This performs FloydWarshall which find the shortest distance between every pair of vertices. 
 	 */
 	@Override
 	public void FloydWarshall() {
-		graphForWarshall = new AdjacencyMatrixGraph<>(vertices.size(), isDirected);
-		vertices.forEach(new BiConsumer<E, Vertex<E>> () {
-			@Override
-			public void accept(E t, Vertex<E> u) {
-				graphForWarshall.insertVertex(t);
-			}
+		graphForWarshall = new AdjacencyMatrixGraph<>(getOrder(), isDirected);
+		vertices.forEach((E t, Vertex<E> u) -> {
+			graphForWarshall.insertVertex(t);
 		});
-		adjacencyLists.forEach(new BiConsumer<E, ArrayList<Edge<E>>>() {
-			@Override
-			public void accept(E t, ArrayList<Edge<E>> u) {
-				for(Edge<E> ale : u) {
-					graphForWarshall.link(ale.getSrc(), ale.getDst(), ale.getWeight());
-				}
+		adjacencyLists.forEach((E t, ArrayList<Edge<E>> u) -> {
+			for(Edge<E> ale : u) {
+				graphForWarshall.link(ale.getSrc(), ale.getDst(), ale.getWeight());
 			}
 		});
 		graphForWarshall.FloydWarshall();
 	}
-	
+
 	/**It allows to obtain a boolean that represents if the graph is directed or not.
 	 * @return A boolean that indicates if the graph is directed or not.
 	 */
 	public boolean isDirected() {
 		return isDirected;
 	}
-	
+
 	/**It returns the last source vertex inside the graph. 
 	 * @return An E object that represents the last source vertex inside the graph.
 	 */
 	public E getLastSrc() {
 		return lastSrc.getElement();
 	}
-	
+
 	/**It allows to get all the actual graph vertices in a ArrayList. 
 	 * @return An ArrayList of E type with all the actual graph vertices.
 	 */
 	@Override
 	public ArrayList<E> getVertices() {
 		ArrayList<E> verts = new ArrayList<>();
-		vertices.forEach(new BiConsumer<E, Vertex<E>>() {
-			@Override
-			public void accept(E t, Vertex<E> u) {
-				verts.add(t);	
-			}
+		vertices.forEach((E t, Vertex<E> u) -> {
+			verts.add(t);
 		});
 		return verts;
 	}
-	
+
 	/**It allows to obtain the distance of a single vertex specified as parameter. Returns infinite if dst does not exist in the vertices list.
 	 * @param dst is a vertex from where distance is going to be calculated. 
 	 * @return An Integer the distance of the entire single path of dst.  
 	 */
 	@Override
 	public int getSingleSourceDistance(E dst) {
-		if(vertices.containsKey(dst)) {
+		if(containsVertex(dst)) {
 			return vertices.get(dst).getDistance();
 		}
 		return Integer.MAX_VALUE;
 	}
-	
+
 	/**It allows to obtain the time that DFS performs discovering a vertex that arrives as parameter.
 	 * @param key is a vertex that is going to be discovered inside the list. 
 	 * @return An Integer that indicates how many time took to discover the inside the list. 
 	 */
 	@Override
 	public int getDFSDiscoveredTime(E key) {
-		if(vertices.containsKey(key)) {
+		if(containsVertex(key)) {
 			return vertices.get(key).getDiscovered();
 		}
 		return 0;
 	}
-	
+
 	/**It allows to obtain the time that DFS performs finishing a vertex that arrives as parameter.
 	 * @param key is a vertex that is going to be finished inside the list.
 	 * @return An Integer that indicates how many time took to finish the inside the list.  
 	 */
 	@Override
 	public int getDFSFinishedTime(E key) {
-		if(vertices.containsKey(key)) {
+		if(containsVertex(key)) {
 			return vertices.get(key).getFinished();
 		}
 		return 0;
 	}
-	
+
 	/**It allows to obtain the key state as a color. 
 	 * @param key is a vertex which its color is going to be extracted. 
 	 * @return A State that indicates the vertex color. 
 	 */
 	@Override
 	public Color getVertexColor(E key) {
-		if(vertices.containsKey(key)) {
+		if(containsVertex(key)) {
 			return vertices.get(key).getColor();
 		}
 		return null;
 	}
-	
+
 	/**It allows to obtain a single predecessor of a determinate vertex that arrives as parameter.
 	 * @param key is a ordinary vertex of the list. 
 	 * @return A E object that represents the single predecessor. 
 	 */
 	@Override
 	public E getSingleSourcePredecessor(E key) {
-		if(vertices.containsKey(key) && vertices.get(key).getPredecessor() != null) {
+		if(containsVertex(key) && vertices.get(key).getPredecessor() != null) {
 			return vertices.get(key).getPredecessor().getElement();
 		}
 		return null;
 	}
-	
+
 	/**It allows to obtain the path between two pair of vertices through an ArrayList of vertices.
 	 * @param src is a vertex from which we can access to dst. 
 	 * @param dst is the vertex which dst can access.
@@ -483,7 +450,7 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 	public ArrayList<E> getPath(E src, E dst) {
 		return graphForWarshall.getPath(src, dst);
 	}
-	
+
 	/**It allows to get the distance between two pairs of vertices.
 	 * @param src is a vertex from which we can access to dst.
 	 * @param dst is the vertex which dst can access.
@@ -493,7 +460,7 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 	public int getDistance(E src, E dst) {
 		return graphForWarshall.getDistance(src, dst);
 	}
-	
+
 	/**It allows to determinate if two pairs of vertices have and edge in common.
 	 * @param src is a vertex from which we can access to dst.
 	 * @param dst is the vertex which dst can access.
@@ -501,12 +468,12 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 	 */
 	@Override
 	public boolean containsEdge(E src, E dst) {
-		if(vertices.containsKey(src) && vertices.containsKey(dst)) {
+		if(containsVertex(src) && containsVertex(dst)) {
 			return adjacencyLists.get(src).contains(new Edge<E>(src, dst, Integer.MAX_VALUE));
 		}
 		return false;
 	}
-	
+
 	/**It allows to obtain all the adjacent vertices of a determinate source that arrives as parameter.
 	 * @param key is a vertex which its adjacent vertices are going to be found. 
 	 * @return An ArrayList that represents all the adjacent vertices of a determinate source that arrives as parameter.
@@ -514,14 +481,14 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 	@Override
 	public ArrayList<E> getAdjacent(E key) {
 		ArrayList<E> adj = new ArrayList<>();
-		if(vertices.containsKey(key)) {
+		if(containsVertex(key)) {
 			for(Edge<E> ale : adjacencyLists.get(key)) {
 				adj.add(ale.getDst());
 			}
 		}
 		return adj;
 	}
-	
+
 	/**It allows to get the weight between two pairs of vertices that arrive as parameters. Returns infinite if there is no edge between these 
 	 * two vertices.
 	 * @param src is a vertex from which we can access to dst.
@@ -530,7 +497,7 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 	 */
 	@Override
 	public int getEdgeWeight(E src, E dst) {
-		if(vertices.containsKey(src) && vertices.containsKey(dst)) {
+		if(containsVertex(src) && containsVertex(dst)) {
 			ArrayList<Edge<E>> srcAdj = adjacencyLists.get(src);
 			for(int i = 0; i < srcAdj.size(); i++) {
 				if(srcAdj.get(i).getDst().equals(dst)) {
@@ -543,30 +510,27 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 		}
 		return Integer.MAX_VALUE;
 	}
-	
-	/**This performs Prim which finds the minimum spanning tree edges of a graph when this is connected and there is a source vertex.
+
+	/**This performs Prim which finds the minimum spanning tree of the connected component of the graph where the source vertex belongs.
 	 * @param src is a reference vertex to start Prim process. 
 	 * @return An ArrayList which has all the edges of the minimum spanning tree.
 	 */
 	@Override
 	public ArrayList<Edge<E>> primMinimumSpanningTree(E src) {
 		ArrayList<Edge<E>> prim = new ArrayList<Edge<E>>();
-		if(vertices.containsKey(src)) {
+		if(containsVertex(src)) {
 			lastSrc = vertices.get(src);
 			PriorityQueue<Vertex<E>> pq = new PriorityQueue<Vertex<E>>();
-			vertices.forEach(new BiConsumer<E, Vertex<E>>() { //Fix the vertices configuration to make Prim
-				@Override
-				public void accept(E t, Vertex<E> u) {
-					u.setDistance(Integer.MAX_VALUE);
-					u.setColor(Color.WHITE);
-					u.setPredecessor(null);
-					pq.offer(u);
-				}
+			vertices.forEach((E t, Vertex<E> u) -> {
+				u.setDistance(Integer.MAX_VALUE);
+				u.setColor(Color.WHITE);
+				u.setPredecessor(null);
+				pq.offer(u);
 			});
 			pq.remove(lastSrc);
 			lastSrc.setDistance(0);
 			pq.offer(lastSrc);
-			
+
 			while(!pq.isEmpty()) {
 				Vertex<E> u = pq.poll();
 				for(Edge<E> ale : adjacencyLists.get(u.getElement())) {
@@ -590,7 +554,7 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 		}
 		return prim;
 	}
-	
+
 	/**This performs Kruskal which finds the minimum spanning tree edges of a graph regardless of this is connected or not.
 	 * @return An ArrayList which has all the edges of the minimum spanning tree.
 	 */
@@ -606,7 +570,7 @@ public class AdjacencyListGraph<E> implements IGraph<E>{
 				}
 			}
 		}
-		Collections.sort((List) edges);
+		Collections.sort(edges);
 		for(int i = 0; i < edges.size(); i++) {
 			Edge<E> edge = edges.get(i);
 			if(uf.find(edge.getSrc()) != uf.find(edge.getDst())) {

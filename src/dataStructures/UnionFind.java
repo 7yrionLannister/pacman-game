@@ -4,6 +4,7 @@ import java.util.NoSuchElementException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+
 public class UnionFind<E> {
 	
     private class Link {

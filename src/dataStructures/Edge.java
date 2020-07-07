@@ -58,7 +58,7 @@ public class Edge<E> implements Comparable<Edge<E>>{
 	public void setWeight(int weight) {
 		this.weight = weight;
 	}
-	/***This method compares if another Adjacency List Edge of E type is equals to the actual Adjacency List Edge.
+	/**This method compares if another Adjacency List Edge of E type is equals to the actual Adjacency List Edge.
 	 * @return A boolean that indicates if another Adjacency List Edge of E type is equals to the actual Adjacency List Edge.
 	 * @param another An AdjacencyListEdge that is going to be compared with the actual one.
 	 * @throws ClassCastException if another is not an AdjacencyListEdge.
@@ -68,6 +68,9 @@ public class Edge<E> implements Comparable<Edge<E>>{
 		Edge<E> a = (Edge<E>)another; 
 		return a.src.equals(src) && a.dst.equals(dst);
 	}
+	/**Compares the incoming edge with this one by weight
+	 * @param edge The edge to compare
+	 * */
 	@Override
 	public int compareTo(Edge<E> edge) {
 		return weight - edge.weight;
